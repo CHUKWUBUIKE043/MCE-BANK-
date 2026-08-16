@@ -4,53 +4,51 @@
     <title>MCE BANK - Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * {margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial;}
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial;}
         body {background: #f5f7fa; padding-bottom: 80px;}
-        .demo {color: red; font-weight: bold; text-align: center; padding: 8px; background: white; font-size: 12px;}
-        
-        .header {display: flex; justify-content: space-between; align-items: center; padding: 20px 16px;}
-        .welcome {display: flex; align-items: center; gap: 12px;}
-        .welcome img {width: 48px; height: 48px; border-radius: 50%; background: #ddd; object-fit: cover; border: 2px solid #0a90f0;}
-        .welcome h3 {font-size: 16px; color: #111; font-weight: 700;}
-        .welcome p {font-size: 14px; color: #555;}
-        .header-icons {display: flex; gap: 10px;}
-        .header-icons div {width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); cursor: pointer;}
+       .demo {color: red; font-weight: bold; text-align: center; padding: 8px; background: white; font-size: 12px;}
 
-        .balance-card {background: white; margin: 0 16px 16px 16px; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);}
-        .balance-top {display: flex; justify-content: space-between; color: #666; font-size: 12px; margin-bottom: 12px; font-weight: 500; align-items: center;}
-        .balance-amount {font-size: 30px; font-weight: 700; color: #111; letter-spacing: 4px; margin-bottom: 18px;}
-        .account-info {display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #f0f0f0;}
-        .account-info div p:first-child {font-size: 11px; color: #999; margin-bottom: 4px;}
-        .account-info div p:last-child {font-size: 15px; font-weight: 600; color: #111;}
-        .pending {text-align: right;}
+       .header {display: flex; justify-content: space-between; align-items: center; padding: 20px 16px; background: white;}
+       .welcome {display: flex; align-items: center; gap: 12px;}
+       .welcome img {width: 48px; height: 48px; border-radius: 50%; background: #ddd; border: 2px solid #0a90f0;}
+       .welcome h3 {font-size: 16px; color: #111; font-weight: 700;}
+       .welcome p {font-size: 14px; color: #555;}
 
-        .actions {display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 16px 16px 16px;}
-        .action-btn {text-align: center; cursor: pointer;}
-        .action-btn .icon {width: 100%; aspect-ratio: 1; background: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); color: #0a90f0;}
-        .action-btn p {font-size: 12px; color: #333; font-weight: 500;}
+       .balance-card {background: #0a90f0; color: white; margin: 16px; padding: 20px; border-radius: 16px;}
+       .balance-top {display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;}
+       .balance-top span:first-child {font-size: 12px; opacity: 0.9;}
+       .currency-select {background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 6px 10px; border-radius: 8px; font-weight: bold; font-size: 13px;}
+       .currency-select option {color: black; background: white;}
+       .balance-amount {font-size: 30px; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px;}
+       .other-currencies {font-size: 12px; opacity: 0.8;}
 
-        .transactions {background: white; margin: 0 16px; padding: 20px; border-radius: 16px;}
-        .transactions h3 {margin-bottom: 15px; color: #111; font-size: 16px; font-weight: 600;}
-        .txn {display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f0f0f0;}
-        .txn:last-child {border: none;}
-        .txn-title {font-weight: 600; color: #111; font-size: 14px;}
-        .txn-sub {font-size: 12px; color: #777; margin-top: 3px;}
-        .txn-amount {color: #00a86b; font-weight: 700; font-size: 14px;}
+       .info-grid {display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 16px 16px 16px;}
+       .info-box {background: white; padding: 15px; border-radius: 12px;}
+       .info-box p.label {font-size: 11px; color: #777; margin-bottom: 5px;}
+       .info-box p.value {font-size: 14px; color: #111; font-weight: bold; word-break: break-all;}
 
-        .bottom-nav {position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.04);}
-        .nav-item {text-align: center; font-size: 11px; color: #999; cursor: pointer;}
-        .nav-item.active {color: #0a90f0;}
-        .nav-item .icon {font-size: 22px; margin-bottom: 3px;}
+       .actions {display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 16px 16px 16px;}
+       .action-btn {text-align: center; cursor: pointer;}
+       .action-btn.icon {width: 100%; aspect-ratio: 1; background: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); color: #0a90f0;}
+       .action-btn p {font-size: 12px; color: #333; font-weight: 500;}
 
-        .modal {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 999;}
-        .modal-content {background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 400px;}
-        .modal-content h3 {margin-bottom: 15px; color: #111;}
-        .modal-content input {width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px;}
-        .modal-content button {width: 100%; padding: 14px; background: #0a90f0; color: white; border: none; border-radius: 10px; font-weight: 600; margin-top: 10px; font-size: 15px;}
+       .transactions {background: white; margin: 0 16px; padding: 20px; border-radius: 16px;}
+       .transactions h3 {margin-bottom: 15px; color: #111; font-size: 16px; font-weight: 600;}
+
+       .bottom-nav {position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.04);}
+       .nav-item {text-align: center; font-size: 11px; color: #999; cursor: pointer;}
+       .nav-item.active {color: #0a90f0;}
+       .nav-item.icon {font-size: 22px; margin-bottom: 3px;}
+
+       .modal {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 999;}
+       .modal-content {background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 400px;}
+       .modal-content h3 {margin-bottom: 15px; color: #111;}
+       .modal-content input,.modal-content select {width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px;}
+       .modal-content button {width: 100%; padding: 14px; background: #0a90f0; color: white; border: none; border-radius: 10px; font-weight: 600; margin-top: 10px; font-size: 15px;}
     </style>
 </head>
 <body>
-    <p class="demo">TRUSTED BY 50MIlloins people's -  A REAL BANK</p>
+    <p class="demo"TRUSTED BY 5MMILLIONS PEOPLE'S  - A REAL BANK</p>
 
     <div class="header">
         <div class="welcome">
@@ -60,27 +58,50 @@
                 <p id="userName">Loading...</p>
             </div>
         </div>
-        <div class="header-icons">
-            <div onclick="alert('Search coming soon')">🔍</div>
-            <div onclick="alert('Notifications coming soon')">🔔</div>
-        </div>
     </div>
 
     <div class="balance-card">
         <div class="balance-top">
             <span>AVAILABLE BALANCE</span>
-            <span onclick="toggleBalance()" style="cursor:pointer; font-size:16px;">👁️</span>
+            <select class="currency-select" id="currencySelect" onchange="changeCurrency()">
+                <!-- MAJOR CURRENCIES -->
+                <option value="USD">$ USD - US Dollar</option>
+                <option value="EUR">€ EUR - Euro</option>
+                <option value="GBP">£ GBP - British Pound</option>
+                <option value="JPY">¥ JPY - Japanese Yen</option>
+                <option value="CAD">C$ CAD - Canadian Dollar</option>
+                <option value="AUD">A$ AUD - Australian Dollar</option>
+                <option value="CHF">Fr CHF - Swiss Franc</option>
+                <option value="CNY">¥ CNY - Chinese Yuan</option>
+                <!-- AFRICA -->
+                <option value="NGN">₦ NGN - Nigerian Naira</option>
+                <option value="GHS">₵ GHS - Ghana Cedi</option>
+                <option value="KES">KSh KES - Kenyan Shilling</option>
+                <option value="ZAR">R ZAR - South African Rand</option>
+                <option value="EGP">£ EGP - Egyptian Pound</option>
+                <!-- ASIA -->
+                <option value="INR">₹ INR - Indian Rupee</option>
+                <option value="SGD">S$ SGD - Singapore Dollar</option>
+                <option value="AED">د.إ AED - UAE Dirham</option>
+                <option value="SAR">﷼ SAR - Saudi Riyal</option>
+            </select>
         </div>
-        <div class="balance-amount" id="balance">••••</div>
-        <div class="account-info">
-            <div>
-                <p>ACCOUNT NUMBER</p>
-                <p id="accNumber">000000000</p>
-            </div>
-            <div class="pending">
-                <p>STATUS</p>
-                <p>ACTIVE</p>
-            </div>
+        <div class="balance-amount" id="balance">$0.00</div>
+        <div class="other-currencies" id="otherBalances">€0.00 | ₦0.00 | £0.00</div>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-box">
+            <p class="label">ACCOUNT NUMBER</p>
+            <p class="value" id="accNumber">Loading...</p>
+        </div>
+        <div class="info-box">
+            <p class="label">PHONE NUMBER</p>
+            <p class="value" id="userPhone">Loading...</p>
+        </div>
+        <div class="info-box" style="grid-column: 1 / 3;">
+            <p class="label">EMAIL ADDRESS</p>
+            <p class="value" id="userEmail">Loading...</p>
         </div>
     </div>
 
@@ -97,9 +118,9 @@
             <div class="icon">✈</div>
             <p>Pay</p>
         </div>
-        <div class="action-btn" onclick="alert('Demo: Coming Soon')">
-            <div class="icon">💬</div>
-            <p>Message</p>
+        <div class="action-btn" onclick="logout()">
+            <div class="icon">🚪</div>
+            <p>Logout</p>
         </div>
     </div>
 
@@ -110,20 +131,20 @@
         </div>
     </div>
 
-    <div class="bottom-nav">
-        <div class="nav-item active"><div class="icon">🏠</div>Home</div>
-        <div class="nav-item"><div class="icon">💳</div>Cards</div>
-        <div class="nav-item"><div class="icon">📊</div>Analytics</div>
-        <div class="nav-item"><div class="icon">⚙️</div>Settings</div>
-    </div>
-
     <!-- TRANSFER MODAL -->
     <div class="modal" id="transferModal">
         <div class="modal-content">
             <h3>Admin Transfer Money</h3>
             <p style="font-size:12px; color:red; margin-bottom:10px;">Only Admin can send money</p>
             <input type="email" id="toEmail" placeholder="Recipient Email">
-            <input type="number" id="amount" placeholder="Amount USD" step="0.01">
+            <select id="sendCurrency">
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="NGN">NGN - Nigerian Naira</option>
+                <option value="GHS">GHS - Ghana Cedi</option>
+            </select>
+            <input type="number" id="amount" placeholder="Amount" step="0.01">
             <button onclick="sendMoney()">Send Money</button>
             <button onclick="closeTransfer()" style="background:#eee; color:#333;">Cancel</button>
         </div>
@@ -131,29 +152,53 @@
 
     <script>
         const ADMIN_EMAIL = "admin@mcebank.com"; // <-- CHANGE THIS TO YOUR EMAIL
+        const EXCHANGE_RATES = { // 1 USD = X
+            USD: 1, EUR: 0.92, GBP: 0.79, JPY: 155, CAD: 1.35, AUD: 1.52, CHF: 0.91, CNY: 7.2,
+            NGN: 1600, GHS: 15.5, KES: 130, ZAR: 18.5, EGP: 48,
+            INR: 83.5, SGD: 1.35, AED: 3.67, SAR: 3.75
+        };
+        const CURRENCY_SYMBOLS = {
+            USD: '$', EUR: '€', GBP: '£', JPY: '¥', CAD: 'C$', AUD: 'A$', CHF: 'Fr', CNY: '¥',
+            NGN: '₦', GHS: '₵', KES: 'KSh', ZAR: 'R', EGP: '£',
+            INR: '₹', SGD: 'S$', AED: 'د.إ', SAR: '﷼'
+        };
+
         const currentEmail = localStorage.getItem('mceCurrentUser');
         if(!currentEmail) window.location.href = "index.html";
 
         const userData = JSON.parse(localStorage.getItem('mceUser_' + currentEmail));
-        let showBalance = false;
+        let currentCurrency = localStorage.getItem('mceCurrency_' + currentEmail) || 'USD'; // Load saved currency
 
-        // SET NAME + PROFILE PIC + ACCOUNT
+        // SET REAL DATA
         document.getElementById('userName').innerText = userData.name;
         document.getElementById('accNumber').innerText = userData.accountNumber;
+        document.getElementById('userEmail').innerText = userData.email;
+        document.getElementById('userPhone').innerText = userData.phone;
         document.getElementById('userAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=0a90f0&color=fff&size=128&bold=true`;
-        
-        updateBalance();
-        loadTransactions();
+        document.getElementById('currencySelect').value = currentCurrency;
 
-        function updateBalance() {
-            const bal = showBalance ? "$" + userData.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) : "••••";
-            document.getElementById('balance').innerText = bal;
+        updateBalance();
+
+        function changeCurrency() {
+            currentCurrency = document.getElementById('currencySelect').value;
+            localStorage.setItem('mceCurrency_' + currentEmail, currentCurrency); // Save choice
+            updateBalance();
         }
 
-        function toggleBalance() { showBalance = !showBalance; updateBalance(); }
+        function updateBalance() {
+            const balanceUSD = userData.balance;
+            const converted = balanceUSD * EXCHANGE_RATES[currentCurrency];
+            const symbol = CURRENCY_SYMBOLS[currentCurrency];
+
+            document.getElementById('balance').innerText = symbol + converted.toLocaleString('en-US', {minimumFractionDigits: 2});
+
+            // Show 3 other currencies below
+            let others = `${CURRENCY_SYMBOLS.EUR}${(balanceUSD * EXCHANGE_RATES.EUR).toFixed(2)} | ${CURRENCY_SYMBOLS.NGN}${(balanceUSD * EXCHANGE_RATES.NGN).toFixed(2)} | ${CURRENCY_SYMBOLS.GBP}${(balanceUSD * EXCHANGE_RATES.GBP).toFixed(2)}`;
+            document.getElementById('otherBalances').innerText = others;
+        }
 
         function openTransfer() {
-            if(currentEmail !== ADMIN_EMAIL) {
+            if(currentEmail!== ADMIN_EMAIL) {
                 alert("Access Denied. Only Admin can send money.");
                 return;
             }
@@ -164,40 +209,24 @@
         function sendMoney() {
             const toEmail = document.getElementById('toEmail').value.toLowerCase().trim();
             const amount = parseFloat(document.getElementById('amount').value);
+            const currency = document.getElementById('sendCurrency').value;
             const receiver = JSON.parse(localStorage.getItem('mceUser_' + toEmail));
 
             if(!receiver) { alert("User not found!"); return; }
             if(amount <= 0 || isNaN(amount)) { alert("Enter valid amount"); return; }
 
-            receiver.balance += amount;
+            const amountInUSD = amount / EXCHANGE_RATES[currency];
+            receiver.balance += amountInUSD;
             localStorage.setItem('mceUser_' + toEmail, JSON.stringify(receiver));
 
-            const txn = {title: "Admin Credit", date: new Date().toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}), amount: "+$" + amount.toLocaleString('en-US', {minimumFractionDigits: 2})};
-            let txns = JSON.parse(localStorage.getItem('mceTxns_' + toEmail)) || [];
-            txns.unshift(txn);
-            localStorage.setItem('mceTxns_' + toEmail, JSON.stringify(txns));
-
-            alert("$" + amount.toFixed(2) + " sent to " + receiver.name);
+            alert(CURRENCY_SYMBOLS[currency] + amount.toFixed(2) + " sent to " + receiver.name);
             closeTransfer();
         }
 
-        function loadTransactions() {
-            const txns = JSON.parse(localStorage.getItem('mceTxns_' + currentEmail)) || [];
-            const list = document.getElementById('txnList');
-            if(txns.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#999; padding:20px 0;">No transactions yet</p>';
-                return;
-            }
-            list.innerHTML = txns.map(t => `
-                <div class="txn">
-                    <div>
-                        <p class="txn-title">${t.title}</p>
-                        <p class="txn-sub">${t.date} • Premium Checking</p>
-                    </div>
-                    <div class="txn-amount">${t.amount}</div>
-                </div>
-            `).join('');
+        function logout() {
+            localStorage.removeItem('mceCurrentUser');
+            window.location.href = "index.html";
         }
     </script>
 </body>
-  </html>
+        </html>
