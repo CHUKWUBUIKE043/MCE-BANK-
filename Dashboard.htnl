@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MCE BANK - Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {font-family: Arial; background: #f0f2f5; margin: 0;}
+    .header {background: #0a1f44; color: white; padding: 15px; text-align: center;}
+    .balance-box {background: #4d90fe; color: white; padding: 25px; margin: 15px; border-radius: 10px; text-align: center;}
+    .balance-box h1 {font-size: 36px; margin: 10px 0;}
+    .card {background: white; margin: 15px; padding: 15px; border-radius: 10px;}
+    .demo {color: red; text-align: center; font-weight: bold; padding: 10px;}
+  </style>
+</head>
+<body>
+  <p class="demo">DEMO ONLY - NOT A REAL BANK</p>
+  <div class="header">
+    <h2>MCE BANK</h2>
+  </div>
+  
+  <div class="balance-box">
+    <p>Available Balance</p>
+    <h1 id="usdBalance">$0.00 USD</h1>
+    <p id="eurBalance">€0.00 EUR</p>
+    <p id="inrBalance">₹0.00 INR</p>
+  </div>
+
+  <div class="card">
+    <h3>Account Details</h3>
+    <p><b>Name:</b> <span id="userName">Loading...</span></p>
+    <p><b>Account Number:</b> <span id="accNumber">Loading...</span></p>
+  </div>
+
+  <script>
+  // Get the last registered user
+  let keys = Object.keys(localStorage).filter(k => k.startsWith('mceUser_'));
+  let lastUser = keys.length > 0 ? JSON.parse(localStorage.getItem(keys[keys.length-1])) : null;
+  
+  if(lastUser) {
+    document.getElementById('userName').innerText = lastUser.name;
+    document.getElementById('accNumber').innerText = lastUser.accountNumber;
+    document.getElementById('usdBalance').innerText = '$' + lastUser.usd.toFixed(2) + ' USD';
+    document.getElementById('eurBalance').innerText = '€' + lastUser.eur.toFixed(2) + ' EUR';
+    document.getElementById('inrBalance').innerText = '₹' + lastUser.inr.toFixed(2) + ' INR';
+  } else {
+    document.getElementById('userName').innerText = "Guest User";
+  }
+  </script>
+</body>
+</html>
