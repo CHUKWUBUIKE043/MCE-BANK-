@@ -3,33 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>MCE BANK - Dashboard</title>
 <style>
   body { font-family: Arial; background: #f5f5f5; padding: 20px; text-align: center; }
   .card { background: white; padding: 20px; border-radius: 10px; margin: 10px auto; max-width: 400px; }
   .balance { font-size: 28px; color: #007bff; font-weight: bold; }
-  button { padding: 12px 20px; margin: 5px; border: none; border-radius: 8px; background: #007bff; color: white; }
+  button { padding: 12px 20px; margin: 5px; border: none; border-radius: 8px; background: #007bff; color: white; cursor: pointer; }
+  button:hover { background: #0056b3; }
+  .logout { background: red; }
 </style>
 </head>
 <body>
   <h1>🏦 MCE BANK</h1>
   <div class="card">
     <p>Available Balance</p>
-    <p class="balance">$0.00 USD</p>
+    <p class="balance" id="balance">$0.00 USD</p>
   </div>
   <div class="card">
     <h3>Account Details</h3>
-    <p><b>Name:</b> Loading...</p>
-    <p><b>Account Number:</b> Loading...</p>
+    <p><b>Name:</b> <span id="name">Loading...</span></p>
+    <p><b>Account Number:</b> <span id="accNum">Loading...</span></p>
   </div>
   <div>
-    <button>Send</button>
-    <button>Receive</button>
-    <button>Deposit</button>
-    <button>Withdraw</button>
+    <button onclick="alert('Send feature coming soon')">Send</button>
+    <button onclick="alert('Receive feature coming soon')">Receive</button>
+    <button onclick="alert('Deposit feature coming soon')">Deposit</button>
+    <button onclick="alert('Withdraw feature coming soon')">Withdraw</button>
   </div>
   <br>
-  <button style="background:red;">Logout</button>
+  <button class="logout" onclick="logout()">Logout</button>
+
+<script>
+  let user = JSON.parse(localStorage.getItem('mceUser'));
+  if(user) {
+    document.getElementById('name').innerText = user.username;
+    document.getElementById('accNum').innerText = 'MCE-' + Math.floor(10000000 + Math.random() * 90000000);
+    document.getElementById('balance').innerText = '$' + user.balance.toFixed(2) + ' USD';
+  } else {
+    alert('Please login first');
+    window.location.href = 'login.html';
+  }
+  function logout() {
+    localStorage.removeItem('mceUser');
+    window.location.href = 'login.html';
+  }
+</script>
 </body>
-</html>
+  </html>
