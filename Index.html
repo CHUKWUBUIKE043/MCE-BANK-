@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MCE BANK - Create Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {font-family: Arial; background: #0a1f44; text-align: center; padding: 20px;}
+    .box {background: white; padding: 25px; border-radius: 10px; max-width: 400px; margin: auto;}
+    input, select {width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px;}
+    button {background: #4d90fe; color: white; padding: 14px; width: 95%; border: none; border-radius: 5px; font-size: 16px; font-weight: bold;}
+    .demo {color: red; font-weight: bold; margin-bottom: 15px;}
+    h2 {color: #0a1f44;}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p class="demo">DEMO ONLY - NOT A REAL BANK</p>
+    <h2>MCE BANK</h2>
+    <h3>Create Your Account</h3>
+    <form onsubmit="registerUser(); return false;">
+      <input type="text" id="name" placeholder="Name" required>
+      <input type="email" id="email" placeholder="E-Mail Address" required>
+      <select id="country"><option>Country Code</option><option>+1 USA</option><option>+234 Nigeria</option><option>+44 UK</option><option>+91 India</option></select>
+      <input type="text" id="phone" placeholder="Phone">
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="cpassword" placeholder="Confirm Password" required>
+      <p><input type="checkbox" required> I agree with Privacy Policy & Terms</p>
+      <button type="submit">Create My Account</button>
+    </form>
+  </div>
+
+  <script>
+  function registerUser() {
+    let user = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      accountNumber: Math.floor(10000000 + Math.random() * 90000000),
+      usd: 0.00,
+      eur: 0.00,
+      inr: 0.00,
+      brl:0.00,
+    
+    localStorage.setItem('mceUser_' + user.email, JSON.stringify(user));
+    alert("Account Created! Welcome to MCE Bank. Your balance is $0.00");
+    window.location.href = "dashboard.html";
+  }
+  </script>
+</body>
+    </html>
