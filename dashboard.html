@@ -1,50 +1,203 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MCE BANK - Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {font-family: Arial; background: #f0f2f5; margin: 0;}
-    .header {background: #0a1f44; color: white; padding: 15px; text-align: center;}
-    .balance-box {background: #4d90fe; color: white; padding: 25px; margin: 15px; border-radius: 10px; text-align: center;}
-    .balance-box h1 {font-size: 36px; margin: 10px 0;}
-    .card {background: white; margin: 15px; padding: 15px; border-radius: 10px;}
-    .demo {color: red; text-align: center; font-weight: bold; padding: 10px;}
-  </style>
+    <title>MCE BANK - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial;}
+        body {background: #f5f7fa; padding-bottom: 80px;}
+        .demo {color: red; font-weight: bold; text-align: center; padding: 8px; background: white; font-size: 12px;}
+        
+        .header {display: flex; justify-content: space-between; align-items: center; padding: 20px 16px;}
+        .welcome {display: flex; align-items: center; gap: 12px;}
+        .welcome img {width: 48px; height: 48px; border-radius: 50%; background: #ddd; object-fit: cover; border: 2px solid #0a90f0;}
+        .welcome h3 {font-size: 16px; color: #111; font-weight: 700;}
+        .welcome p {font-size: 14px; color: #555;}
+        .header-icons {display: flex; gap: 10px;}
+        .header-icons div {width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); cursor: pointer;}
+
+        .balance-card {background: white; margin: 0 16px 16px 16px; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);}
+        .balance-top {display: flex; justify-content: space-between; color: #666; font-size: 12px; margin-bottom: 12px; font-weight: 500; align-items: center;}
+        .balance-amount {font-size: 30px; font-weight: 700; color: #111; letter-spacing: 4px; margin-bottom: 18px;}
+        .account-info {display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #f0f0f0;}
+        .account-info div p:first-child {font-size: 11px; color: #999; margin-bottom: 4px;}
+        .account-info div p:last-child {font-size: 15px; font-weight: 600; color: #111;}
+        .pending {text-align: right;}
+
+        .actions {display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 16px 16px 16px;}
+        .action-btn {text-align: center; cursor: pointer;}
+        .action-btn .icon {width: 100%; aspect-ratio: 1; background: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); color: #0a90f0;}
+        .action-btn p {font-size: 12px; color: #333; font-weight: 500;}
+
+        .transactions {background: white; margin: 0 16px; padding: 20px; border-radius: 16px;}
+        .transactions h3 {margin-bottom: 15px; color: #111; font-size: 16px; font-weight: 600;}
+        .txn {display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f0f0f0;}
+        .txn:last-child {border: none;}
+        .txn-title {font-weight: 600; color: #111; font-size: 14px;}
+        .txn-sub {font-size: 12px; color: #777; margin-top: 3px;}
+        .txn-amount {color: #00a86b; font-weight: 700; font-size: 14px;}
+
+        .bottom-nav {position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.04);}
+        .nav-item {text-align: center; font-size: 11px; color: #999; cursor: pointer;}
+        .nav-item.active {color: #0a90f0;}
+        .nav-item .icon {font-size: 22px; margin-bottom: 3px;}
+
+        .modal {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 999;}
+        .modal-content {background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 400px;}
+        .modal-content h3 {margin-bottom: 15px; color: #111;}
+        .modal-content input {width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px;}
+        .modal-content button {width: 100%; padding: 14px; background: #0a90f0; color: white; border: none; border-radius: 10px; font-weight: 600; margin-top: 10px; font-size: 15px;}
+    </style>
 </head>
 <body>
-  <p class="demo">DEMO ONLY - NOT A REAL BANK</p>
-  <div class="header">
-    <h2>MCE BANK</h2>
-  </div>
-  
-  <div class="balance-box">
-    <p>Available Balance</p>
-    <h1 id="usdBalance">$0.00 USD</h1>
-    <p id="eurBalance">€0.00 EUR</p>
-    <p id="inrBalance">₹0.00 INR</p>
-  </div>
+    <p class="demo">TRUSTED BY 50MIlloins people's -  A REAL BANK</p>
 
-  <div class="card">
-    <h3>Account Details</h3>
-    <p><b>Name:</b> <span id="userName">Loading...</span></p>
-    <p><b>Account Number:</b> <span id="accNumber">Loading...</span></p>
-  </div>
+    <div class="header">
+        <div class="welcome">
+            <img id="userAvatar" src="" alt="user">
+            <div>
+                <h3>Welcome back</h3>
+                <p id="userName">Loading...</p>
+            </div>
+        </div>
+        <div class="header-icons">
+            <div onclick="alert('Search coming soon')">🔍</div>
+            <div onclick="alert('Notifications coming soon')">🔔</div>
+        </div>
+    </div>
 
-  <script>
-  // Get the last registered user
-  let keys = Object.keys(localStorage).filter(k => k.startsWith('mceUser_'));
-  let lastUser = keys.length > 0 ? JSON.parse(localStorage.getItem(keys[keys.length-1])) : null;
-  
-  if(lastUser) {
-    document.getElementById('userName').innerText = lastUser.name;
-    document.getElementById('accNumber').innerText = lastUser.accountNumber;
-    document.getElementById('usdBalance').innerText = '$' + lastUser.usd.toFixed(2) + ' USD';
-    document.getElementById('eurBalance').innerText = '€' + lastUser.eur.toFixed(2) + ' EUR';
-    document.getElementById('inrBalance').innerText = '₹' + lastUser.inr.toFixed(2) + ' INR';
-  } else {
-    document.getElementById('userName').innerText = "Guest User";
-  }
-  </script>
+    <div class="balance-card">
+        <div class="balance-top">
+            <span>AVAILABLE BALANCE</span>
+            <span onclick="toggleBalance()" style="cursor:pointer; font-size:16px;">👁️</span>
+        </div>
+        <div class="balance-amount" id="balance">••••</div>
+        <div class="account-info">
+            <div>
+                <p>ACCOUNT NUMBER</p>
+                <p id="accNumber">000000000</p>
+            </div>
+            <div class="pending">
+                <p>STATUS</p>
+                <p>ACTIVE</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <div class="action-btn" onclick="openTransfer()">
+            <div class="icon">⇄</div>
+            <p>Transfer</p>
+        </div>
+        <div class="action-btn" onclick="alert('Demo: Contact Admin to Deposit')">
+            <div class="icon">↓</div>
+            <p>Deposit</p>
+        </div>
+        <div class="action-btn" onclick="alert('Demo: Coming Soon')">
+            <div class="icon">✈</div>
+            <p>Pay</p>
+        </div>
+        <div class="action-btn" onclick="alert('Demo: Coming Soon')">
+            <div class="icon">💬</div>
+            <p>Message</p>
+        </div>
+    </div>
+
+    <div class="transactions">
+        <h3>Recent Transactions</h3>
+        <div id="txnList">
+            <p style="text-align:center; color:#999; padding:20px 0;">No transactions yet</p>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active"><div class="icon">🏠</div>Home</div>
+        <div class="nav-item"><div class="icon">💳</div>Cards</div>
+        <div class="nav-item"><div class="icon">📊</div>Analytics</div>
+        <div class="nav-item"><div class="icon">⚙️</div>Settings</div>
+    </div>
+
+    <!-- TRANSFER MODAL -->
+    <div class="modal" id="transferModal">
+        <div class="modal-content">
+            <h3>Admin Transfer Money</h3>
+            <p style="font-size:12px; color:red; margin-bottom:10px;">Only Admin can send money</p>
+            <input type="email" id="toEmail" placeholder="Recipient Email">
+            <input type="number" id="amount" placeholder="Amount USD" step="0.01">
+            <button onclick="sendMoney()">Send Money</button>
+            <button onclick="closeTransfer()" style="background:#eee; color:#333;">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_EMAIL = "admin@mcebank.com"; // <-- CHANGE THIS TO YOUR EMAIL
+        const currentEmail = localStorage.getItem('mceCurrentUser');
+        if(!currentEmail) window.location.href = "index.html";
+
+        const userData = JSON.parse(localStorage.getItem('mceUser_' + currentEmail));
+        let showBalance = false;
+
+        // SET NAME + PROFILE PIC + ACCOUNT
+        document.getElementById('userName').innerText = userData.name;
+        document.getElementById('accNumber').innerText = userData.accountNumber;
+        document.getElementById('userAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=0a90f0&color=fff&size=128&bold=true`;
+        
+        updateBalance();
+        loadTransactions();
+
+        function updateBalance() {
+            const bal = showBalance ? "$" + userData.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) : "••••";
+            document.getElementById('balance').innerText = bal;
+        }
+
+        function toggleBalance() { showBalance = !showBalance; updateBalance(); }
+
+        function openTransfer() {
+            if(currentEmail !== ADMIN_EMAIL) {
+                alert("Access Denied. Only Admin can send money.");
+                return;
+            }
+            document.getElementById('transferModal').style.display = 'flex';
+        }
+        function closeTransfer() { document.getElementById('transferModal').style.display = 'none'; }
+
+        function sendMoney() {
+            const toEmail = document.getElementById('toEmail').value.toLowerCase().trim();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const receiver = JSON.parse(localStorage.getItem('mceUser_' + toEmail));
+
+            if(!receiver) { alert("User not found!"); return; }
+            if(amount <= 0 || isNaN(amount)) { alert("Enter valid amount"); return; }
+
+            receiver.balance += amount;
+            localStorage.setItem('mceUser_' + toEmail, JSON.stringify(receiver));
+
+            const txn = {title: "Admin Credit", date: new Date().toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}), amount: "+$" + amount.toLocaleString('en-US', {minimumFractionDigits: 2})};
+            let txns = JSON.parse(localStorage.getItem('mceTxns_' + toEmail)) || [];
+            txns.unshift(txn);
+            localStorage.setItem('mceTxns_' + toEmail, JSON.stringify(txns));
+
+            alert("$" + amount.toFixed(2) + " sent to " + receiver.name);
+            closeTransfer();
+        }
+
+        function loadTransactions() {
+            const txns = JSON.parse(localStorage.getItem('mceTxns_' + currentEmail)) || [];
+            const list = document.getElementById('txnList');
+            if(txns.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#999; padding:20px 0;">No transactions yet</p>';
+                return;
+            }
+            list.innerHTML = txns.map(t => `
+                <div class="txn">
+                    <div>
+                        <p class="txn-title">${t.title}</p>
+                        <p class="txn-sub">${t.date} • Premium Checking</p>
+                    </div>
+                    <div class="txn-amount">${t.amount}</div>
+                </div>
+            `).join('');
+        }
+    </script>
 </body>
-</html>
+  </html>
