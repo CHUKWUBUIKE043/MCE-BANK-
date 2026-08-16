@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MCE BANK - ADMIN PANEL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {font-family: Arial; background: #0a1f44; color: white; padding: 20px;}
+    .box {background: white; color: black; padding: 25px; border-radius: 10px; max-width: 500px; margin: auto;}
+    input {width: 95%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px;}
+    button {background: red; color: white; padding: 14px; width: 100%; border: none; border-radius: 5px; font-size: 16px; font-weight: bold;}
+    h2 {text-align: center; color: red;}
+    .warning {background: yellow; color: black; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold;}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>⚠️ ADMIN PANEL ⚠️</h2>
+    <p class="warning">ONLY YOU SHOULD HAVE THIS LINK</p>
+    
+    <h3>Send Money to User</h3>
+    <input type="email" id="userEmail" placeholder="User's Email Address">
+    <input type="number" id="amount" placeholder="Amount to Add in USD" step="0.01">
+    <button onclick="addMoney()">Add Money to User</button>
+    
+    <hr>
+    <h3>All Registered Users</h3>
+    <div id="userList"></div>
+  </div>
+
+  <script>
+  // Show all users
+  function loadUsers() {
+    let list = document.getElementById('userList');
+    let keys = Object.keys(localStorage).filter(k => k.startsWith('mceUser_'));
+    if(keys.length === 0) { list.innerHTML = "No users yet"; return; }
+    
+    list.innerHTML = "";
+    keys.forEach(k => {
+      let u = JSON.parse(localStorage.getItem(k));
+      list.innerHTML += `<p><b>${u.name}</b><br>Email: ${u.email}<br>Balance: $${u.usd.toFixed(2)}</p><hr>`;
+    });
+  }
+  
+  // Add money function
+  function addMoney() {
+    let email = document.getElementById('userEmail').value;
+    let amount = parseFloat(document.getElementById('amount').value);
+    let userKey = 'mceUser_' + email;
+    
+    if(!localStorage.getItem(userKey)) {
+      alert("User not found!");
+      return;
+    }
+    
+    let user = JSON.parse(localStorage.getItem(userKey));
+    user.usd = user.usd + amount;
+    localStorage.setItem(userKey, JSON.stringify(user));
+    
+    alert(`Success! Added $${amount.toFixed(2)} to ${user.name}. New balance: $${user.usd.toFixed(2)}`);
+    loadUsers();
+  }
+  
+  loadUsers();
+  </script>
+</body>
+</html>
