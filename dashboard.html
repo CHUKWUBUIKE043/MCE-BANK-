@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCE BANK - Home</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  body { background: #f8f9fa; padding-bottom: 80px; }
+  
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 20px; }
+  .welcome { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); }
+  .welcome h2 { font-size: 18px; }
+  .welcome p { color: #888; font-size: 14px; }
+  .icons { display: flex; gap: 15px; }
+  .icon-btn { width: 40px; height: 40px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+  
+  .balance-card { background: white; margin: 10px 20px; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .balance-label { color: #888; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .balance { font-size: 32px; font-weight: bold; margin: 10px 0; }
+  .acc-info { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
+  .acc-info div p:first-child { color: #888; font-size: 12px; }
+  .acc-info div p:last-child { font-weight: bold; }
+  
+  .actions { display: flex; justify-content: space-around; padding: 20px; }
+  .action { text-align: center; }
+  .action-icon { width: 60px; height: 60px; background: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); font-size: 24px; }
+  .action p { font-size: 13px; color: #333; }
+  
+  .transactions { background: white; margin: 10px 20px; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .trans-title { font-weight: bold; margin-bottom: 15px; }
+  .trans-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
+  .trans-name { font-weight: 600; }
+  .trans-date { font-size: 12px; color: #888; }
+  .trans-amount { color: #00c853; font-weight: bold; }
+  
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+  .nav-item { text-align: center; color: #888; font-size: 12px; }
+  .nav-item.active { color: #007bff; }
+  .nav-icon { font-size: 24px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="welcome">
+      <div class="avatar"></div>
+      <div>
+        <h2>Welcome back</h2>
+        <p id="username">User</p>
+      </div>
+    </div>
+    <div class="icons">
+      <div class="icon-btn">🔍</div>
+      <div class="icon-btn">🔔</div>
+    </div>
+  </div>
+
+  <div class="balance-card">
+    <div class="balance-label">AVAILABLE BALANCE 👁️</div>
+    <div class="balance" id="balance">$0.00</div>
+    <div class="acc-info">
+      <div>
+        <p>ACCOUNT NUMBER</p>
+        <p id="accNum">MCE-00000000</p>
+      </div>
+      <div>
+        <p>STATUS</p>
+        <p>ACTIVE</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <div class="action" onclick="alert('Transfer coming soon')">
+      <div class="action-icon">↔️</div>
+      <p>Transfer</p>
+    </div>
+    <div class="action" onclick="alert('Deposit coming soon')">
+      <div class="action-icon">⬇️</div>
+      <p>Deposit</p>
+    </div>
+    <div class="action" onclick="alert('Pay coming soon')">
+      <div class="action-icon">✈️</div>
+      <p>Pay</p>
+    </div>
+    <div class="action" onclick="alert('Message coming soon')">
+      <div class="action-icon">💬</div>
+      <p>Message</p>
+    </div>
+  </div>
+
+  <div class="transactions">
+    <div class="trans-title">Recent Transactions</div>
+    <div class="trans-item">
+      <div>
+        <div class="trans-name">Welcome Bonus</div>
+        <div class="trans-date">Aug 16, 2026 • MCE Bank</div>
+      </div>
+      <div class="trans-amount" id="bonus">+$0.00</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <div class="nav-icon">🏠</div>
+      <div>Home</div>
+    </div>
+    <div class="nav-item" onclick="alert('Cards coming soon')">
+      <div class="nav-icon">💳</div>
+      <div>Cards</div>
+    </div>
+    <div class="nav-item" onclick="alert('Analytics coming soon')">
+      <div class="nav-icon">📊</div>
+      <div>Analytics</div>
+    </div>
+    <div class="nav-item" onclick="alert('Settings coming soon')">
+      <div class="nav-icon">⚙️</div>
+      <div>Settings</div>
+    </div>
+  </div>
+
+<script>
+  let user = JSON.parse(localStorage.getItem('mceUser'));
+  if(user) {
+    document.getElementById('username').innerText = user.username;
+    document.getElementById('accNum').innerText = 'MCE-' + Math.floor(10000000 + Math.random() * 90000000);
+    document.getElementById('balance').innerText = '$' + user.balance.toFixed(2);
+    document.getElementById('bonus').innerText = '+$' + user.balance.toFixed(2);
+  } else {
+    window.location.href = 'login.html';
+  }
+</script>
+
+</body>
+          </html>
