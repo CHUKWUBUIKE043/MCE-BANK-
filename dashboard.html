@@ -1,7 +1,18 @@
-<!DOCTYPE html>
+document.querySelector('.logout-btn').addEventListener('click', function() {
+  localStorage.removeItem('mcebank_user'); // clear logged in user
+  window.location.href = 'index.html'; // go back to homepage
+});<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+  const user = JSON.parse(localStorage.getItem('mcebank_user'));
+if(user) {
+  document.querySelector('#name').innerText = user.name;
+  document.querySelector('#email').innerText = user.email;
+  document.querySelector('#phone').innerText = user.phone;
+} else {
+  window.location.href = 'index.html'; // if no user, send back to login
+}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MCE BANK</title>
 <style>
