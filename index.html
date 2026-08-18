@@ -1,23 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MCE BANK</title>
+  <title>MCE BANK 👑</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 30px; background: #fff5e6; }
+    input, button { padding: 10px; margin: 5px; width: 80%; max-width: 300px; border-radius: 8px; border: 1px solid #ccc; }
+    button { background: #ff9900; color: white; border: none; cursor: pointer; font-weight: bold; }
+    .page { display: none; }
+    .active { display: block; }
+  </style>
 </head>
 <body>
+
+<!-- PAGE 1: HOMEPAGE -->
+<div id="home" class="page active">
   <h1>Welcome to MCE BANK 👑</h1>
   <p>The #1 Bank for Members</p>
-  
-  <a href="signup.html"><button>Sign Up</button></a>
-  <a href="login.html"><button>Sign In</button></a>
+  <button onclick="showPage('signup')">Sign Up</button>
+  <button onclick="showPage('login')">Sign In</button>
+</div>
 
-  <script>
-    // Only auto-login if user already exists
-    const user = localStorage.getItem('mcebank_user');
-    if(user) {
-      // User is logged in already, then go to dashboard
-      window.location.href = "dashboard.html";
-    }
-    // If no user, STAY on homepage
-  </script>
+<!-- PAGE 2: SIGNUP -->
+<div id="signup" class="page">
+  <h2>Create Account</h2>
+  <input type="text" id="s_name" placeholder="Full Name"><br>
+  <input type="email" id="s_email" placeholder="Email"><br>
+  <input type="text" id="s_phone" placeholder="Phone Number"><br>
+  <input type="password" id="s_password" placeholder="Password"><br>
+  <button onclick="signup()">Create Account</button>
+  <p><a href="#" onclick="showPage('home')">Back</a></p>
+</div>
+
+<!-- PAGE 3: LOGIN -->
+<div id="login" class="page">
+  <h2>Sign In</h2>
+  <input type="email" id="l_email" placeholder="Email"><br>
+  <input type="password" id="l_password" placeholder="Password"><br>
+  <button onclick="login()">Sign In</button>
+  <p><a href="#" onclick="showPage('home')">Back</a></p>
+</div>
+
+<!-- PAGE 4: DASHBOARD -->
+<div id="dashboard" class="page">
+  <h2>Welcome, <span id="d_name"></span></h2>
+  <p><b>Email:</b> <span id="d_email"></span></p>
+  <p><b>Phone:</b> <span id="d_phone"></span></p>
+  <p><b>Account No:</b> <span id="d_acc"></span></p>
+  <p><b>Balance:</b> $<span id="d_balance">0.00</span></p>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<script>
+// Switch pages
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+// SIGNUP
+function signup() {
+  const user = {
+    name: document.getElementById('s_name').value,
+    email: document.getElementById('s_email').value,
+    phone: document.getElementById('s_phone').value,
+    password: document.getElementById('s_password').value,
+    accNumber: 'MCE' + Math.floor(Math.random()*9000000 + 1000000),
+    balance: 0.00
+  };
+  localStorage.setItem('mcebank_user', JSON.stringify(user));
+  loadDashboard();
+}
+
+// LOGIN
+function login() {
+  const email = document.getElementById('l_email').value;
+  const password = document.getElementById('l_password').value;
+  const user = JSON.parse(localStorage.getItem('mcebank_user'));
+
+  if(user && user.email === email && user.password === password) {
+    loadDashboard();
+  } else {
+    alert("Wrong email or password");
+  }
+}
+
+// LOAD DASHBOARD
+function loadDashboard() {
+  const user = JSON.parse(localStorage.getItem('mcebank_user'));
+  if(!user) { showPage('home'); return; }
+  
+  document.getElementById('d_name').innerText = user.name;
+  document.getElementById('d_email').innerText = user.email;
+  document.getElementById('d_phone').innerText = user.phone;
+  document.getElementById('d_acc').innerText = user.accNumber;
+  document.getElementById('d_balance').innerText = user.balance.toFixed(2);
+  
+  showPage('dashboard');
+}
+
+// LOGOUT
+function logout() {
+  localStorage.removeItem('mcebank_user');
+  alert('Logged out');
+  showPage('home');
+}
+
+// Auto-login if user exists
+window.onload = function() {
+  const user = localStorage.getItem('mcebank_user');
+  if(user) { loadDashboard(); }
+}
+</script>
+
 </body>
-</html>
+                                                                  </html>
