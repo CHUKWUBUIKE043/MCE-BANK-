@@ -6,11 +6,12 @@
   <style>
     body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
     .container { max-width: 500px; margin: auto; background: white; min-height: 100vh; }
-    input, button, select { padding: 12px; margin: 8px 0; width: 90%; border-radius: 10px; border: 1px solid #ddd; }
+    input, button, select, textarea { padding: 12px; margin: 8px 0; width: 90%; border-radius: 10px; border: 1px solid #ddd; }
     button { background: #ff9900; color: white; border: none; cursor: pointer; font-weight: bold; }
     .page { display: none; padding: 20px; }
     .active { display: block; }
     .btn-green { background: #28a745; }
+    .btn-red { background: #dc3545; }
     .card { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
     .action-btn { background: #fff; border: 1px solid #eee; padding: 15px 5px; border-radius: 12px; cursor: pointer; }
@@ -24,31 +25,24 @@
 <body>
 <div class="container">
 
-<!-- PAGE 1: HOMEPAGE -->
+<!-- HOMEPAGE, SIGNUP, LOGIN SAME AS BEFORE -->
 <div id="home" class="page active">
   <h1 style="text-align:center;">Welcome to MCE BANK 👑</h1>
   <button onclick="showPage('signup')">Sign Up</button>
   <button onclick="showPage('login')">Sign In</button>
 </div>
 
-<!-- PAGE 2: SIGNUP -->
 <div id="signup" class="page">
   <h2>Create Account</h2>
   <input type="text" id="s_name" placeholder="Full Name">
   <input type="email" id="s_email" placeholder="Email">
   <input type="text" id="s_phone" placeholder="Phone Number">
-  <select id="s_financial">
-    <option value="">Select Financial Situation</option>
-    <option value="Student">Student</option>
-    <option value="Employed">Employed</option>
-    <option value="Business Owner">Business Owner</option>
-  </select>
+  <select id="s_financial"><option value="">Financial Situation</option><option>Student</option><option>Employed</option></select>
   <input type="password" id="s_password" placeholder="Password">
   <button onclick="signup()">Create Account</button>
   <p><a href="#" onclick="showPage('home')">Back</a></p>
 </div>
 
-<!-- PAGE 3: LOGIN -->
 <div id="login" class="page">
   <h2>Sign In</h2>
   <input type="email" id="l_email" placeholder="Email">
@@ -57,17 +51,13 @@
   <p><a href="#" onclick="showPage('home')">Back</a></p>
 </div>
 
-<!-- PAGE 4: DASHBOARD -->
+<!-- DASHBOARD -->
 <div id="dashboard" class="page">
   <div style="display:flex; align-items:center; padding:15px;">
     <img src="https://i.imgur.com/8Km9tLL.png" style="width:45px; height:45px; border-radius:50%; margin-right:10px;">
-    <div>
-      <b>Welcome back</b><br>
-      <span id="d_name"></span>
-    </div>
+    <div><b>Welcome back</b><br><span id="d_name"></span></div>
   </div>
 
-  <!-- BALANCE CARD -->
   <div class="card">
     <p style="color:gray;">AVAILABLE BALANCE <span class="hide-balance" onclick="toggleBalance()">👁️</span></p>
     <h2 id="balance_text">$0.00</h2>
@@ -78,31 +68,57 @@
     </p>
   </div>
 
-  <!-- 4 BUTTONS -->
+  <!-- 4 BUTTONS NOW ALL WORK -->
   <div class="card">
     <div class="grid-4">
-      <div class="action-btn" onclick="alert('Transfer feature coming soon')"><span>↔️</span>Transfer</div>
+      <div class="action-btn" onclick="showPage('transfer')"><span>↔️</span>Transfer</div>
       <div class="action-btn" onclick="showPage('deposit')"><span>⬇️</span>Deposit</div>
-      <div class="action-btn" onclick="alert('Pay Bills coming soon')"><span>✈️</span>Pay</div>
-      <div class="action-btn" onclick="alert('Message Support coming soon')"><span>💬</span>Message</div>
+      <div class="action-btn" onclick="showPage('pay')"><span>✈️</span>Pay</div>
+      <div class="action-btn" onclick="showPage('message')"><span>💬</span>Message</div>
     </div>
   </div>
 
-  <!-- RECENT TRANSACTIONS -->
   <div class="card">
     <h3>Recent Transactions</h3>
     <div id="transactions_list"></div>
   </div>
-
   <button onclick="logout()">Logout</button>
 </div>
 
-<!-- PAGE 5: DEPOSIT -->
+<!-- DEPOSIT PAGE -->
 <div id="deposit" class="page">
   <h2>Deposit Money</h2>
   <input type="number" id="add_amount" placeholder="Enter Amount">
   <button class="btn-green" onclick="addMoney()">Add Money</button>
-  <p><a href="#" onclick="showPage('dashboard')">Back to Dashboard</a></p>
+  <p><a href="#" onclick="showPage('dashboard')">Back</a></p>
+</div>
+
+<!-- TRANSFER PAGE NEW -->
+<div id="transfer" class="page">
+  <h2>Transfer Money</h2>
+  <input type="text" id="t_acc" placeholder="Recipient Account Number">
+  <input type="text" id="t_name" placeholder="Recipient Full Name">
+  <input type="email" id="t_email" placeholder="Recipient Email">
+  <input type="number" id="t_amount" placeholder="Amount to Send">
+  <button class="btn-red" onclick="doTransfer()">Send Money</button>
+  <p><a href="#" onclick="showPage('dashboard')">Back</a></p>
+</div>
+
+<!-- PAY PAGE NEW -->
+<div id="pay" class="page">
+  <h2>Pay Bills</h2>
+  <input type="text" id="p_biller" placeholder="Biller Name e.g DSTV, PHCN">
+  <input type="number" id="p_amount" placeholder="Amount">
+  <button onclick="doPay()">Pay Now</button>
+  <p><a href="#" onclick="showPage('dashboard')">Back</a></p>
+</div>
+
+<!-- MESSAGE PAGE NEW -->
+<div id="message" class="page">
+  <h2>Message Support</h2>
+  <textarea id="msg_text" placeholder="Type your message here..." rows="4"></textarea>
+  <button onclick="sendMessage()">Send Message</button>
+  <p><a href="#" onclick="showPage('dashboard')">Back</a></p>
 </div>
 
 </div>
@@ -141,7 +157,6 @@ function login() {
 function loadDashboard() {
   const user = JSON.parse(localStorage.getItem('mcebank_user'));
   if(!user) { showPage('home'); return; }
-  
   document.getElementById('d_name').innerText = user.name.split(' ')[0];
   document.getElementById('d_acc').innerText = user.accNumber;
   updateBalanceDisplay(user.balance);
@@ -156,22 +171,65 @@ function toggleBalance() {
 }
 
 function updateBalanceDisplay(balance) {
-  document.getElementById('balance_text').innerText = showBal ? `$${balance.toFixed(2)}` : '••••••••';
+  document.getElementById('balance_text').innerText = showBal ? `$${balance.toFixed(2)}` : '••••';
 }
 
 function addMoney() {
   const amount = parseFloat(document.getElementById('add_amount').value);
   if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
-  
   let user = JSON.parse(localStorage.getItem('mcebank_user'));
   user.balance += amount;
   user.transactions.unshift({type: 'Deposit', amount: amount, date: new Date().toLocaleDateString()});
   localStorage.setItem('mcebank_user', JSON.stringify(user));
-  
   updateBalanceDisplay(user.balance);
   loadTransactions(user.transactions);
   document.getElementById('add_amount').value = '';
   alert(`$${amount.toFixed(2)} Deposited!`);
+  showPage('dashboard');
+}
+
+function doTransfer() {
+  const amount = parseFloat(document.getElementById('t_amount').value);
+  const acc = document.getElementById('t_acc').value;
+  const name = document.getElementById('t_name').value;
+  if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
+  
+  let user = JSON.parse(localStorage.getItem('mcebank_user'));
+  if(user.balance < amount) { alert("Insufficient Balance"); return; }
+  
+  user.balance -= amount;
+  user.transactions.unshift({type: `Transfer to ${name}`, amount: amount, date: new Date().toLocaleDateString()});
+  localStorage.setItem('mcebank_user', JSON.stringify(user));
+  
+  updateBalanceDisplay(user.balance);
+  loadTransactions(user.transactions);
+  alert(`$${amount.toFixed(2)} Sent to ${name}`);
+  showPage('dashboard');
+}
+
+function doPay() {
+  const amount = parseFloat(document.getElementById('p_amount').value);
+  const biller = document.getElementById('p_biller').value;
+  if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
+  
+  let user = JSON.parse(localStorage.getItem('mcebank_user'));
+  if(user.balance < amount) { alert("Insufficient Balance"); return; }
+  
+  user.balance -= amount;
+  user.transactions.unshift({type: `Bill Payment - ${biller}`, amount: amount, date: new Date().toLocaleDateString()});
+  localStorage.setItem('mcebank_user', JSON.stringify(user));
+  
+  updateBalanceDisplay(user.balance);
+  loadTransactions(user.transactions);
+  alert(`$${amount.toFixed(2)} Paid to ${biller}`);
+  showPage('dashboard');
+}
+
+function sendMessage() {
+  const msg = document.getElementById('msg_text').value;
+  if(msg.trim() === '') { alert("Type a message first"); return; }
+  alert("Support will get back to you soon ✅");
+  document.getElementById('msg_text').value = '';
   showPage('dashboard');
 }
 
@@ -184,7 +242,7 @@ function loadTransactions(transactions) {
   list.innerHTML = transactions.map(t => `
     <div class="transaction">
       <div><b>${t.type}</b><br><span style="color:gray; font-size:12px;">${t.date}</span></div>
-      <div class="green">+$${t.amount.toFixed(2)}</div>
+      <div class="${t.type.includes('Deposit') ? 'green' : 'red'}">${t.type.includes('Deposit') ? '+' : '-'}$${t.amount.toFixed(2)}</div>
     </div>
   `).join('');
 }
@@ -200,4 +258,4 @@ window.onload = function() {
 }
 </script>
 </body>
-                                                 </html>
+  </html>
