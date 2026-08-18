@@ -23,15 +23,17 @@ body{background:#f5f5f7}
 .acc-label{color:#888;font-size:13px}
 .acc-value{font-weight:600;margin-top:4px}
 .status{color:#888;font-size:13px;text-align:right}
-.status-value{color:#ff9500;font-weight:600;margin-top:4px;text-align:right}
+.status-value{color:#34c759;font-weight:600;margin-top:4px;text-align:right}
 .btn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 20px 20px}
 .btn{background:white;padding:18px 5px;border-radius:15px;text-align:center;font-size:12px;font-weight:500;box-shadow:0 2px 10px rgba(0,0,0,0.05);cursor:pointer;color:#0047ab}
 .btn.icon{font-size:26px;margin-bottom:6px}
 .section{padding:0 20px 80px}
 .section h3{margin-bottom:10px;font-size:18px}
 .no-tx{color:#999;text-align:center;padding:30px;background:white;border-radius:18px}
+.tx-item{padding:14px;background:#f8f9fa;margin:8px 0;border-radius:12px}
+.tx-title{font-weight:600}
+.tx-date{color:#888;font-size:12px}
 
-/* SETTINGS PAGE */
 .settings-header{background:#0047ab;color:white;padding:25px 20px}
 .settings-header h1{font-size:24px;margin-bottom:15px}
 .profile{display:flex;align-items:center;gap:15px}
@@ -41,27 +43,25 @@ body{background:#f5f5f7}
 .settings-content{padding:20px}
 .section-title{color:#666;font-size:13px;font-weight:600;margin:20px 0 10px 10px}
 .setting-card{background:white;border-radius:15px;padding:5px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
-.setting-item{display:flex;align-items:center;justify-content:space-between;padding:15px;border-bottom:1px solid #f0f0f0;cursor:pointer}
-.setting-item:last-child{border:none}
+.setting-item{display:flex;align-items:center;justify-content:space-between;padding:15px;border-bottom:1px solid #f0f0f0}
 .setting-left{display:flex;align-items:center;gap:12px}
 .setting-icon{font-size:20px;color:#0047ab}
 .setting-text{font-size:15px;font-weight:500}
-.setting-arrow{color:#ccc}
 .setting-value{color:#888;font-size:13px;margin-left:auto;margin-right:8px}
 .logout-btn{width:calc(100% - 40px);margin:20px;background:white;color:#ff3b30;border:1px solid #ff3b30;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.admin-btn{width:calc(100% - 40px);margin:0 20px 20px;background:#0047ab;color:white;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
 
-/* AUTH */
 .auth{padding:40px 20px;text-align:center}
 input,button.primary{width:100%;padding:14px;margin:10px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
 button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor:pointer}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:99}
 .modal-content{background:white;padding:25px;border-radius:18px;width:90%;max-width:400px}
 .close{float:right;font-size:24px;cursor:pointer}
+.success{color:#34c759;font-weight:600}
 </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
 <div id="authPage" class="auth page active">
   <h1 style="color:#0047ab;margin-bottom:30px">MCE BANK</h1>
   <div id="loginForm">
@@ -79,18 +79,17 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
   </div>
 </div>
 
-<!-- DASHBOARD PAGE -->
 <div id="dashboardPage" class="page">
   <div class="header">
     <div style="display:flex;align-items:center;gap:12px">
       <img src="https://i.pravatar.cc/100" class="pfp" id="pfp">
       <div>
         <div class="welcome-title">Welcome back</div>
-        <div class="welcome-sub" id="userName">Jennifer</div>
+        <div class="welcome-sub" id="userName">User</div>
       </div>
     </div>
     <div class="icons">
-      <div class="icon-btn" onclick="alert('Search coming soon')">🔍</div>
+      <div class="icon-btn" onclick="alert('Search')">🔍</div>
       <div class="icon-btn" onclick="openModal('notifications')">🔔</div>
     </div>
   </div>
@@ -101,11 +100,11 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
     <div class="acc-row">
       <div>
         <div class="acc-label">ACCOUNT NUMBER</div>
-        <div class="acc-value" id="accNo">0633144341</div>
+        <div class="acc-value" id="accNo">0000000000</div>
       </div>
       <div>
         <div class="status">STATUS</div>
-        <div class="status-value">PENDING</div>
+        <div class="status-value">ACTIVE</div>
       </div>
     </div>
   </div>
@@ -119,19 +118,18 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
 
   <div class="section">
     <h3>Recent Transactions</h3>
-    <div class="no-tx" id="txList">No transactions yet</div>
+    <div id="txList">No transactions yet</div>
   </div>
 </div>
 
-<!-- SETTINGS PAGE -->
 <div id="settingsPage" class="page">
   <div class="settings-header">
     <h1>Settings & Profile</h1>
     <div class="profile">
       <img src="https://i.pravatar.cc/100" id="settingsPfp">
       <div>
-        <div class="profile-name" id="settingsName">Jennifer Bella</div>
-        <div class="profile-id">ID: <span id="settingsId">0633144341</span></div>
+        <div class="profile-name" id="settingsName">User</div>
+        <div class="profile-id">ID: <span id="settingsId">0000000000</span></div>
       </div>
     </div>
   </div>
@@ -139,38 +137,17 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
   <div class="settings-content">
     <div class="section-title">Personal Information</div>
     <div class="setting-card">
-      <div class="setting-item" onclick="alert('Change Profile Photo')"><div class="setting-left"><span class="setting-icon">👤</span><span class="setting-text">Profile Photo</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item"><div class="setting-left"><span class="setting-icon">✉️</span><span class="setting-text">Email Address</span></div><span class="setting-value" id="settingsEmail">email</span><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('Add Phone Number')"><div class="setting-left"><span class="setting-icon">📞</span><span class="setting-text">Phone Number</span></div><span class="setting-value">+1 (555) 123-4567</span><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('Add Address')"><div class="setting-left"><span class="setting-icon">📍</span><span class="setting-text">Mailing Address</span></div><span class="setting-arrow">›</span></div>
+      <div class="setting-item"><div class="setting-left"><span class="setting-icon">✉️</span><span class="setting-text">Email Address</span></div><span class="setting-value" id="settingsEmail">email</span></div>
     </div>
 
-    <div class="section-title">Security</div>
-    <div class="setting-card">
-      <div class="setting-item" onclick="changePassword()"><div class="setting-left"><span class="setting-icon">🔒</span><span class="setting-text">Change Password</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('Change PIN')"><div class="setting-left"><span class="setting-icon">🔑</span><span class="setting-text">Change PIN</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('Face ID')"><div class="setting-left"><span class="setting-icon">👆</span><span class="setting-text">Face ID / Touch ID</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('2FA')"><div class="setting-left"><span class="setting-icon">🛡️</span><span class="setting-text">Two-Factor Authentication</span></div><span class="setting-arrow">›</span></div>
-    </div>
-
-    <div class="section-title">Card Management</div>
-    <div class="setting-card">
-      <div class="setting-item" onclick="alert('Freeze Card')"><div class="setting-left"><span class="setting-icon">💳</span><span class="setting-text">Freeze Card</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('Replace Card')"><div class="setting-left"><span class="setting-icon">💳</span><span class="setting-text">Replace Card</span></div><span class="setting-arrow">›</span></div>
-    </div>
-
-    <div class="section-title">Support & Legal</div>
-    <div class="setting-card">
-      <div class="setting-item" onclick="alert('Help Centre')"><div class="setting-left"><span class="setting-icon">❓</span><span class="setting-text">Help Centre</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="contactSupport()"><div class="setting-left"><span class="setting-icon">❓</span><span class="setting-text">Contact Support</span></div><span class="setting-arrow">›</span></div>
-      <div class="setting-item" onclick="alert('Live Chat')"><div class="setting-left"><span class="setting-icon">💬</span><span class="setting-text">Live Chat</span></div><span class="setting-arrow">›</span></div>
-    </div>
+    <div class="section-title">Admin Panel</div>
+    <button class="admin-btn" onclick="openModal('admin')">👑 Add Money to User</button>
+    <button class="admin-btn" style="background:#34c759" onclick="viewAllUsers()">👥 View All Users</button>
 
     <button class="logout-btn" onclick="logout()">🚪 Sign Out</button>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
 <div id="bottomNav" style="display:none;position:fixed;bottom:0;width:100%;background:white;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:10px 0">
   <div onclick="showPage('dashboardPage')" style="text-align:center;color:#0047ab;cursor:pointer"><div>🏠</div><div style="font-size:11px">Home</div></div>
   <div onclick="alert('Cards')" style="text-align:center;color:#888;cursor:pointer"><div>💳</div><div style="font-size:11px">Cards</div></div>
@@ -188,7 +165,7 @@ let showBal = false;
 function save(){localStorage.setItem('mce_users',JSON.stringify(users))}
 function showLogin(){loginForm.style.display='block';signupForm.style.display='none'}
 function showSignup(){loginForm.style.display='none';signupForm.style.display='block'}
-function genAccNo(){return '' + Math.floor(1000000000 + Math.random()*9000000000)}
+function genAccNo(){return '' + Math.floor(1000000 + Math.random()*9000000000)}
 
 function signup(){
   const name=signupName.value.trim();
@@ -230,7 +207,7 @@ function showPage(page){
 }
 
 function updateBalance(){
-  balance.innerText = showBal? `$${currentUser.balance.toFixed(2)}` : '••••••••';
+  balance.innerText = showBal? `$${currentUser.balance.toFixed(2)}` : '••••';
 }
 
 function toggleBalance(){showBal=!showBal;updateBalance()}
@@ -244,12 +221,36 @@ function logout(){
 function openModal(type){
   modal.style.display='flex';
   if(type==='deposit')modalBody.innerHTML=`<h2>Deposit</h2><input id="depAmt" type="number" placeholder="Amount"><button class="primary" onclick="deposit()">Deposit</button>`;
-  if(type==='transfer')modalBody.innerHTML=`<h2>Transfer</h2><input id="transAcc" placeholder="Account Number"><input id="transAmt" type="number" placeholder="Amount"><button class="primary" onclick="transfer()">Send</button>`;
+  if(type==='transfer')modalBody.innerHTML=`<h2>Transfer</h2><input id="transAcc" placeholder="Receiver Account Number"><input id="transAmt" type="number" placeholder="Amount"><button class="primary" onclick="transfer()">Send</button>`;
   if(type==='pay')modalBody.innerHTML=`<h2>Pay Bills</h2><p>Coming Soon</p>`;
   if(type==='message')modalBody.innerHTML=`<h2>Message</h2><textarea id="msgText" rows="4" placeholder="Message support..."></textarea><button class="primary" onclick="sendMsg()">Send</button>`;
   if(type==='notifications')modalBody.innerHTML=`<h2>Notifications</h2><p>No new notifications</p>`;
+  if(type==='admin')modalBody.innerHTML=`<h2>👑 Admin: Add Money</h2><input id="adminAcc" placeholder="User Account Number"><input id="adminAmt" type="number" placeholder="Amount to Add"><button class="primary" onclick="adminAddMoney()">Add Money</button>`;
 }
 function closeModal(){modal.style.display='none'}
+
+// ADMIN FUNCTION - NOW SHOWS IN RECENT TX AS "REBANK"
+function adminAddMoney(){
+  const acc=adminAcc.value.trim();
+  const amt=parseFloat(adminAmt.value);
+  const user=users.find(u=>u.accNo===acc);
+  if(!user){alert('Account not found');return}
+  if(amt<=0){alert('Invalid amount');return}
+  user.balance+=amt;
+  user.transactions.unshift({type:'REBANK Credit',amt,date:new Date().toLocaleString()}); // CHANGED HERE
+  users=users.map(u=>u.accNo===user.accNo?user:u);
+  save();
+  alert(`✅ Successful: Added $${amt.toFixed(2)} to ${user.name}`); // SUCCESS WITH USERNAME
+  closeModal();
+}
+
+function viewAllUsers(){
+  let list = 'ALL USERS:\n\n';
+  users.forEach(u=>{
+    list += `Name: ${u.name}\nAccount: ${u.accNo}\nBalance: $${u.balance.toFixed(2)}\n\n`;
+  });
+  alert(list);
+}
 
 function deposit(){
   const amt=parseFloat(depAmt.value);
@@ -264,32 +265,31 @@ function transfer(){
   const amt=parseFloat(transAmt.value);
   const receiver=users.find(u=>u.accNo===acc);
   if(!receiver){alert('Account not found');return}
-  if(amt<=0||amt>currentUser.balance){alert('Invalid amount');return}
+  if(acc===currentUser.accNo){alert('Cannot transfer to yourself');return}
+  if(amt<=0||amt>currentUser.balance){alert('Invalid amount or Insufficient funds');return}
   currentUser.balance-=amt;receiver.balance+=amt;
   currentUser.transactions.unshift({type:'Transfer Out',amt,to:acc,date:new Date().toLocaleString()});
   receiver.transactions.unshift({type:'Transfer In',amt,from:currentUser.accNo,date:new Date().toLocaleString()});
   updateUser();users=users.map(u=>u.accNo===receiver.accNo?receiver:u);save();
-  alert('Transfer Sent');closeModal();loadTransactions();
+  alert('Transfer Sent to ' + acc);closeModal();loadTransactions();
 }
 
 function sendMsg(){alert('Message sent to support');closeModal()}
 
-function changePassword(){
-  const pass=prompt('New Password:');
-  if(pass){currentUser.pass=pass;updateUser();alert('Password Changed')}
-}
-
 function updateUser(){
   users=users.map(u=>u.email===currentUser.email?currentUser:u);
-  save();localStorage.setItem('mce_current',JSON.stringify(currentUser));
+  save();localStorage.setItem('mce_current',JSON.stringify(currentUser));updateBalance();
 }
 
 function loadTransactions(){
-  if(currentUser.transactions.length===0){txList.innerHTML='No transactions yet';return}
-  txList.innerHTML=currentUser.transactions.map(t=>`<div style="padding:12px;background:#f8f9fa;margin:8px 0;border-radius:12px"><b>${t.type}</b> - $${t.amt.toFixed(2)}<br><small>${t.date}</small></div>`).join('');
+  if(currentUser.transactions.length===0){txList.innerHTML='<div class="no-tx">No transactions yet</div>';return}
+  txList.innerHTML=currentUser.transactions.map(t=>`
+    <div class="tx-item">
+      <div class="tx-title">${t.type} - $${t.amt.toFixed(2)}</div>
+      <div class="tx-date">${t.date}</div>
+    </div>
+  `).join('');
 }
-
-function contactSupport(){alert('Contacting support...')}
 
 if(currentUser)loadDashboard();
 if(location.search.includes('resetbank=1')){localStorage.clear();alert('Reset Complete')}
