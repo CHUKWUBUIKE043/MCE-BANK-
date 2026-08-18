@@ -5,34 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
-   .container { max-width: 500px; margin: auto; background: white; min-height: 100vh; }
-    input, button, select, textarea { padding: 12px; margin: 8px 0; width: 90%; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; }
+    .container { max-width: 500px; margin: auto; background: white; min-height: 100vh; padding-bottom: 40px; }
+    input, button, select, textarea { padding: 12px; margin: 8px 0; width: 90%; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; display: block; }
     button { background: #ff9900; color: white; border: none; cursor: pointer; font-weight: bold; }
-   .btn-blue { background: #0033cc; color: white; }
-   .btn-green { background: #28a745; color: white; }
-   .page { display: none; padding: 20px; }
-   .active { display: block; }
-   .card { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
-   .action-btn { background: #fff; border: 1px solid #eee; padding: 15px 5px; border-radius: 12px; cursor: pointer; font-size: 12px; }
-   .action-btn span { font-size: 24px; display: block; margin-bottom: 5px; }
-   .hide-balance { cursor: pointer; color: #0066ff; }
-   .transaction { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; cursor: pointer; }
-   .green { color: #28a745; font-weight: bold; }
-   .red { color: #dc3545; font-weight: bold; }
-   .section-title { display: flex; align-items: center; font-weight: bold; margin-top: 15px; }
-   .section-title span { margin-right: 8px; }
-    label { font-size: 12px; color: gray; display: block; margin-top: 10px; text-transform: uppercase; }
-   .review-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
-   .review-amount { font-size: 32px; text-align: center; font-weight: bold; margin: 20px 0; }
+    .btn-blue { background: #0033cc; color: white; }
+    .btn-green { background: #28a745; color: white; }
+    .page { display: none; padding: 20px; }
+    .active { display: block; }
+    .card { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+    .action-btn { background: #fff; border: 1px solid #eee; padding: 15px 5px; border-radius: 12px; cursor: pointer; font-size: 12px; }
+    .action-btn span { font-size: 24px; display: block; margin-bottom: 5px; }
+    .hide-balance { cursor: pointer; color: #0066ff; }
+    .transaction { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; cursor: pointer; }
+    .green { color: #28a745; font-weight: bold; }
+    .red { color: #dc3545; font-weight: bold; }
   </style>
 </head>
 <body>
 <div class="container">
 
-<!-- HOME, SIGNUP, LOGIN, DASHBOARD, DEPOSIT SAME -->
-<div id="home" class="page active"><h1 style="text-align:center;">Welcome to MCE BANK 👑</h1><button onclick="showPage('signup')">Sign Up</button><button onclick="showPage('login')">Sign In</button></div>
+<div id="home" class="page active">
+  <h1 style="text-align:center;">Welcome to MCE BANK 👑</h1>
+  <button onclick="showPage('signup')">Sign Up</button>
+  <button onclick="showPage('login')">Sign In</button>
+</div>
+
 <div id="signup" class="page"><h2>Create Account</h2><input type="text" id="s_name" placeholder="Full Name"><input type="email" id="s_email" placeholder="Email"><input type="text" id="s_phone" placeholder="Phone Number"><select id="s_financial"><option value="">Financial Situation</option><option>Student</option><option>Employed</option></select><input type="password" id="s_password" placeholder="Password"><button onclick="signup()">Create Account</button><p><a href="#" onclick="showPage('home')">Back</a></p></div>
+
 <div id="login" class="page"><h2>Sign In</h2><input type="email" id="l_email" placeholder="Email"><input type="password" id="l_password" placeholder="Password"><button onclick="login()">Sign In</button><p><a href="#" onclick="showPage('home')">Back</a></p></div>
 
 <div id="dashboard" class="page">
@@ -44,62 +44,19 @@
 </div>
 
 <div id="deposit" class="page"><h2>Deposit Money</h2><input type="number" id="add_amount" placeholder="Enter Amount"><button class="btn-green" onclick="addMoney()">Add Money</button><p><a href="#" onclick="showPage('dashboard')">Back</a></p></div>
-
-<!-- STEP 1: TRANSFER FORM -->
-<div id="transfer" class="page">
-  <h2>Transfer Funds</h2>
-  <label>FROM ACCOUNT</label>
-  <select id="t_from"><option>Premium Checking (...<span id="t_from_last4"></span>)</option></select>
-
-  <div class="section-title"><span>👤</span> Recipient Info</div>
-  <label>ACCOUNT NUMBER</label><input type="text" id="t_acc" placeholder="Enter Account Number">
-  <label>BANK NAME</label><input type="text" id="t_bank" placeholder="MCE BANK" value="MCE BANK">
-  <label>RECIPIENT NAME</label><input type="text" id="t_name" placeholder="Full Name">
-  <label>PHONE NUMBER</label><input type="text" id="t_phone" placeholder="Enter phone number">
-  <label>SWIFT / BIC (OPTIONAL)</label><input type="text" id="t_swift" placeholder="SWIFT/BIC Code">
-  
-  <div class="section-title"><span>🏦</span> Transfer Details</div>
-  <label>AMOUNT</label><input type="number" id="t_amount" placeholder="0.00">
-  <label>DESCRIPTION (OPTIONAL)</label><input type="text" id="t_desc" placeholder="What is this for?">
-  
-  <button class="btn-blue" onclick="reviewTransfer()">Review Transfer</button>
-  <p><a href="#" onclick="showPage('dashboard')">Back</a></p>
-</div>
-
-<!-- STEP 2: REVIEW TRANSFER PAGE - LIKE REBANK -->
-<div id="reviewTransfer" class="page">
-  <h2 style="text-align:center;">Review Transfer</h2>
-  <div class="card">
-    <div class="review-amount" id="review_amount">$0.00</div>
-    <div class="review-row"><span>To</span><b id="review_name"></b></div>
-    <div class="review-row"><span>Account Number</span><b id="review_acc"></b></div>
-    <div class="review-row"><span>Bank</span><b id="review_bank"></b></div>
-    <div class="review-row"><span>From</span><b id="review_from"></b></div>
-    <div class="review-row"><span>Description</span><b id="review_desc"></b></div>
-    <div class="review-row"><span>Fee</span><b>$0.00</b></div>
-  </div>
-  <button class="btn-green" onclick="confirmTransfer()">Send Money</button>
-  <button style="background:gray;" onclick="showPage('transfer')">Cancel</button>
-</div>
-
-<div id="pay" class="page"><h2>Pay Bills</h2><input type="text" id="p_biller" placeholder="Biller Name e.g DSTV, PHCN"><input type="number" id="p_amount" placeholder="Amount"><button onclick="doPay()">Pay Now</button><p><a href="#" onclick="showPage('dashboard')">Back</a></p></div>
+<div id="transfer" class="page"><h2>Transfer Funds</h2><label>ACCOUNT NUMBER</label><input type="text" id="t_acc" placeholder="Enter Account Number"><label>RECIPIENT NAME</label><input type="text" id="t_name" placeholder="Full Name"><label>AMOUNT</label><input type="number" id="t_amount" placeholder="0.00"><button class="btn-blue" onclick="doTransfer()">Send Money</button><p><a href="#" onclick="showPage('dashboard')">Back</a></p></div>
+<div id="pay" class="page"><h2>Pay Bills</h2><input type="text" id="p_biller" placeholder="Biller Name"><input type="number" id="p_amount" placeholder="Amount"><button onclick="doPay()">Pay Now</button><p><a href="#" onclick="showPage('dashboard')">Back</a></p></div>
 <div id="message" class="page"><h2>Message Support</h2><textarea id="msg_text" placeholder="Type your message here..." rows="4"></textarea><button onclick="sendMessage()">Send Message</button><p><a href="#" onclick="showPage('dashboard')">Back</a></p></div>
-<div id="transactionDetail" class="page"><h2>Transaction Details</h2><div class="card"><div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Type</span><b id="td_type"></b></div><div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Amount</span><b id="td_amount"></b></div><div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Date & Time</span><b id="td_date"></b></div><div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Account No</span><b id="td_acc"></b></div><div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Name</span><b id="td_name"></b></div><div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Status</span><b style="color:green;">Successful</b></div></div><button onclick="showPage('dashboard')">Back to Dashboard</button></div>
 
 </div>
 <script>
 let showBal = true;
 let currentUser = null;
-let pendingTransfer = {}; // stores transfer data before confirming
 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
   if(pageId === 'dashboard') { loadDashboard(); }
-  if(pageId === 'transfer') { 
-    currentUser = getUser();
-    document.getElementById('t_from_last4').innerText = currentUser.accNumber.slice(-4);
-  }
 }
 
 function getUser() { return JSON.parse(localStorage.getItem('mcebank_user')); }
@@ -128,93 +85,32 @@ function loadDashboard() {
 function toggleBalance() { showBal =!showBal; updateBalanceDisplay(currentUser.balance); }
 function updateBalanceDisplay(balance) { document.getElementById('balance_text').innerText = showBal? `$${balance.toFixed(2)}` : '••••'; }
 
-function addTransaction(type, amount, details = {}) {
-  const tx = { type: type, amount: amount, date: new Date().toLocaleString(),...details };
-  currentUser.transactions.unshift(tx);
-  saveUser(currentUser);
-}
-
 function addMoney() {
   const amount = parseFloat(document.getElementById('add_amount').value);
   if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
   currentUser.balance += amount;
-  addTransaction('Deposit', amount, {acc: currentUser.accNumber, name: currentUser.name});
+  currentUser.transactions.unshift({type: 'Deposit', amount: amount, date: new Date().toLocaleString()});
+  saveUser(currentUser);
   updateBalanceDisplay(currentUser.balance);
   document.getElementById('add_amount').value = '';
   alert(`$${amount.toFixed(2)} Deposited!`);
   showPage('dashboard');
 }
 
-// STEP 1: COLLECT DATA AND GO TO REVIEW
-function reviewTransfer() {
+function doTransfer() {
   const amount = parseFloat(document.getElementById('t_amount').value);
-  const acc = document.getElementById('t_acc').value;
-  const name = document.getElementById('t_name').value;
-  
-  if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
-  if(acc === '' || name === '') { alert("Enter Account Number and Name"); return; }
-  if(currentUser.balance < amount) { alert("Insufficient Balance"); return; }
-  
-  // save data temporarily
-  pendingTransfer = {
-    amount: amount,
-    acc: acc,
-    name: name,
-    bank: document.getElementById('t_bank').value,
-    phone: document.getElementById('t_phone').value,
-    desc: document.getElementById('t_desc').value || 'Transfer'
-  };
-  
-  // show on review page
-  document.getElementById('review_amount').innerText = `$${amount.toFixed(2)}`;
-  document.getElementById('review_name').innerText = name;
-  document.getElementById('review_acc').innerText = acc;
-  document.getElementById('review_bank').innerText = pendingTransfer.bank;
-  document.getElementById('review_from').innerText = `Premium Checking (...${currentUser.accNumber.slice(-4)})`;
-  document.getElementById('review_desc').innerText = pendingTransfer.desc;
-  
-  showPage('reviewTransfer');
-}
-
-// STEP 2: CONFIRM AND SEND
-function confirmTransfer() {
-  currentUser.balance -= pendingTransfer.amount;
-  addTransaction(`Transfer to ${pendingTransfer.name}`, pendingTransfer.amount, {acc: pendingTransfer.acc, name: pendingTransfer.name, bank: pendingTransfer.bank, desc: pendingTransfer.desc});
-  updateBalanceDisplay(currentUser.balance);
-  alert(`✅ $${pendingTransfer.amount.toFixed(2)} Sent to ${pendingTransfer.name} Successfully!`);
-  showPage('dashboard');
-}
-
-function doPay() {
-  const amount = parseFloat(document.getElementById('p_amount').value);
-  const biller = document.getElementById('p_biller').value;
   if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
   if(currentUser.balance < amount) { alert("Insufficient Balance"); return; }
-  
   currentUser.balance -= amount;
-  addTransaction(`Bill Payment - ${biller}`, amount, {acc: 'N/A', name: biller});
+  currentUser.transactions.unshift({type: `Transfer to ${document.getElementById('t_name').value}`, amount: amount, date: new Date().toLocaleString()});
+  saveUser(currentUser);
   updateBalanceDisplay(currentUser.balance);
-  alert(`$${amount.toFixed(2)} Paid to ${biller}`);
+  alert(`$${amount.toFixed(2)} Sent`);
   showPage('dashboard');
 }
 
-function sendMessage() {
-  const msg = document.getElementById('msg_text').value;
-  if(msg.trim() === '') { alert("Type a message first"); return; }
-  alert("Support will get back to you soon ✅");
-  document.getElementById('msg_text').value = '';
-  showPage('dashboard');
-}
-
-function showTransactionDetail(index) {
-  const tx = currentUser.transactions[index];
-  document.getElementById('td_type').innerText = tx.type;
-  document.getElementById('td_amount').innerText = `$${tx.amount.toFixed(2)}`;
-  document.getElementById('td_date').innerText = tx.date;
-  document.getElementById('td_acc').innerText = tx.acc || 'N/A';
-  document.getElementById('td_name').innerText = tx.name || 'N/A';
-  showPage('transactionDetail');
-}
+function doPay() { alert("Paid"); showPage('dashboard'); }
+function sendMessage() { alert("Message Sent"); showPage('dashboard'); }
 
 function loadTransactions(transactions) {
   const list = document.getElementById('transactions_list');
@@ -222,8 +118,8 @@ function loadTransactions(transactions) {
     list.innerHTML = '<p style="color:gray;">No transactions yet</p>';
     return;
   }
-  list.innerHTML = transactions.slice(0,5).map((t, index) => `
-    <div class="transaction" onclick="showTransactionDetail(${index})">
+  list.innerHTML = transactions.slice(0,5).map(t => `
+    <div class="transaction">
       <div><b>${t.type}</b><br><span style="color:gray; font-size:12px;">${t.date}</span></div>
       <div class="${t.type.includes('Deposit')? 'green' : 'red'}">${t.type.includes('Deposit')? '+' : '-'}$${t.amount.toFixed(2)}</div>
     </div>
@@ -231,7 +127,11 @@ function loadTransactions(transactions) {
 }
 
 function logout() { localStorage.removeItem('mcebank_user'); currentUser = null; showPage('home'); }
-window.onload = function() { const user = getUser(); if(user) { loadDashboard(); }
+
+window.onload = function() { 
+  const user = getUser(); 
+  if(user) { loadDashboard(); } 
+}
 </script>
 </body>
-                                                                                                                                                                   </html>
+  </html>
