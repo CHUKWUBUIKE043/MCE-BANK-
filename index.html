@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK</title>
+<title>REBANK</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 body{background:#f5f5f7}
@@ -13,6 +13,7 @@ body{background:#f5f5f7}
 .pfp{width:45px;height:45px;border-radius:50%;object-fit:cover}
 .welcome-title{font-size:18px;font-weight:700}
 .welcome-sub{font-size:14px;color:#666}
+.admin-badge{background:#ff3b30;color:white;font-size:10px;padding:2px 6px;border-radius:5px;margin-left:5px}
 .icons{display:flex;gap:12px}
 .icon-btn{width:40px;height:40px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);cursor:pointer;font-size:20px}
 .card{background:white;margin:0 20px 20px;padding:20px;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
@@ -24,15 +25,16 @@ body{background:#f5f5f7}
 .acc-value{font-weight:600;margin-top:4px}
 .status{color:#888;font-size:13px;text-align:right}
 .status-value{color:#34c759;font-weight:600;margin-top:4px;text-align:right}
-.btn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 20px 20px}
+.btn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 20px 20px}
 .btn{background:white;padding:18px 5px;border-radius:15px;text-align:center;font-size:12px;font-weight:500;box-shadow:0 2px 10px rgba(0,0,0,0.05);cursor:pointer;color:#0047ab}
 .btn.icon{font-size:26px;margin-bottom:6px}
 .section{padding:0 20px 80px}
 .section h3{margin-bottom:10px;font-size:18px}
 .no-tx{color:#999;text-align:center;padding:30px;background:white;border-radius:18px}
-.tx-item{padding:14px;background:#f8f9fa;margin:8px 0;border-radius:12px}
-.tx-title{font-weight:600}
-.tx-date{color:#888;font-size:12px}
+.tx-item{padding:14px;background:#f8f9fa;margin:8px 0;border-radius:12px;border-left:4px solid #0047ab}
+.tx-title{font-weight:600;font-size:15px}
+.tx-desc{color:#666;font-size:12px;margin-top:3px}
+.tx-date{color:#888;font-size:11px;margin-top:5px}
 
 .settings-header{background:#0047ab;color:white;padding:25px 20px}
 .settings-header h1{font-size:24px;margin-bottom:15px}
@@ -44,26 +46,23 @@ body{background:#f5f5f7}
 .section-title{color:#666;font-size:13px;font-weight:600;margin:20px 0 10px 10px}
 .setting-card{background:white;border-radius:15px;padding:5px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
 .setting-item{display:flex;align-items:center;justify-content:space-between;padding:15px;border-bottom:1px solid #f0f0f0}
-.setting-left{display:flex;align-items:center;gap:12px}
-.setting-icon{font-size:20px;color:#0047ab}
-.setting-text{font-size:15px;font-weight:500}
-.setting-value{color:#888;font-size:13px;margin-left:auto;margin-right:8px}
-.logout-btn{width:calc(100% - 40px);margin:20px;background:white;color:#ff3b30;border:1px solid #ff3b30;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-.admin-btn{width:calc(100% - 40px);margin:0 20px 20px;background:#0047ab;color:white;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+.admin-btn{width:calc(100% - 40px);margin:0 20px 10px;background:#ff3b30;color:white;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+.logout-btn{width:calc(100% - 40px);margin:20px;background:white;color:#ff3b30;border:1px solid #ff3b30;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
 
 .auth{padding:40px 20px;text-align:center}
 input,button.primary{width:100%;padding:14px;margin:10px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
 button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor:pointer}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:99}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:99}
 .modal-content{background:white;padding:25px;border-radius:18px;width:90%;max-width:400px}
-.close{float:right;font-size:24px;cursor:pointer}
-.success{color:#34c759;font-weight:600}
+.close{float:right;font-size:24px;cursor:pointer;color:#999}
+.success-popup{text-align:center}
+.success-popup.icon{font-size:50px;color:#34c759;margin-bottom:10px}
 </style>
 </head>
 <body>
 
 <div id="authPage" class="auth page active">
-  <h1 style="color:#0047ab;margin-bottom:30px">MCE BANK</h1>
+  <h1 style="color:#0047ab;margin-bottom:30px">REBANK</h1>
   <div id="loginForm">
     <input type="email" id="loginEmail" placeholder="Email">
     <input type="password" id="loginPass" placeholder="Password">
@@ -84,7 +83,7 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
     <div style="display:flex;align-items:center;gap:12px">
       <img src="https://i.pravatar.cc/100" class="pfp" id="pfp">
       <div>
-        <div class="welcome-title">Welcome back</div>
+        <div class="welcome-title">Welcome back <span id="adminTag"></span></div>
         <div class="welcome-sub" id="userName">User</div>
       </div>
     </div>
@@ -100,7 +99,7 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
     <div class="acc-row">
       <div>
         <div class="acc-label">ACCOUNT NUMBER</div>
-        <div class="acc-value" id="accNo">0000000000</div>
+        <div class="acc-value" id="accNo">0000000</div>
       </div>
       <div>
         <div class="status">STATUS</div>
@@ -109,12 +108,7 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
     </div>
   </div>
 
-  <div class="btn-grid">
-    <div class="btn" onclick="openModal('transfer')"><div class="icon">↔️</div>Transfer</div>
-    <div class="btn" onclick="openModal('deposit')"><div class="icon">⬇️</div>Deposit</div>
-    <div class="btn" onclick="openModal('pay')"><div class="icon">✈️</div>Pay</div>
-    <div class="btn" onclick="openModal('message')"><div class="icon">💬</div>Message</div>
-  </div>
+  <div class="btn-grid" id="btnGrid"></div>
 
   <div class="section">
     <h3>Recent Transactions</h3>
@@ -129,23 +123,11 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
       <img src="https://i.pravatar.cc/100" id="settingsPfp">
       <div>
         <div class="profile-name" id="settingsName">User</div>
-        <div class="profile-id">ID: <span id="settingsId">0000000000</span></div>
+        <div class="profile-id">ID: <span id="settingsId">0000</span></div>
       </div>
     </div>
   </div>
-
-  <div class="settings-content">
-    <div class="section-title">Personal Information</div>
-    <div class="setting-card">
-      <div class="setting-item"><div class="setting-left"><span class="setting-icon">✉️</span><span class="setting-text">Email Address</span></div><span class="setting-value" id="settingsEmail">email</span></div>
-    </div>
-
-    <div class="section-title">Admin Panel</div>
-    <button class="admin-btn" onclick="openModal('admin')">👑 Add Money to User</button>
-    <button class="admin-btn" style="background:#34c759" onclick="viewAllUsers()">👥 View All Users</button>
-
-    <button class="logout-btn" onclick="logout()">🚪 Sign Out</button>
-  </div>
+  <div class="settings-content" id="settingsContent"></div>
 </div>
 
 <div id="bottomNav" style="display:none;position:fixed;bottom:0;width:100%;background:white;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:10px 0">
@@ -158,14 +140,18 @@ button.primary{background:#0047ab;color:white;border:none;font-weight:600;cursor
 <div class="modal" id="modal"><div class="modal-content"><span class="close" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
 
 <script>
-let users = JSON.parse(localStorage.getItem('mce_users')) || [];
-let currentUser = JSON.parse(localStorage.getItem('mce_current')) || null;
+let users = JSON.parse(localStorage.getItem('re_users_v26')) || [];
+let currentUser = JSON.parse(localStorage.getItem('re_current_v26')) || null;
 let showBal = false;
 
-function save(){localStorage.setItem('mce_users',JSON.stringify(users))}
+// CHANGE THIS TO YOUR EMAIL TO BECOME ADMIN
+const ADMIN_EMAIL = "admin@rebank.com";
+
+function save(){localStorage.setItem('re_users_v26',JSON.stringify(users))}
 function showLogin(){loginForm.style.display='block';signupForm.style.display='none'}
 function showSignup(){loginForm.style.display='none';signupForm.style.display='block'}
-function genAccNo(){return '' + Math.floor(1000000 + Math.random()*9000000000)}
+function genAccNo(){return '' + Math.floor(1000000000 + Math.random()*9000000)} // 10 digits
+function isAdmin(){return currentUser && currentUser.email.toLowerCase() === ADMIN_EMAIL}
 
 function signup(){
   const name=signupName.value.trim();
@@ -175,7 +161,7 @@ function signup(){
   if(users.find(u=>u.email===email)){alert('Email already exists');return}
   const user={name,email,pass,balance:0,accNo:genAccNo(),transactions:[]};
   users.push(user);save();
-  alert('Account Created! Account No: ' + user.accNo);
+  alert('Account Created!\nName: ' + name + '\nAccount No: ' + user.accNo);
   showLogin();
 }
 
@@ -184,7 +170,7 @@ function login(){
   const pass=loginPass.value;
   const user=users.find(u=>u.email===email&&u.pass===pass);
   if(!user){alert('Invalid login');return}
-  currentUser=user;localStorage.setItem('mce_current',JSON.stringify(user));
+  currentUser=user;localStorage.setItem('re_current_v26',JSON.stringify(user));
   loadDashboard();
 }
 
@@ -197,8 +183,53 @@ function loadDashboard(){
   settingsEmail.innerText=currentUser.email;
   accNo.innerText=currentUser.accNo;
   settingsId.innerText=currentUser.accNo;
+  
+  if(isAdmin()) adminTag.innerHTML = '<span class="admin-badge">ADMIN</span>';
+  
+  loadButtons();
+  loadSettings();
   updateBalance();
   loadTransactions();
+}
+
+function loadButtons(){
+  if(isAdmin()){
+    btnGrid.innerHTML = `
+      <div class="btn" onclick="openModal('transfer')"><div class="icon">↔️</div>Transfer</div>
+      <div class="btn" onclick="openModal('addMoney')"><div class="icon">⬇️</div>Add Money</div>
+      <div class="btn" onclick="viewAllUsers()"><div class="icon">👥</div>All Users</div>
+    `;
+  } else {
+    btnGrid.innerHTML = `
+      <div class="btn" style="color:#ccc;cursor:not-allowed"><div class="icon">↔️</div>Transfer</div>
+      <div class="btn" style="color:#ccc;cursor:not-allowed"><div class="icon">⬇️</div>Deposit</div>
+      <div class="btn" onclick="openModal('message')"><div class="icon">💬</div>Message</div>
+    `;
+  }
+}
+
+function loadSettings(){
+  if(isAdmin()){
+    settingsContent.innerHTML = `
+      <div class="section-title">Personal Information</div>
+      <div class="setting-card">
+        <div class="setting-item"><div>✉️ Email</div><span>${currentUser.email}</span></div>
+      </div>
+      <div class="section-title">Admin Controls</div>
+      <button class="admin-btn" onclick="openModal('transfer')">👑 Transfer to User</button>
+      <button class="admin-btn" onclick="openModal('addMoney')">💰 Add Money to User</button>
+      <button class="admin-btn" style="background:#34c759" onclick="viewAllUsers()">👥 View All Users</button>
+      <button class="logout-btn" onclick="logout()">🚪 Sign Out</button>
+    `;
+  } else {
+    settingsContent.innerHTML = `
+      <div class="section-title">Personal Information</div>
+      <div class="setting-card">
+        <div class="setting-item"><div>✉️ Email</div><span>${currentUser.email}</span></div>
+      </div>
+      <button class="logout-btn" onclick="logout()">🚪 Sign Out</button>
+    `;
+  }
 }
 
 function showPage(page){
@@ -213,35 +244,86 @@ function updateBalance(){
 function toggleBalance(){showBal=!showBal;updateBalance()}
 
 function logout(){
-  currentUser=null;localStorage.removeItem('mce_current');
+  currentUser=null;localStorage.removeItem('re_current_v26');
   showPage('authPage');
   bottomNav.style.display='none';
 }
 
 function openModal(type){
   modal.style.display='flex';
-  if(type==='deposit')modalBody.innerHTML=`<h2>Deposit</h2><input id="depAmt" type="number" placeholder="Amount"><button class="primary" onclick="deposit()">Deposit</button>`;
-  if(type==='transfer')modalBody.innerHTML=`<h2>Transfer</h2><input id="transAcc" placeholder="Receiver Account Number"><input id="transAmt" type="number" placeholder="Amount"><button class="primary" onclick="transfer()">Send</button>`;
-  if(type==='pay')modalBody.innerHTML=`<h2>Pay Bills</h2><p>Coming Soon</p>`;
-  if(type==='message')modalBody.innerHTML=`<h2>Message</h2><textarea id="msgText" rows="4" placeholder="Message support..."></textarea><button class="primary" onclick="sendMsg()">Send</button>`;
+  if(type==='addMoney')modalBody.innerHTML=`<h2>💰 Add Money to User</h2><input id="addAcc" placeholder="Receiver Account Number"><input id="addAmt" type="number" placeholder="Amount"><button class="primary" onclick="addMoney()">Add Money</button>`;
+  if(type==='transfer')modalBody.innerHTML=`<h2>↔️ Transfer Money</h2><input id="transAcc" placeholder="Receiver Account Number"><input id="transAmt" type="number" placeholder="Amount"><input id="transDesc" placeholder="Description e.g. School Fees"><button class="primary" onclick="doTransfer()">Send</button>`;
+  if(type==='message')modalBody.innerHTML=`<h2>Message Support</h2><textarea id="msgText" rows="4" placeholder="Message..."></textarea><button class="primary" onclick="sendMsg()">Send</button>`;
   if(type==='notifications')modalBody.innerHTML=`<h2>Notifications</h2><p>No new notifications</p>`;
-  if(type==='admin')modalBody.innerHTML=`<h2>👑 Admin: Add Money</h2><input id="adminAcc" placeholder="User Account Number"><input id="adminAmt" type="number" placeholder="Amount to Add"><button class="primary" onclick="adminAddMoney()">Add Money</button>`;
 }
 function closeModal(){modal.style.display='none'}
 
-// ADMIN FUNCTION - NOW SHOWS IN RECENT TX AS "REBANK"
-function adminAddMoney(){
-  const acc=adminAcc.value.trim();
-  const amt=parseFloat(adminAmt.value);
+// ADD MONEY FUNCTION
+function addMoney(){
+  const acc=addAcc.value.trim();
+  const amt=parseFloat(addAmt.value);
   const user=users.find(u=>u.accNo===acc);
   if(!user){alert('Account not found');return}
   if(amt<=0){alert('Invalid amount');return}
   user.balance+=amt;
-  user.transactions.unshift({type:'REBANK Credit',amt,date:new Date().toLocaleString()}); // CHANGED HERE
+  user.transactions.unshift({
+    type:'REBANK Credit',
+    amt,
+    desc:`From Admin: ${currentUser.name}`,
+    date:new Date().toLocaleString()
+  });
   users=users.map(u=>u.accNo===user.accNo?user:u);
   save();
-  alert(`✅ Successful: Added $${amt.toFixed(2)} to ${user.name}`); // SUCCESS WITH USERNAME
+  showSuccess(`Successful: Added $${amt.toFixed(2)} to ${user.name}`);
   closeModal();
+}
+
+// TRANSFER FUNCTION - EXACTLY LIKE YOUR IMAGE
+function doTransfer(){
+  const acc=transAcc.value.trim();
+  const amt=parseFloat(transAmt.value);
+  const desc=transDesc.value || 'Transfer';
+  const receiver=users.find(u=>u.accNo===acc);
+  if(!receiver){alert('Account not found');return}
+  if(amt<=0||amt>currentUser.balance){alert('Invalid amount or Insufficient funds');return}
+  
+  currentUser.balance-=amt;
+  receiver.balance+=amt;
+  
+  // Sender transaction
+  currentUser.transactions.unshift({
+    type:'Transfer Out',
+    amt,
+    desc:`To: ${receiver.name} - ${acc}\n${desc}`,
+    date:new Date().toLocaleString()
+  });
+  
+  // Receiver transaction 
+  receiver.transactions.unshift({
+    type:'Transfer In',
+    amt,
+    desc:`From: ${currentUser.name}\n${desc}`,
+    date:new Date().toLocaleString()
+  });
+  
+  updateUser();
+  users=users.map(u=>u.accNo===receiver.accNo?receiver:u);
+  save();
+  showSuccess(`Transfer Successful!\n$${amt.toFixed(2)} sent to ${receiver.name}`);
+  closeModal();
+  loadTransactions();
+}
+
+function showSuccess(msg){
+  modalBody.innerHTML = `
+    <div class="success-popup">
+      <div class="icon">✅</div>
+      <h2>Success!</h2>
+      <p style="margin-top:10px;white-space:pre-line">${msg}</p>
+      <button class="primary" onclick="closeModal()" style="margin-top:20px">Done</button>
+    </div>
+  `;
+  modal.style.display='flex';
 }
 
 function viewAllUsers(){
@@ -252,33 +334,11 @@ function viewAllUsers(){
   alert(list);
 }
 
-function deposit(){
-  const amt=parseFloat(depAmt.value);
-  if(amt<=0){alert('Invalid');return}
-  currentUser.balance+=amt;
-  currentUser.transactions.unshift({type:'Deposit',amt,date:new Date().toLocaleString()});
-  updateUser();alert('Deposit Successful');closeModal();loadTransactions();
-}
-
-function transfer(){
-  const acc=transAcc.value.trim();
-  const amt=parseFloat(transAmt.value);
-  const receiver=users.find(u=>u.accNo===acc);
-  if(!receiver){alert('Account not found');return}
-  if(acc===currentUser.accNo){alert('Cannot transfer to yourself');return}
-  if(amt<=0||amt>currentUser.balance){alert('Invalid amount or Insufficient funds');return}
-  currentUser.balance-=amt;receiver.balance+=amt;
-  currentUser.transactions.unshift({type:'Transfer Out',amt,to:acc,date:new Date().toLocaleString()});
-  receiver.transactions.unshift({type:'Transfer In',amt,from:currentUser.accNo,date:new Date().toLocaleString()});
-  updateUser();users=users.map(u=>u.accNo===receiver.accNo?receiver:u);save();
-  alert('Transfer Sent to ' + acc);closeModal();loadTransactions();
-}
-
 function sendMsg(){alert('Message sent to support');closeModal()}
 
 function updateUser(){
   users=users.map(u=>u.email===currentUser.email?currentUser:u);
-  save();localStorage.setItem('mce_current',JSON.stringify(currentUser));updateBalance();
+  save();localStorage.setItem('re_current_v26',JSON.stringify(currentUser));updateBalance();
 }
 
 function loadTransactions(){
@@ -286,13 +346,14 @@ function loadTransactions(){
   txList.innerHTML=currentUser.transactions.map(t=>`
     <div class="tx-item">
       <div class="tx-title">${t.type} - $${t.amt.toFixed(2)}</div>
+      <div class="tx-desc">${t.desc || ''}</div>
       <div class="tx-date">${t.date}</div>
     </div>
   `).join('');
 }
 
 if(currentUser)loadDashboard();
-if(location.search.includes('resetbank=1')){localStorage.clear();alert('Reset Complete')}
+if(location.search.includes('resetbank=1')){localStorage.clear();alert('Reset Complete. Refresh page.')}
 </script>
 </body>
 </html>
