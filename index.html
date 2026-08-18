@@ -2,20 +2,31 @@
 <html>
 <head>
   <title>MCE BANK 👑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial; text-align: center; padding: 30px; background: #fff5e6; }
-    input, button { padding: 10px; margin: 5px; width: 80%; max-width: 300px; border-radius: 8px; border: 1px solid #ccc; }
+    body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+    .container { max-width: 500px; margin: auto; background: white; min-height: 100vh; }
+    input, button, select { padding: 12px; margin: 8px 0; width: 90%; border-radius: 10px; border: 1px solid #ddd; }
     button { background: #ff9900; color: white; border: none; cursor: pointer; font-weight: bold; }
-    .page { display: none; }
+    .page { display: none; padding: 20px; }
     .active { display: block; }
+    .btn-green { background: #28a745; }
+    .card { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+    .action-btn { background: #fff; border: 1px solid #eee; padding: 15px 5px; border-radius: 12px; cursor: pointer; }
+    .action-btn span { font-size: 24px; display: block; margin-bottom: 5px; }
+    .hide-balance { cursor: pointer; color: #0066ff; }
+    .transaction { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+    .green { color: #28a745; font-weight: bold; }
+    .red { color: #dc3545; font-weight: bold; }
   </style>
 </head>
 <body>
+<div class="container">
 
 <!-- PAGE 1: HOMEPAGE -->
 <div id="home" class="page active">
-  <h1>Welcome to MCE BANK 👑</h1>
-  <p>The #1 Bank for Members</p>
+  <h1 style="text-align:center;">Welcome to MCE BANK 👑</h1>
   <button onclick="showPage('signup')">Sign Up</button>
   <button onclick="showPage('login')">Sign In</button>
 </div>
@@ -23,10 +34,16 @@
 <!-- PAGE 2: SIGNUP -->
 <div id="signup" class="page">
   <h2>Create Account</h2>
-  <input type="text" id="s_name" placeholder="Full Name"><br>
-  <input type="email" id="s_email" placeholder="Email"><br>
-  <input type="text" id="s_phone" placeholder="Phone Number"><br>
-  <input type="password" id="s_password" placeholder="Password"><br>
+  <input type="text" id="s_name" placeholder="Full Name">
+  <input type="email" id="s_email" placeholder="Email">
+  <input type="text" id="s_phone" placeholder="Phone Number">
+  <select id="s_financial">
+    <option value="">Select Financial Situation</option>
+    <option value="Student">Student</option>
+    <option value="Employed">Employed</option>
+    <option value="Business Owner">Business Owner</option>
+  </select>
+  <input type="password" id="s_password" placeholder="Password">
   <button onclick="signup()">Create Account</button>
   <p><a href="#" onclick="showPage('home')">Back</a></p>
 </div>
@@ -34,83 +51,153 @@
 <!-- PAGE 3: LOGIN -->
 <div id="login" class="page">
   <h2>Sign In</h2>
-  <input type="email" id="l_email" placeholder="Email"><br>
-  <input type="password" id="l_password" placeholder="Password"><br>
+  <input type="email" id="l_email" placeholder="Email">
+  <input type="password" id="l_password" placeholder="Password">
   <button onclick="login()">Sign In</button>
   <p><a href="#" onclick="showPage('home')">Back</a></p>
 </div>
 
 <!-- PAGE 4: DASHBOARD -->
 <div id="dashboard" class="page">
-  <h2>Welcome, <span id="d_name"></span></h2>
-  <p><b>Email:</b> <span id="d_email"></span></p>
-  <p><b>Phone:</b> <span id="d_phone"></span></p>
-  <p><b>Account No:</b> <span id="d_acc"></span></p>
-  <p><b>Balance:</b> $<span id="d_balance">0.00</span></p>
-  <button class="logout-btn" onclick="logout()">Logout</button>
+  <div style="display:flex; align-items:center; padding:15px;">
+    <img src="https://i.imgur.com/8Km9tLL.png" style="width:45px; height:45px; border-radius:50%; margin-right:10px;">
+    <div>
+      <b>Welcome back</b><br>
+      <span id="d_name"></span>
+    </div>
+  </div>
+
+  <!-- BALANCE CARD -->
+  <div class="card">
+    <p style="color:gray;">AVAILABLE BALANCE <span class="hide-balance" onclick="toggleBalance()">👁️</span></p>
+    <h2 id="balance_text">$0.00</h2>
+    <hr>
+    <p style="display:flex; justify-content:space-between;">
+      <span><b>ACCOUNT NUMBER</b><br><span id="d_acc"></span></span>
+      <span style="color:gray;"><b>STATUS</b><br>ACTIVE</span>
+    </p>
+  </div>
+
+  <!-- 4 BUTTONS -->
+  <div class="card">
+    <div class="grid-4">
+      <div class="action-btn" onclick="alert('Transfer feature coming soon')"><span>↔️</span>Transfer</div>
+      <div class="action-btn" onclick="showPage('deposit')"><span>⬇️</span>Deposit</div>
+      <div class="action-btn" onclick="alert('Pay Bills coming soon')"><span>✈️</span>Pay</div>
+      <div class="action-btn" onclick="alert('Message Support coming soon')"><span>💬</span>Message</div>
+    </div>
+  </div>
+
+  <!-- RECENT TRANSACTIONS -->
+  <div class="card">
+    <h3>Recent Transactions</h3>
+    <div id="transactions_list"></div>
+  </div>
+
+  <button onclick="logout()">Logout</button>
 </div>
 
+<!-- PAGE 5: DEPOSIT -->
+<div id="deposit" class="page">
+  <h2>Deposit Money</h2>
+  <input type="number" id="add_amount" placeholder="Enter Amount">
+  <button class="btn-green" onclick="addMoney()">Add Money</button>
+  <p><a href="#" onclick="showPage('dashboard')">Back to Dashboard</a></p>
+</div>
+
+</div>
 <script>
-// Switch pages
+let showBal = true;
+
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
 }
 
-// SIGNUP
 function signup() {
   const user = {
     name: document.getElementById('s_name').value,
     email: document.getElementById('s_email').value,
     phone: document.getElementById('s_phone').value,
+    financial: document.getElementById('s_financial').value,
     password: document.getElementById('s_password').value,
     accNumber: 'MCE' + Math.floor(Math.random()*9000000 + 1000000),
-    balance: 0.00
+    balance: 0.00,
+    transactions: []
   };
   localStorage.setItem('mcebank_user', JSON.stringify(user));
   loadDashboard();
 }
 
-// LOGIN
 function login() {
   const email = document.getElementById('l_email').value;
   const password = document.getElementById('l_password').value;
   const user = JSON.parse(localStorage.getItem('mcebank_user'));
-
   if(user && user.email === email && user.password === password) {
     loadDashboard();
-  } else {
-    alert("Wrong email or password");
-  }
+  } else { alert("Wrong email or password"); }
 }
 
-// LOAD DASHBOARD
 function loadDashboard() {
   const user = JSON.parse(localStorage.getItem('mcebank_user'));
   if(!user) { showPage('home'); return; }
   
-  document.getElementById('d_name').innerText = user.name;
-  document.getElementById('d_email').innerText = user.email;
-  document.getElementById('d_phone').innerText = user.phone;
+  document.getElementById('d_name').innerText = user.name.split(' ')[0];
   document.getElementById('d_acc').innerText = user.accNumber;
-  document.getElementById('d_balance').innerText = user.balance.toFixed(2);
-  
+  updateBalanceDisplay(user.balance);
+  loadTransactions(user.transactions);
   showPage('dashboard');
 }
 
-// LOGOUT
+function toggleBalance() {
+  showBal = !showBal;
+  const user = JSON.parse(localStorage.getItem('mcebank_user'));
+  updateBalanceDisplay(user.balance);
+}
+
+function updateBalanceDisplay(balance) {
+  document.getElementById('balance_text').innerText = showBal ? `$${balance.toFixed(2)}` : '••••••••';
+}
+
+function addMoney() {
+  const amount = parseFloat(document.getElementById('add_amount').value);
+  if(isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
+  
+  let user = JSON.parse(localStorage.getItem('mcebank_user'));
+  user.balance += amount;
+  user.transactions.unshift({type: 'Deposit', amount: amount, date: new Date().toLocaleDateString()});
+  localStorage.setItem('mcebank_user', JSON.stringify(user));
+  
+  updateBalanceDisplay(user.balance);
+  loadTransactions(user.transactions);
+  document.getElementById('add_amount').value = '';
+  alert(`$${amount.toFixed(2)} Deposited!`);
+  showPage('dashboard');
+}
+
+function loadTransactions(transactions) {
+  const list = document.getElementById('transactions_list');
+  if(transactions.length === 0) {
+    list.innerHTML = '<p style="color:gray;">No transactions yet</p>';
+    return;
+  }
+  list.innerHTML = transactions.map(t => `
+    <div class="transaction">
+      <div><b>${t.type}</b><br><span style="color:gray; font-size:12px;">${t.date}</span></div>
+      <div class="green">+$${t.amount.toFixed(2)}</div>
+    </div>
+  `).join('');
+}
+
 function logout() {
   localStorage.removeItem('mcebank_user');
-  alert('Logged out');
   showPage('home');
 }
 
-// Auto-login if user exists
 window.onload = function() {
   const user = localStorage.getItem('mcebank_user');
   if(user) { loadDashboard(); }
 }
 </script>
-
 </body>
-                                                                  </html>
+                                                 </html>
