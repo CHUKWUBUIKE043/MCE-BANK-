@@ -5,196 +5,211 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MCE BANK</title>
 <style>
+:root{--bg:#000;--card:#151515;--green:#00d37f;--text:#fff;--gray:#9aa0a6;--input:#1a1a1a;--red:#ff3b30;--green-dark:#0d3b2a}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#f0f4ff;color:#1a237e}
-.page{display:none}.page.active{display:block}
-.orange{background:linear-gradient(135deg, #1a237e 0%, #3949ab 100%);color:white;padding:25px 20px;border-radius:0 0 30px 30px}
-.balance-card{background:rgba(255,255,255,0.15);padding:20px;border-radius:20px;backdrop-filter:blur(10px)}
-.balance-label{font-size:13px;opacity:0.9}
-.balance{font-size:32px;font-weight:800;margin:8px 0}
-.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px}
-.quick-btn{background:white;padding:18px 10px;border-radius:16px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,0.08);cursor:pointer}
-.quick-btn:active{transform:scale(0.95)}
-.quick-icon{font-size:26px;margin-bottom:6px}
-.quick-label{font-size:12px;font-weight:600;color:#1a237e}
-.section{padding:0 20px 100px}
-.section h3{margin:20px 0 12px;font-size:16px;font-weight:700}
-.tx-item{display:flex;justify-content:space-between;align-items:center;background:white;padding:14px;border-radius:14px;margin:8px 0}
-.tx-left{display:flex;gap:12px;align-items:center}
-.tx-icon{width:40px;height:40px;border-radius:12px;background:#e8eaf6;display:flex;align-items:center;justify-content:center}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:99}
-.modal-content{background:white;padding:24px;border-radius:20px;width:90%;max-width:420px;max-height:90vh;overflow-y:auto}
-input,select{width:100%;padding:14px;margin:10px 0;border:1.5px solid #e5e7eb;border-radius:12px;font-size:15px}
-.btn-primary{width:100%;padding:16px;background:#1a237e;color:white;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer}
-.receiver-box{background:#e8f5e9;padding:14px;border-radius:12px;margin:10px 0;border-left:4px solid #10b981}
+body{background:var(--bg);color:var(--text)}
+.page{display:none}.page.active{display:block;padding-bottom:85px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px}
+.back{font-size:24px;cursor:pointer}
+.help{color:var(--green);font-weight:600;cursor:pointer}
+.name{font-size:18px;font-weight:800}
+.tier{background:#222;color:var(--green);padding:3px 10px;border-radius:20px;font-size:11px;margin-top:4px;display:inline-block}
+.top-icons{display:flex;gap:18px;font-size:22px;position:relative}
+.bell-dot{position:absolute;top:0;right:0;width:8px;height:8px;background:red;border-radius:50%}
+.title{font-size:24px;font-weight:900;padding:20px 20px 10px}
+.phone-box{background:var(--input);border-radius:14px;margin:0 20px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.country-select{display:flex;align-items:center;gap:6px}
+.flag{font-size:24px}
+.country-code{font-weight:700}
+.divider{width:1px;height:24px;background:#333}
+input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:16px}
+.invite-box{background:var(--green-dark);margin:15px 20px;padding:14px;border-radius:14px}
+.invite-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.invite-input{background:#0a0a0a;border-radius:10px;padding:14px;margin-top:12px;color:var(--gray);width:100%}
+.bonus{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--green);font-weight:700;margin:20px 0;font-size:14px}
+.btn-next{margin:20px;background:var(--green);color:#000;border:none;padding:16px;border-radius:30px;font-size:16px;font-weight:900;width:calc(100% - 40px);cursor:pointer;opacity:0.5}
+.btn-next.active{opacity:1}
+.terms{display:flex;gap:10px;align-items:start;margin:20px;font-size:13px;color:var(--gray)}
+.terms input{width:18px;height:18px;accent-color:var(--green)}
+.terms span{color:var(--green)}
+.login-text{text-align:center;color:var(--gray);font-size:14px;margin-top:15px}
+.login-text span{color:var(--green);font-weight:700;cursor:pointer}
+.balance-card{background:linear-gradient(135deg,#00d37f 0%,#00a866 100%);margin:0 20px;padding:22px;border-radius:18px;color:#000}
+.balance{font-size:32px;font-weight:900;margin:8px 0}
+.add-btn{background:#000;color:var(--green);padding:11px 20px;border-radius:25px;border:none;font-weight:800;float:right;cursor:pointer}
+.business{background:var(--card);margin:15px 20px;padding:14px;border-radius:14px;font-size:13px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 20px 25px}
+.btn{background:var(--card);padding:20px 10px;border-radius:16px;text-align:center;cursor:pointer;position:relative;transition:0.2s}
+.btn:active{transform:scale(0.95)}
+.btn-icon{font-size:28px;color:var(--green);margin-bottom:8px}
+.badge{position:absolute;top:8px;right:8px;background:var(--red);color:#fff;font-size:9px;padding:2px 6px;border-radius:8px}
+.refer{background:var(--card);margin:0 20px 20px;padding:18px;border-radius:16px;display:flex;align-items:center;gap:15px}
+.refer-btn{background:var(--green);color:#000;padding:10px 22px;border-radius:22px;border:none;font-weight:800;cursor:pointer}
+.bottom-nav{position:fixed;bottom:0;width:100%;background:var(--card);border-top:1px solid #222;display:flex;justify-content:space-around;padding:10px 0}
+.nav-item{text-align:center;color:var(--gray);cursor:pointer;font-size:11px}
+.nav-item.active{color:var(--green)}
+.nav-icon{font-size:23px;margin-bottom:3px}
+.card-gradient{background:linear-gradient(135deg,#00d37f 0%,#00a866 100%);margin:0 20px;padding:22px;border-radius:18px;color:#000}
+.setting{background:var(--card);margin:8px 20px;padding:16px;border-radius:14px;display:flex;justify-content:space-between;cursor:pointer}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:99}
+.modal-content{background:var(--card);padding:24px;border-radius:20px;width:90%;max-width:440px}
+select{width:100%;padding:14px;margin:10px 0;border:1.5px solid #222;border-radius:12px;font-size:15px;background:var(--input);color:#fff}
+.btn-primary{width:100%;padding:15px;background:var(--green);color:#000;border:none;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer}
+.info{color:var(--green);font-size:13px;margin:8px 0;text-align:center}
 .auth{padding:30px 20px}
-.logo{font-size:28px;font-weight:800;color:#1a237e;text-align:center;margin-bottom:10px}
-.bottom-nav{position:fixed;bottom:0;width:100%;background:white;border-top:1px solid #e5e7eb;display:flex;justify-content:space-around;padding:12px 0}
-.nav-item{text-align:center;color:#9ca3af;cursor:pointer;font-size:11px}
-.nav-item.active{color:#1a237e}
-.country-flag{font-size:20px;margin-right:8px}
+.logo{font-size:34px;font-weight:900;color:var(--green);text-align:center}
+.logo span{color:#fff}
+.receiver{background:#0f2a1f;border-left:4px solid var(--green);padding:14px;border-radius:12px;margin:10px 0}
+.admin-badge{background:var(--red);color:#fff;padding:3px 8px;border-radius:8px;font-size:10px;margin-left:8px}
+.tx{display:flex;justify-content:space-between;padding:14px;background:var(--card);margin:8px 20px;border-radius:12px}
+.country-list{max-height:300px;overflow-y:auto}
+.country-item{padding:12px;display:flex;justify-content:space-between;cursor:pointer;border-bottom:1px solid #222}
 </style>
 </head>
 <body>
 
 <div id="authPage" class="auth page active">
-  <div class="logo">MCE BANK</div>
-  <p style="text-align:center;color:#666;margin-bottom:25px">Create Account like Opay</p>
-  <input type="text" id="regName" placeholder="Full Name">
-  <input type="email" id="regEmail" placeholder="Email Address">
-  <input type="tel" id="regPhone" placeholder="Phone Number">
-  <input type="text" id="regBVN" placeholder="BVN / ID Number">
-  <select id="regCountry" onchange="updateCurrency()">
-    <option value="NG,₦,NGN">🇳🇬 Nigeria - Naira</option>
-    <option value="US,$,USD">🇺🇸 USA - Dollar</option>
-    <option value="EU,€,EUR">🇪🇺 Europe - Euro</option>
-    <option value="UK,£,GBP">🇬🇧 UK - Pound</option>
-    <option value="KE,KES,KES">🇰🇪 Kenya - Shilling</option>
-    <option value="GH,₵,GHS">🇬🇭 Ghana - Cedi</option>
-  </select>
-  <input type="password" id="regPin" placeholder="Set 4-Digit Transaction PIN" maxlength="4">
-  <button class="btn-primary" onclick="register()">Create Account</button>
-</div>
+  <div class="header"><div class="back">←</div><div class="help">Help</div></div>
+  <div class="logo">M<span>CE</span>Pay</div>
+  <div class="title" id="t1">Get an MCE Account</div>
 
-<div id="dashboardPage" class="page">
-  <div class="orange">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
-      <div>
-        <div style="font-size:14px;opacity:0.9">Welcome back,</div>
-        <div style="font-size:18px;font-weight:700" id="dashName">User</div>
-      </div>
-      <div style="font-size:24px;cursor:pointer" onclick="showPage('settingsPage')">⚙️</div>
-    </div>
-    <div class="balance-card">
-      <div class="balance-label">Available Balance</div>
-      <div class="balance" id="balance">₦0.00</div>
-      <div style="font-size:13px;opacity:0.9">Account: <span id="dashAcc">0000</span></div>
-    </div>
+  <div class="phone-box" onclick="openCountryPicker()">
+    <div class="country-select"><div class="flag" id="flag">🇳🇬</div><div class="country-code" id="countryCode">+234</div></div>
+    <div class="divider"></div>
+    <input type="tel" id="phone" placeholder="Enter your Mobile No." maxlength="10" oninput="checkBtn()">
   </div>
 
-  <div class="quick-grid">
-    <div class="quick-btn" onclick="openTransfer()"><div class="quick-icon">📤</div><div class="quick-label">Transfer</div></div>
-    <div class="quick-btn" onclick="openToBank()"><div class="quick-icon">🏦</div><div class="quick-label">To Bank</div></div>
-    <div class="quick-btn" onclick="openAirtime()"><div class="quick-icon">📱</div><div class="quick-label">Airtime</div></div>
-    <div class="quick-btn" onclick="openData()"><div class="quick-icon">🌐</div><div class="quick-label">Data</div></div>
-    <div class="quick-btn" onclick="openBills()"><div class="quick-icon">💡</div><div class="quick-label">Bills</div></div>
-    <div class="quick-btn" onclick="openDeposit()"><div class="quick-icon">⬇️</div><div class="quick-label">Deposit</div></div>
-    <div class="quick-btn" onclick="openBetting()"><div class="quick-icon">🎯</div><div class="quick-label">Betting</div></div>
-    <div class="quick-btn" onclick="openMore()"><div class="quick-icon">⋯</div><div class="quick-label">More</div></div>
+  <div class="invite-box">
+    <div class="invite-head" onclick="toggleInvite()"><div>🎁 Have an Invitation Code? (Optional)</div><div id="arrow">^</div></div>
+    <input type="text" id="inviteCode" class="invite-input" placeholder="Invitation Code">
   </div>
 
-  <div class="section">
-    <h3>Recent Transactions</h3>
-    <div id="txList"></div>
+  <div class="bonus">💰 Get ₦300 airtime for free</div>
+  <button class="btn-next" id="nextBtn" onclick="auth()">NEXT</button>
+
+  <div class="terms"><input type="checkbox" id="termsCheck" checked onchange="checkBtn()">
+    <div>I have read, understood and agreed to the <span>Terms & Conditions</span> and <span>Privacy Policy</span>.</div>
   </div>
+  <div class="login-text" id="t2">Already have an MCE Account? <span onclick="goLogin()">Log in</span></div>
+  <div style="color:var(--gray);font-size:12px;text-align:center;margin-top:15px">Admin: admin@mce.com | PIN: 0000</div>
 </div>
 
-<div id="settingsPage" class="page">
-  <div class="orange"><h2>Settings</h2></div>
-  <div class="section">
-    <div style="background:white;border-radius:15px;padding:10px;margin-top:20px">
-      <div class="tx-item" onclick="alert('Edit Profile')"><div>👤 Profile</div><div>›</div></div>
-      <div class="tx-item" onclick="changeCurrency()"><div>💱 Currency: <span id="setCurrency">₦ NGN</span></div><div>›</div></div>
-      <div class="tx-item" onclick="alert('Change PIN')"><div>🔒 Security PIN</div><div>›</div></div>
-      <div class="tx-item" onclick="alert('Referral')"><div>🎁 Refer & Earn</div><div>›</div></div>
-      <div class="tx-item" onclick="logout()"><div style="color:red">🚪 Logout</div><div>›</div></div>
-    </div>
-  </div>
+<div id="pinPage" class="page auth"><div class="title">Create 4-Digit PIN</div>
+  <input type="password" id="pin" maxlength="4" placeholder="****" style="background:var(--input);border-radius:12px;padding:16px;font-size:20px;text-align:center;letter-spacing:8px;width:100%;margin:20px 0">
+  <button class="btn-next active" onclick="finishSignup()">CREATE ACCOUNT</button>
 </div>
 
-<div class="bottom-nav">
-  <div class="nav-item active" onclick="showPage('dashboardPage')"><div style="font-size:22px">🏠</div>Home</div>
-  <div class="nav-item"><div style="font-size:22px">🎁</div>Rewards</div>
-  <div class="nav-item"><div style="font-size:22px">💳</div>Cards</div>
-  <div class="nav-item" onclick="showPage('settingsPage')"><div style="font-size:22px">👤</div>Me</div>
+<div id="homePage" class="page">
+  <div class="header"><div><div class="name" id="userName">Hi, USER</div><div class="tier">Tier 1 <span id="adminTag"></span></div></div><div class="top-icons"><span>🎧</span><span>📱</span><span>🔔<div class="bell-dot"></div></span></div></div>
+  <div class="balance-card"><div style="display:flex;justify-content:space-between"><span id="t3">Available Balance</span> <span onclick="toggleBalance()">👁️</span></div><div class="balance" id="balance">₦0.00</div><button class="add-btn" id="addMoneyBtn" onclick="openDeposit()" style="display:none">+ Add Money</button><div style="clear:both;padding-top:18px;cursor:pointer" onclick="openHistory()">Transaction History ›</div></div>
+  <div class="business">🏪 Business Service - Today's Sales: <span style="color:var(--green)">₦0.00</span></div>
+  <div class="grid3"><div class="btn" onclick="openTransfer()"><div class="btn-icon">👤</div><div id="t4">To MCE</div></div><div class="btn" onclick="alert('Withdraw Request')"><div class="btn-icon">↗️</div><div>Withdraw</div></div><div class="btn" onclick="openAdminPanel()" id="adminPanelBtn" style="display:none"><div class="btn-icon">👑</div><div>Admin</div></div></div>
+  <div class="grid4"><div class="btn" onclick="openAirtime()"><div class="btn-icon">📶</div><div id="t5">Airtime</div></div><div class="btn" onclick="openData()"><div class="btn-icon">📱</div><div id="t6">Data</div></div><div class="btn" onclick="alert('Betting')"><div class="btn-icon">⚙️</div><div>Betting</div></div><div class="btn" onclick="alert('TV')"><div class="btn-icon">📺</div><div>TV</div></div><div class="btn" onclick="alert('SafeBox')"><div class="btn-icon">#️⃣</div><div>SafeBox</div></div><div class="btn" onclick="alert('Loan')"><div class="btn-icon">💰</div><div>Loan</div><div class="badge">Hot</div></div><div class="btn" onclick="alert('Game')"><div class="btn-icon">🎮</div><div>Game</div><div class="badge">New</div></div><div class="btn" onclick="alert('More')"><div class="btn-icon">🎓</div><div>More</div></div></div>
+  <div class="refer"><div style="flex:1"><b>Share MCE with Others</b><div style="color:var(--gray);font-size:12px">Get ₦500 Bonus</div></div><button class="refer-btn" onclick="alert('Link Copied')">Go</button></div>
 </div>
+
+<div id="rewardsPage" class="page"><div class="title">Rewards</div><div style="display:flex;justify-content:space-around;margin:0 20px"><div><div style="color:var(--gray)">Cashback</div><div style="font-size:22px;font-weight:900">₦72.00</div></div><div><div style="color:var(--gray)">Voucher</div><div style="font-size:22px;font-weight:900">4</div></div></div></div>
+
+<div id="financePage" class="page"><div class="title">Finance</div><div class="card-gradient"><div>Total Balance</div><div style="font-size:26px;font-weight:900;margin:8px 0" id="fBalance">₦0.00</div></div></div>
+
+<div id="cardsPage" class="page"><div class="title">Cards</div><div style="background:linear-gradient(135deg,#1a237e,#3949ab);margin:20px;border-radius:16px;padding:22px;height:190px"><div>MCE BANK</div><div style="margin-top:70px;font-size:18px" id="cardNo">5078 **** 0070</div></div></div>
+
+<div id="mePage" class="page"><div class="header"><div class="name" id="t8">Me</div></div>
+  <div class="setting" onclick="openCurrency()"><div id="t9">💱 Currency</div><div id="currentCurr">₦ ›</div></div>
+  <div class="setting" onclick="openLanguage()"><div id="t10">🌍 Language</div><div id="currentLang">English ›</div></div>
+  <div class="setting"><div>👤 My Profile</div><div>›</div></div>
+  <button class="btn-primary" style="margin:20px;width:calc(100% - 40px);background:var(--red);color:#fff" onclick="logout()" id="t11">Sign Out</button>
+</div>
+
+<div class="bottom-nav"><div class="nav-item active" onclick="showPage('homePage')"><div class="nav-icon">🏠</div><div id="t12">Home</div></div><div class="nav-item" onclick="showPage('rewardsPage')"><div class="nav-icon">💎</div>Rewards</div><div class="nav-item" onclick="showPage('financePage')"><div class="nav-icon">📈</div>Finance</div><div class="nav-item" onclick="showPage('cardsPage')"><div class="nav-icon">💳</div>Cards</div><div class="nav-item" onclick="showPage('mePage')"><div class="nav-icon">👤</div><div id="t13">Me</div></div></div>
 
 <div class="modal" id="modal"><div class="modal-content"><span style="float:right;font-size:26px;cursor:pointer" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
 
 <script>
-let allUsers = JSON.parse(localStorage.getItem('mceUsers') || '[]');
+let users = JSON.parse(localStorage.getItem('mceUsers') || '[]');
 let currentUser = null;
-let foundUser = null;
+let showBal = true;
+let tempPhone = '';
 
-function genAccNo(){
-  let newAcc;
-  do{ newAcc = '' + Math.floor(1000000 + Math.random()*9000000000); } 
-  while(allUsers.find(u=>u.accNo===newAcc));
-  return newAcc;
-}
-function saveUsers(){localStorage.setItem('mceUsers', JSON.stringify(allUsers))}
+const countries = [
+  {code:'+234', flag:'🇳🇬', name:'Nigeria', currency:'₦'},
+  {code:'+1', flag:'🇺🇸', name:'USA', currency:'$'},
+  {code:'+44', flag:'🇬🇧', name:'UK', currency:'£'},
+  {code:'+33', flag:'🇫🇷', name:'France', currency:'€'},
+  {code:'+233', flag:'🇬🇭', name:'Ghana', currency:'₵'},
+  {code:'+254', flag:'🇰🇪', name:'Kenya', currency:'KSh'}
+];
 
-function register(){
-  const [country, symbol, code] = regCountry.value.split(',');
-  let user = {
-    name:regName.value, email:regEmail.value, phone:regPhone.value, bvn:regBVN.value, pin:regPin.value,
-    accNo: genAccNo(), balance:0, country:country, currency:symbol, currencyCode:code, transactions:[]
-  };
-  allUsers.push(user); saveUsers(); currentUser = user;
-  updateDashboard();
-  authPage.classList.remove('active'); dashboardPage.classList.add('active');
-}
+const languages = {
+  en: {t1:'Get an MCE Account', t2:'Already have an MCE Account? Log in', t3:'Available Balance', t4:'To MCE', t5:'Airtime', t6:'Data', t8:'Me', t9:'Currency', t10:'Language', t11:'Sign Out', t12:'Home', t13:'Me'},
+  fr: {t1:'Créer un compte MCE', t2:'Vous avez déjà un compte? Se connecter', t3:'Solde Disponible', t4:'Vers MCE', t5:'Crédit', t6:'Data', t8:'Moi', t9:'Devise', t10:'Langue', t11:'Déconnexion', t12:'Accueil', t13:'Moi'},
+  ha: {t1:'Bude Asusun MCE', t2:'Kana da asusu? Shiga', t3:'Ma\'adanar Kuɗi', t4:'Zuwa MCE', t5:'Katin Sadarwa', t6:'Data', t8:'Ni', t9:'Kuɗi', t10:'Harshe', t11:'Fita', t12:'Gida', t13:'Ni'}
+};
 
-function updateDashboard(){
-  dashName.innerText = currentUser.name;
-  dashAcc.innerText = currentUser.accNo;
-  balance.innerText = `${currentUser.currency}${currentUser.balance.toLocaleString()}.00`;
-  setCurrency.innerText = `${currentUser.currency} ${currentUser.currencyCode}`;
-  loadTx();
+let selectedCountry = countries[0];
+let selectedLang = 'en';
+
+// CREATE ADMIN
+if(!users.find(u=>u.email==='admin@mce.com')){
+  users.push({name:'ADMIN',email:'admin@mce.com',phone:'+234000',pin:'0000',accNo:'5000000',balance:999999,currency:'₦',lang:'en',isAdmin:true,transactions:[]});
+  saveUsers();
 }
 
+function genAccNo(){let newAcc;do{newAcc=''+Math.floor(1000000+Math.random()*9000000);}while(users.find(u=>u.accNo===newAcc));return newAcc}
+function saveUsers(){localStorage.setItem('mceUsers',JSON.stringify(users))}
 function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active')}
 function closeModal(){modal.style.display='none'}
 
-function openTransfer(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`
-    <h2>Transfer to MCE User</h2>
-    <input id="tAcc" placeholder="Account Number" onkeyup="checkAccount()">
-    <div id="receiverInfo"></div>
-    <input id="tAmt" type="number" placeholder="Amount">
-    <input id="tPin" type="password" placeholder="Transaction PIN" maxlength="4">
-    <button class="btn-primary" onclick="sendTransfer()">Send Now</button>
-  `;
+function openCountryPicker(){modal.style.display='flex';modalBody.innerHTML=`<h2>Select Country</h2><div class="country-list">`+countries.map(c=>`<div class="country-item" onclick="selectCountry('${c.code}')"><div>${c.flag} ${c.name}</div><div>${c.code}</div></div>`).join('')+`</div>`}
+function selectCountry(code){selectedCountry=countries.find(c=>c.code===code);flag.innerText=selectedCountry.flag;countryCode.innerText=selectedCountry.code;closeModal()}
+
+function checkBtn(){nextBtn.classList.toggle('active', phone.value.length>=10 && termsCheck.checked)}
+function toggleInvite(){const inv=document.getElementById('inviteCode');inv.style.display=inv.style.display==='none'?'block':'none';arrow.innerText=inv.style.display==='none'?'v':'^'}
+
+function auth(){
+  if(!nextBtn.classList.contains('active')) return;
+  tempPhone = selectedCountry.code + phone.value;
+  const exists = users.find(u=>u.phone===tempPhone);
+  if(exists){alert('Account exists. Enter PIN');showPage('pinPage');currentUser=exists;return}
+  showPage('pinPage');
 }
 
-function checkAccount(){
-  const acc = tAcc.value.trim();
-  if(acc.length < 10){receiverInfo.innerHTML='';return}
-  foundUser = allUsers.find(u=>u.accNo===acc);
-  if(foundUser){
-    receiverInfo.innerHTML = `<div class="receiver-box"><b>✓ ${foundUser.name}</b><br>${foundUser.accNo}</div>`;
-  } else {
-    receiverInfo.innerHTML = `<div class="receiver-box" style="background:#fef2f2;border-color:#ef4444"><b>Account Not Found</b></div>`;
+function finishSignup(){
+  if(currentUser){ // LOGIN
+    if(pin.value!==currentUser.pin){alert('Wrong PIN');return}
+  } else { // SIGNUP
+    currentUser = {name:'USER',email:tempPhone+'@mce.com',phone:tempPhone,pin:pin.value,accNo:genAccNo(),balance:300,currency:selectedCountry.currency,lang:'en',isAdmin:false,transactions:[{type:'Welcome Bonus',amt:300}]};
+    users.push(currentUser); saveUsers();
   }
+  userName.innerText='Hi, '+currentUser.name; cardNo.innerText=currentUser.accNo;
+  if(currentUser.isAdmin){adminTag.innerHTML='<span class="admin-badge">ADMIN</span>';addMoneyBtn.style.display='block';adminPanelBtn.style.display='block'}
+  updateUI(); showPage('homePage');
 }
 
-function sendTransfer(){
-  if(tPin.value !== currentUser.pin){alert('Wrong Transaction PIN');return}
-  const amt = parseFloat(tAmt.value);
-  currentUser.balance -= amt; foundUser.balance += amt;
-  currentUser.transactions.unshift({type:'Transfer',amt,desc:`To: ${foundUser.name}`,date:new Date().toLocaleString()});
-  saveUsers(); updateDashboard(); closeModal(); alert('Transfer Successful');
-}
+function updateBalance(){balance.innerText=`${currentUser.currency}${currentUser.balance.toLocaleString()}.00`;fBalance.innerText=`${currentUser.currency}${currentUser.balance.toLocaleString()}.00`}
+function toggleBalance(){showBal=!showBal;balance.innerText=showBal?`${currentUser.currency}${currentUser.balance.toLocaleString()}.00`:'••••'}
+function logout(){currentUser=null;phone.value='';pin.value='';showPage('authPage')}
+function goLogin(){alert('Enter your number above to login')}
+function openHistory(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transaction History</h2>`+(currentUser.transactions.length?currentUser.transactions.map(t=>`<div class="tx"><div>${t.type}</div><div style="color:var(--green)">+${currentUser.currency}${t.amt}</div></div>`).join(''):'<p>No transactions</p>')+`<button class="btn-primary" onclick="closeModal()">Close</button>`}
 
-function openToBank(){alert('To Bank feature - coming in v=36')}
-function openAirtime(){alert('Buy Airtime - coming in v=36')}
-function openData(){alert('Buy Data - coming in v=36')}
-function openBills(){alert('Pay Bills - coming in v=36')}
-function openDeposit(){alert('Deposit - coming in v=36')}
-function openBetting(){alert('Betting - coming in v=36')}
-function openMore(){alert('More services')}
-function changeCurrency(){alert('Currency switch in settings')}
-function logout(){showPage('authPage')}
-function loadTx(){
-  if(currentUser.transactions.length===0){txList.innerHTML='<div style="text-align:center;color:#999;padding:30px">No transactions yet</div>';return}
-  txList.innerHTML=currentUser.transactions.map(t=>`
-    <div class="tx-item">
-      <div class="tx-left"><div class="tx-icon">📤</div><div><b>${t.type}</b><div style="font-size:12px;color:#666">${t.desc}</div></div></div>
-      <div style="color:red;font-weight:700">-${currentUser.currency}${t.amt}</div>
-    </div>
-  `).join('');
-}
+// CURRENCY + LANGUAGE
+function openCurrency(){modal.style.display='flex';modalBody.innerHTML=`<h2>Select Currency</h2><select id="curr"><option value="₦">₦ NGN</option><option value="$">$ USD</option><option value="€">€ EUR</option><option value="£">£ GBP</option><option value="₵">₵ GHS</option><option value="KSh">KSh KES</option></select><button class="btn-primary" onclick="saveCurrency()">Save</button>`}
+function saveCurrency(){currentUser.currency=curr.value;saveUsers();currentCurr.innerText=`${currentUser.currency}`;updateBalance();closeModal()}
+function openLanguage(){modal.style.display='flex';modalBody.innerHTML=`<h2>Select Language</h2><select id="lang"><option value="en">English</option><option value="fr">Français</option><option value="ha">Hausa</option></select><button class="btn-primary" onclick="saveLanguage()">Save</button>`}
+function saveLanguage(){selectedLang=lang.value;currentUser.lang=selectedLang;saveUsers();updateUI();closeModal()}
+function updateUI(){const t=languages[selectedLang];for(let i=1;i<=13;i++){const el=document.getElementById('t'+i); if(el) el.innerText=t['t'+i]}currentCurr.innerText=currentUser.currency;currentLang.innerText=selectedLang==='en'?'English':selectedLang==='fr'?'Français':'Hausa';updateBalance()}
+
+// TRANSFER ONLY MCE + ADMIN
+function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer to MCE User</h2><input id="tAcc" placeholder="Account Number" onkeyup="checkMCE()"><div id="recInfo"></div><input id="tAmt" type="number" placeholder="Amount"><input id="tPin" type="password" placeholder="PIN"><button class="btn-primary" onclick="doTransfer()">Send Now</button>`}
+let foundUser=null;
+function checkMCE(){const acc=tAcc.value;foundUser=users.find(u=>u.accNo===acc);recInfo.innerHTML=foundUser?`<div class="receiver">✓ ${foundUser.name}<br>${foundUser.accNo}</div>`:'<div style="color:red">Account not found</div>'}
+function doTransfer(){if(tPin.value!==currentUser.pin){alert('Wrong PIN');return}const amt=parseFloat(tAmt.value);if(amt>currentUser.balance){alert('Insufficient Balance');return}currentUser.balance-=amt;foundUser.balance+=amt;currentUser.transactions.unshift({type:'Transfer Out',amt});foundUser.transactions.unshift({type:'Transfer In',amt});saveUsers();updateBalance();closeModal();alert('Transfer Successful')}
+function openDeposit(){if(!currentUser.isAdmin){alert('Only Admin can add money');return}modal.style.display='flex';modalBody.innerHTML=`<h2>Admin: Credit User</h2><input id="creditAcc" placeholder="User Account Number"><input id="creditAmt" type="number" placeholder="Amount"><button class="btn-primary" onclick="creditUser()">Credit Account</button>`}
+function creditUser(){const user=users.find(u=>u.accNo===creditAcc.value);if(!user){alert('User not found');return}const amt=parseFloat(creditAmt.value);user.balance+=amt;user.transactions.unshift({type:'Admin Credit',amt});saveUsers();closeModal();alert(`${user.name} credited`)}
+function openAdminPanel(){modal.style.display='flex';modalBody.innerHTML=`<h2>Admin Panel</h2><p>Total Users: ${users.length}</p><button class="btn-primary" onclick="closeModal()">Close</button>`}
+function openAirtime(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Airtime</h2><input placeholder="Phone"><input type="number" placeholder="Amount"><button class="btn-primary" onclick="alert('Airtime Sent');closeModal()">Buy</button>`}
+function openData(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Data</h2><select><option>1GB - ${currentUser.currency}2</option><option>2GB - ${currentUser.currency}4</option></select><button class="btn-primary" onclick="alert('Data Purchased');closeModal()">Buy</button>`}
 </script>
 </body>
-  </html>
+</html>
