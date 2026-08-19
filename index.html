@@ -6,221 +6,195 @@
 <title>MCE BANK</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#f5f7fa;color:#1a237e}
+body{background:#f0f4ff;color:#1a237e}
 .page{display:none}.page.active{display:block}
-
-/* HEADER */
-.header{display:flex;justify-content:space-between;align-items:center;padding:20px}
-.profile{display:flex;align-items:center;gap:12px}
-.pfp{width:45px;height:45px;border-radius:50%;object-fit:cover}
-.welcome-title{font-size:18px;font-weight:700;color:#000}
-.welcome-sub{font-size:14px;color:#6b7280}
-.header-icons{display:flex;gap:10px}
-.icon-circle{width:42px;height:42px;border-radius:12px;background:white;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);cursor:pointer;font-size:20px}
-
-/* BALANCE CARD */
-.card{background:white;margin:0 20px 20px;padding:20px;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-.card-label{color:#6b7280;font-size:13px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.eye{cursor:pointer}
-.balance{font-size:28px;font-weight:800;margin-bottom:15px;color:#1a237e}
-.acc-row{display:flex;justify-content:space-between}
-.acc-group{display:flex;flex-direction:column}
-.acc-label{color:#6b7280;font-size:12px;margin-bottom:3px}
-.acc-value{font-weight:700;font-size:15px;color:#1a237e}
-.pending{color:#6b7280;font-size:12px;text-align:right;margin-bottom:3px}
-.pending-value{color:#1a237e;font-weight:700;font-size:15px;text-align:right}
-
-/* 4 BUTTONS */
-.btn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 20px 25px}
-.btn-card{background:white;padding:18px 8px;border-radius:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;transition:0.2s}
-.btn-card:active{transform:scale(0.96)}
-.btn-icon{width:32px;height:32px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
-.btn-icon svg{width:24px;height:24px;stroke:#1a237e}
-.btn-label{font-size:13px;font-weight:500;color:#1a237e}
-
-/* TRANSACTIONS */
-.section{padding:0 20px 90px}
-.section h3{margin-bottom:12px;font-size:16px;font-weight:700}
-.tx-empty{color:#999;text-align:center;padding:30px;background:white;border-radius:16px}
-
-/* MODAL */
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);justify-content:center;align-items:center;z-index:99}
-.modal-content{background:white;padding:24px;border-radius:20px;width:90%;max-width:420px}
-.close{float:right;font-size:26px;cursor:pointer;color:#999}
+.orange{background:linear-gradient(135deg, #1a237e 0%, #3949ab 100%);color:white;padding:25px 20px;border-radius:0 0 30px 30px}
+.balance-card{background:rgba(255,255,255,0.15);padding:20px;border-radius:20px;backdrop-filter:blur(10px)}
+.balance-label{font-size:13px;opacity:0.9}
+.balance{font-size:32px;font-weight:800;margin:8px 0}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px}
+.quick-btn{background:white;padding:18px 10px;border-radius:16px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,0.08);cursor:pointer}
+.quick-btn:active{transform:scale(0.95)}
+.quick-icon{font-size:26px;margin-bottom:6px}
+.quick-label{font-size:12px;font-weight:600;color:#1a237e}
+.section{padding:0 20px 100px}
+.section h3{margin:20px 0 12px;font-size:16px;font-weight:700}
+.tx-item{display:flex;justify-content:space-between;align-items:center;background:white;padding:14px;border-radius:14px;margin:8px 0}
+.tx-left{display:flex;gap:12px;align-items:center}
+.tx-icon{width:40px;height:40px;border-radius:12px;background:#e8eaf6;display:flex;align-items:center;justify-content:center}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:99}
+.modal-content{background:white;padding:24px;border-radius:20px;width:90%;max-width:420px;max-height:90vh;overflow-y:auto}
 input,select{width:100%;padding:14px;margin:10px 0;border:1.5px solid #e5e7eb;border-radius:12px;font-size:15px}
-.btn-primary{width:100%;padding:15px;background:#1a237e;color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
+.btn-primary{width:100%;padding:16px;background:#1a237e;color:white;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer}
 .receiver-box{background:#e8f5e9;padding:14px;border-radius:12px;margin:10px 0;border-left:4px solid #10b981}
-
-/* AUTH */
-.auth{padding:50px 20px;text-align:center}
-.auth h1{color:#1a237e;margin-bottom:30px;font-size:28px}
-.bottom-nav{position:fixed;bottom:0;width:100%;background:white;border-top:1px solid #e5e7eb;display:flex;justify-content:space-around;padding:10px 0}
+.auth{padding:30px 20px}
+.logo{font-size:28px;font-weight:800;color:#1a237e;text-align:center;margin-bottom:10px}
+.bottom-nav{position:fixed;bottom:0;width:100%;background:white;border-top:1px solid #e5e7eb;display:flex;justify-content:space-around;padding:12px 0}
 .nav-item{text-align:center;color:#9ca3af;cursor:pointer;font-size:11px}
 .nav-item.active{color:#1a237e}
+.country-flag{font-size:20px;margin-right:8px}
 </style>
 </head>
 <body>
 
 <div id="authPage" class="auth page active">
-  <h1>MCE BANK</h1>
-  <input type="text" id="loginName" placeholder="Full Name">
-  <input type="email" id="loginEmail" placeholder="Email">
-  <button class="btn-primary" onclick="login()">Enter Dashboard</button>
+  <div class="logo">MCE BANK</div>
+  <p style="text-align:center;color:#666;margin-bottom:25px">Create Account like Opay</p>
+  <input type="text" id="regName" placeholder="Full Name">
+  <input type="email" id="regEmail" placeholder="Email Address">
+  <input type="tel" id="regPhone" placeholder="Phone Number">
+  <input type="text" id="regBVN" placeholder="BVN / ID Number">
+  <select id="regCountry" onchange="updateCurrency()">
+    <option value="NG,₦,NGN">🇳🇬 Nigeria - Naira</option>
+    <option value="US,$,USD">🇺🇸 USA - Dollar</option>
+    <option value="EU,€,EUR">🇪🇺 Europe - Euro</option>
+    <option value="UK,£,GBP">🇬🇧 UK - Pound</option>
+    <option value="KE,KES,KES">🇰🇪 Kenya - Shilling</option>
+    <option value="GH,₵,GHS">🇬🇭 Ghana - Cedi</option>
+  </select>
+  <input type="password" id="regPin" placeholder="Set 4-Digit Transaction PIN" maxlength="4">
+  <button class="btn-primary" onclick="register()">Create Account</button>
 </div>
 
 <div id="dashboardPage" class="page">
-  <div class="header">
-    <div class="profile">
-      <img src="https://i.pravatar.cc/100" class="pfp">
+  <div class="orange">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
       <div>
-        <div class="welcome-title">Welcome back</div>
-        <div class="welcome-sub" id="userName">Jennifer</div>
+        <div style="font-size:14px;opacity:0.9">Welcome back,</div>
+        <div style="font-size:18px;font-weight:700" id="dashName">User</div>
       </div>
+      <div style="font-size:24px;cursor:pointer" onclick="showPage('settingsPage')">⚙️</div>
     </div>
-    <div class="header-icons">
-      <div class="icon-circle">🔍</div>
-      <div class="icon-circle">🔔</div>
+    <div class="balance-card">
+      <div class="balance-label">Available Balance</div>
+      <div class="balance" id="balance">₦0.00</div>
+      <div style="font-size:13px;opacity:0.9">Account: <span id="dashAcc">0000</span></div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-label">AVAILABLE BALANCE <span class="eye" onclick="toggleBalance()">👁️</span></div>
-    <div class="balance" id="balance">$0.00</div>
-    <div class="acc-row">
-      <div class="acc-group">
-        <div class="acc-label">ACCOUNT NUMBER</div>
-        <div class="acc-value" id="accNo">0633144341</div>
-      </div>
-      <div class="acc-group">
-        <div class="pending">PENDING</div>
-        <div class="pending-value">$0.00</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-grid">
-    <div class="btn-card" onclick="openTransfer()">
-      <div class="btn-icon"><svg fill="none" viewBox="0 0 24 24"><path stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg></div>
-      <div class="btn-label">Transfer</div>
-    </div>
-    <div class="btn-card" onclick="openDeposit()">
-      <div class="btn-icon"><svg fill="none" viewBox="0 0 24 24"><path stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></div>
-      <div class="btn-label">Deposit</div>
-    </div>
-    <div class="btn-card" onclick="openPay()">
-      <div class="btn-icon"><svg fill="none" viewBox="0 0 24 24"><path stroke-width="2" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
-      <div class="btn-label">Pay</div>
-    </div>
-    <div class="btn-card" onclick="openMessage()">
-      <div class="btn-icon"><svg fill="none" viewBox="0 0 24 24"><path stroke-width="2" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-      <div class="btn-label">Message</div>
-    </div>
+  <div class="quick-grid">
+    <div class="quick-btn" onclick="openTransfer()"><div class="quick-icon">📤</div><div class="quick-label">Transfer</div></div>
+    <div class="quick-btn" onclick="openToBank()"><div class="quick-icon">🏦</div><div class="quick-label">To Bank</div></div>
+    <div class="quick-btn" onclick="openAirtime()"><div class="quick-icon">📱</div><div class="quick-label">Airtime</div></div>
+    <div class="quick-btn" onclick="openData()"><div class="quick-icon">🌐</div><div class="quick-label">Data</div></div>
+    <div class="quick-btn" onclick="openBills()"><div class="quick-icon">💡</div><div class="quick-label">Bills</div></div>
+    <div class="quick-btn" onclick="openDeposit()"><div class="quick-icon">⬇️</div><div class="quick-label">Deposit</div></div>
+    <div class="quick-btn" onclick="openBetting()"><div class="quick-icon">🎯</div><div class="quick-label">Betting</div></div>
+    <div class="quick-btn" onclick="openMore()"><div class="quick-icon">⋯</div><div class="quick-label">More</div></div>
   </div>
 
   <div class="section">
     <h3>Recent Transactions</h3>
-    <div id="txList"><div class="tx-empty">No transactions yet</div></div>
+    <div id="txList"></div>
+  </div>
+</div>
+
+<div id="settingsPage" class="page">
+  <div class="orange"><h2>Settings</h2></div>
+  <div class="section">
+    <div style="background:white;border-radius:15px;padding:10px;margin-top:20px">
+      <div class="tx-item" onclick="alert('Edit Profile')"><div>👤 Profile</div><div>›</div></div>
+      <div class="tx-item" onclick="changeCurrency()"><div>💱 Currency: <span id="setCurrency">₦ NGN</span></div><div>›</div></div>
+      <div class="tx-item" onclick="alert('Change PIN')"><div>🔒 Security PIN</div><div>›</div></div>
+      <div class="tx-item" onclick="alert('Referral')"><div>🎁 Refer & Earn</div><div>›</div></div>
+      <div class="tx-item" onclick="logout()"><div style="color:red">🚪 Logout</div><div>›</div></div>
+    </div>
   </div>
 </div>
 
 <div class="bottom-nav">
-  <div class="nav-item active"><div style="font-size:22px">🏠</div>Home</div>
+  <div class="nav-item active" onclick="showPage('dashboardPage')"><div style="font-size:22px">🏠</div>Home</div>
+  <div class="nav-item"><div style="font-size:22px">🎁</div>Rewards</div>
   <div class="nav-item"><div style="font-size:22px">💳</div>Cards</div>
-  <div class="nav-item"><div style="font-size:22px">📊</div>Analytics</div>
-  <div class="nav-item"><div style="font-size:22px">⚙️</div>Settings</div>
+  <div class="nav-item" onclick="showPage('settingsPage')"><div style="font-size:22px">👤</div>Me</div>
 </div>
 
-<div class="modal" id="modal"><div class="modal-content"><span class="close" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
+<div class="modal" id="modal"><div class="modal-content"><span style="float:right;font-size:26px;cursor:pointer" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
 
 <script>
-let currentUser = {name:'Jennifer',accNo:'0633144341',balance:0,phone:'0800000',transactions:[]};
-let mockDB = [
-  {name:'Olivia Smith',accNo:'1234567890',phone:'08012345678',balance:50000},
-  {name:'John Doe',accNo:'0987654321',phone:'08098765432',balance:30000}
-];
-let showBal = true;
+let allUsers = JSON.parse(localStorage.getItem('mceUsers') || '[]');
+let currentUser = null;
 let foundUser = null;
 
-function login(){
-  currentUser.name = loginName.value || 'Jennifer';
-  userName.innerText = currentUser.name;
-  authPage.classList.remove('active');
-  dashboardPage.classList.add('active');
-  updateUI();
+function genAccNo(){
+  let newAcc;
+  do{ newAcc = '' + Math.floor(1000000 + Math.random()*9000000000); } 
+  while(allUsers.find(u=>u.accNo===newAcc));
+  return newAcc;
+}
+function saveUsers(){localStorage.setItem('mceUsers', JSON.stringify(allUsers))}
+
+function register(){
+  const [country, symbol, code] = regCountry.value.split(',');
+  let user = {
+    name:regName.value, email:regEmail.value, phone:regPhone.value, bvn:regBVN.value, pin:regPin.value,
+    accNo: genAccNo(), balance:0, country:country, currency:symbol, currencyCode:code, transactions:[]
+  };
+  allUsers.push(user); saveUsers(); currentUser = user;
+  updateDashboard();
+  authPage.classList.remove('active'); dashboardPage.classList.add('active');
 }
 
-function updateUI(){
-  balance.innerText = showBal? `$${currentUser.balance.toLocaleString()}.00` : '••••';
+function updateDashboard(){
+  dashName.innerText = currentUser.name;
+  dashAcc.innerText = currentUser.accNo;
+  balance.innerText = `${currentUser.currency}${currentUser.balance.toLocaleString()}.00`;
+  setCurrency.innerText = `${currentUser.currency} ${currentUser.currencyCode}`;
+  loadTx();
 }
 
-function toggleBalance(){showBal=!showBal;updateUI()}
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active')}
+function closeModal(){modal.style.display='none'}
 
 function openTransfer(){
   modal.style.display='flex';
   modalBody.innerHTML=`
-    <h2>Transfer Money</h2>
-    <input id="tAcc" placeholder="Recipient Account Number" onkeyup="checkAccount()">
+    <h2>Transfer to MCE User</h2>
+    <input id="tAcc" placeholder="Account Number" onkeyup="checkAccount()">
     <div id="receiverInfo"></div>
     <input id="tAmt" type="number" placeholder="Amount">
-    <input id="tDesc" placeholder="Description">
+    <input id="tPin" type="password" placeholder="Transaction PIN" maxlength="4">
     <button class="btn-primary" onclick="sendTransfer()">Send Now</button>
   `;
 }
 
 function checkAccount(){
   const acc = tAcc.value.trim();
-  foundUser = mockDB.find(u=>u.accNo===acc);
+  if(acc.length < 10){receiverInfo.innerHTML='';return}
+  foundUser = allUsers.find(u=>u.accNo===acc);
   if(foundUser){
-    receiverInfo.innerHTML = `<div class="receiver-box"><b>Recipient Found</b><br>Name: ${foundUser.name}<br>Account: ${foundUser.accNo}<br>Phone: ${foundUser.phone}</div>`;
-  } else {receiverInfo.innerHTML=''}
+    receiverInfo.innerHTML = `<div class="receiver-box"><b>✓ ${foundUser.name}</b><br>${foundUser.accNo}</div>`;
+  } else {
+    receiverInfo.innerHTML = `<div class="receiver-box" style="background:#fef2f2;border-color:#ef4444"><b>Account Not Found</b></div>`;
+  }
 }
 
 function sendTransfer(){
+  if(tPin.value !== currentUser.pin){alert('Wrong Transaction PIN');return}
   const amt = parseFloat(tAmt.value);
-  if(!foundUser){alert('Account not found');return}
-  currentUser.balance -= amt;
+  currentUser.balance -= amt; foundUser.balance += amt;
   currentUser.transactions.unshift({type:'Transfer',amt,desc:`To: ${foundUser.name}`,date:new Date().toLocaleString()});
-  alert(`Transfer Successful!\n$${amt} sent to ${foundUser.name}`);
-  closeModal();updateUI();loadTx();
+  saveUsers(); updateDashboard(); closeModal(); alert('Transfer Successful');
 }
 
-function openDeposit(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Deposit</h2><input id="dAmt" type="number" placeholder="Amount"><button class="btn-primary" onclick="doDeposit()">Add Money</button>`;
-}
-
-function doDeposit(){
-  const amt = parseFloat(dAmt.value);
-  currentUser.balance += amt;
-  currentUser.transactions.unshift({type:'Deposit',amt,desc:'Self Deposit',date:new Date().toLocaleString()});
-  alert(`$${amt} Added Successfully`);
-  closeModal();updateUI();loadTx();
-}
-
-function openPay(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Pay Bills</h2><select id="billType"><option>Electricity</option><option>Data</option><option>Cable TV</option><option>Airtime</option></select><input id="billNo" placeholder="Meter/Phone"><input id="billAmt" type="number" placeholder="Amount"><button class="btn-primary" onclick="payBill()">Pay Now</button>`;
-}
-
-function payBill(){
-  const type = billType.value; const amt = parseFloat(billAmt.value);
-  currentUser.balance -= amt;
-  currentUser.transactions.unshift({type:'Bill',amt,desc:type,date:new Date().toLocaleString()});
-  alert(`${type} Paid Successfully`);
-  closeModal();updateUI();loadTx();
-}
-
-function openMessage(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Message Support</h2><textarea id="msg" rows="4" style="width:100%;padding:14px;border:1.5px solid #ddd;border-radius:12px"></textarea><button class="btn-primary" onclick="alert('Message Sent');closeModal()">Send</button>`;
-}
-
-function closeModal(){modal.style.display='none'}
-
+function openToBank(){alert('To Bank feature - coming in v=36')}
+function openAirtime(){alert('Buy Airtime - coming in v=36')}
+function openData(){alert('Buy Data - coming in v=36')}
+function openBills(){alert('Pay Bills - coming in v=36')}
+function openDeposit(){alert('Deposit - coming in v=36')}
+function openBetting(){alert('Betting - coming in v=36')}
+function openMore(){alert('More services')}
+function changeCurrency(){alert('Currency switch in settings')}
+function logout(){showPage('authPage')}
 function loadTx(){
-  if(currentUser.transactions.length===0){txList.innerHTML='<div class="tx-empty">No transactions yet</div>';return}
-  txList.innerHTML=currentUser.transactions.map(t=>`<div style="padding:14px;background:white;margin:8px 0;border-radius:12px"><b>${t.type} - $${t.amt}</b><div style="color:#666;font-size:12px">${t.desc}</div></div>`).join('');
+  if(currentUser.transactions.length===0){txList.innerHTML='<div style="text-align:center;color:#999;padding:30px">No transactions yet</div>';return}
+  txList.innerHTML=currentUser.transactions.map(t=>`
+    <div class="tx-item">
+      <div class="tx-left"><div class="tx-icon">📤</div><div><b>${t.type}</b><div style="font-size:12px;color:#666">${t.desc}</div></div></div>
+      <div style="color:red;font-weight:700">-${currentUser.currency}${t.amt}</div>
+    </div>
+  `).join('');
 }
 </script>
 </body>
-</html>
+  </html>
