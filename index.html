@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCE BANK</title>
+<style>
+:root{--orange:#f97316;--light:#fff7ed;--card:#fff;--text:#0f172a;--gray:#64748b;--green:#16a34a;--red:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:var(--light);color:var(--text)}
+.page{display:none}.page.active{display:block;padding-bottom:85px}
+
+/* AUTH - WHITE + ORANGE */
+.auth{background:#fff;min-height:100vh;padding:40px 24px;text-align:center}
+.bank-icon{width:70px;height:70px;background:var(--orange);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#fff}
+.auth h1{font-size:26px;font-weight:900;margin-bottom:8px}
+.auth p{color:var(--gray);margin-bottom:30px}
+.input-group{text-align:left;margin-bottom:18px}
+.input-group label{font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;display:block}
+.input-group input{width:100%;padding:14px;border:1.5px solid #fed7aa;border-radius:10px;font-size:15px;background:#fff7ed}
+.btn-orange{width:100%;padding:16px;background:var(--orange);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;margin-top:10px}
+.link-text{margin-top:20px;color:var(--gray)}.link-text b{color:var(--orange);cursor:pointer}
+
+/* APP */
+.header{display:flex;justify-content:space-between;align-items:center;padding:20px}
+.welcome{font-size:22px;font-weight:900}
+.top-icons{display:flex;gap:15px;position:relative}
+.bell-dot{position:absolute;top:0;right:0;width:10px;height:10px;background:red;border-radius:50%;display:none}
+.balance-card{background:linear-gradient(135deg,var(--orange) 0%,#ea580c 100%);margin:0 20px;padding:25px;border-radius:20px;color:#fff}
+.balance{font-size:36px;font-weight:900;margin:10px 0}
+.acc-no{background:rgba(0,0,0,0.2);padding:8px 14px;border-radius:20px;display:inline-block;font-size:12px;margin-top:8px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:25px 20px}
+.btn{background:var(--card);padding:22px 10px;border-radius:18px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.btn-icon{font-size:30px;color:var(--orange);margin-bottom:8px}
+.bottom-nav{position:fixed;bottom:0;width:100%;background:var(--card);border-top:1px solid #fed7aa;display:flex;justify-content:space-around;padding:12px 0}
+.nav-item{text-align:center;color:var(--gray);cursor:pointer;font-size:12px}
+.nav-item.active{color:var(--orange)}
+.setting{background:var(--card);margin:8px 20px;padding:16px;border-radius:14px;display:flex;justify-content:space-between;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:99}
+.modal-content{background:var(--card);padding:24px;border-radius:20px;width:90%;max-width:420px;max-height:80vh;overflow-y:auto}
+.tx{display:flex;justify-content:space-between;padding:14px;background:var(--card);margin:8px 20px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+.card-display{background:linear-gradient(135deg,var(--orange) 0%,#ea580c 100%);padding:20px;border-radius:16px;color:#fff;margin:20px}
+.recipient-info{background:#fff7ed;padding:12px;border-radius:10px;margin:10px 0;color:var(--orange);font-weight:700;display:none}
+.alert{position:fixed;top:20px;right:20px;background:var(--green);color:#fff;padding:14px 20px;border-radius:12px;z-index:999;display:none}
+</style>
+</head>
+<body>
+
+<div id="alert" class="alert"></div>
+
+<!-- AUTH PAGE - SMART -->
+<div id="authPage" class="auth page active">
+  <div class="bank-icon">🏦</div>
+  <h1 id="authTitle">Welcome to MCE BANK</h1>
+  <p id="authSub">Enter your email to continue</p>
+
+  <div id="nameField" class="input-group" style="display:none">
+    <label>FULL NAME</label>
+    <input type="text" id="regName" placeholder="John Doe">
+  </div>
+  <div class="input-group">
+    <label>EMAIL OR MEMBER ID</label>
+    <input type="email" id="email" placeholder="Enter your email" onkeyup="checkEmail()">
+  </div>
+  <div class="input-group">
+    <label>PASSWORD / PIN</label>
+    <input type="password" id="pin" placeholder="Enter 4-digit PIN" maxlength="4">
+  </div>
+
+  <button class="btn-orange" id="authBtn" onclick="handleAuth()">CONTINUE</button>
+  <div class="link-text"><b onclick="forgotPin()">Forgot PIN?</b></div>
+</div>
+
+<!-- HOME PAGE -->
+<div id="homePage" class="page">
+  <div class="header">
+    <div><div class="welcome" id="userName">Hi, USER</div></div>
+    <div class="top-icons"><span onclick="alert('Support Chat')">🎧</span><span onclick="openNotifications()">🔔<div class="bell-dot" id="bellDot"></div></span></div>
+  </div>
+  <div class="balance-card">
+    <div>Available Balance 👁️</div>
+    <div class="balance" id="balance">$0.00</div>
+    <div class="acc-no" id="accNo">Acc: 0000</div>
+  </div>
+  <div class="grid4">
+    <div class="btn" onclick="openTransfer()"><div class="btn-icon">💸</div><div>Transfer</div></div>
+    <div class="btn" onclick="openDeposit()"><div class="btn-icon">⬇️</div><div>Deposit</div></div>
+    <div class="btn" onclick="showPage('cardsPage')"><div class="btn-icon">💳</div><div>Cards</div></div>
+    <div class="btn" onclick="showPage('settingsPage')"><div class="btn-icon">⚙️</div><div>Settings</div></div>
+  </div>
+  <div style="padding:0 20px;margin-top:15px;font-weight:700">Recent Transactions</div>
+  <div id="txList"></div>
+</div>
+
+<!-- CARDS PAGE -->
+<div id="cardsPage" class="page">
+  <div class="header"><div class="welcome">My Cards</div></div>
+  <div class="card-display">
+    <div style="display:flex;justify-content:space-between"><div>MCE BANK<br>VISA DEBIT</div><div style="background:rgba(0,0,0,0.2);padding:4px 10px;border-radius:20px;font-size:11px" id="cardStatus">ACTIVE</div></div>
+    <div style="font-size:22px;margin:15px 0" id="cardNum">4532 •••• •••• 8819</div>
+    <div style="display:flex;justify-content:space-between"><div><small>CARDHOLDER</small><br><b id="cardName">JOHN DOE</b></div><div><small>EXPIRES</small><br><b>09/29</b></div></div>
+  </div>
+  <div style="display:flex;gap:10px;margin:0 20px">
+    <button class="btn-orange" style="background:var(--red)" onclick="freezeCard()">🔒 Freeze Card</button>
+    <button class="btn-orange" onclick="copyCard()">📋 Copy Details</button>
+  </div>
+  <div class="setting"><div>Daily ATM Limit</div><div>$2,500</div></div>
+  <div class="setting"><div>Daily POS Limit</div><div>$10,000</div></div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div id="settingsPage" class="page">
+  <div class="header"><div class="welcome">Settings</div></div>
+  <div class="setting"><div>📧 Email</div><div id="setEmail">email</div></div>
+  <div class="setting"><div>📱 Phone</div><div id="setPhone">phone</div></div>
+  <div class="setting" onclick="openCountryPicker()"><div>🌍 Country Code</div><div id="setCountry">+1 ›</div></div>
+  <div class="setting" onclick="openCurrency()"><div>💱 Currency</div><div id="setCurr">$ ›</div></div>
+  <div class="setting" onclick="alert('Security Settings')"><div>🔒 Security</div><div>›</div></div>
+  <div class="setting" onclick="alert('Download Statements')"><div>📥 Statements</div><div>›</div></div>
+  <button class="btn-orange" style="margin:20px;width:calc(100% - 40px);background:var(--red)" onclick="logout()">Sign Out</button>
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showPage('homePage')"><div style="font-size:24px">🏠</div>Home</div>
+  <div class="nav-item" onclick="showPage('cardsPage')"><div style="font-size:24px">💳</div>Cards</div>
+  <div class="nav-item" onclick="alert('Analytics Coming')"><div style="font-size:24px">📊</div>Analytics</div>
+  <div class="nav-item" onclick="showPage('settingsPage')"><div style="font-size:24px">👤</div>Me</div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-content"><span style="float:right;font-size:26px;cursor:pointer" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
+
+<script>
+let users = JSON.parse(localStorage.getItem('mceUsers') || '[]');
+let currentUser = null;
+let authMode = 'check';
+
+// BACKEND DATA - IMPORTANT FROM v48-v54
+const countries = [
+{code:"+1",name:"USA",currency:"$"},{code:"+234",name:"Nigeria",currency:"₦"},{code:"+44",name:"UK",currency:"£"},
+{code:"+233",name:"Ghana",currency:"₵"},{code:"+254",name:"Kenya",currency:"KSh"},{code:"+27",name:"South Africa",currency:"R"},
+{code:"+33",name:"France",currency:"€"},{code:"+49",name:"Germany",currency:"€"},{code:"+91",name:"India",currency:"₹"},
+{code:"+86",name:"China",currency:"¥"},{code:"+81",name:"Japan",currency:"¥"},{code:"+61",name:"Australia",currency:"$"},
+{code:"+55",name:"Brazil",currency:"R$"},{code:"+92",name:"Pakistan",currency:"₨"},{code:"+20",name:"Egypt",currency:"£"}
+];
+
+function saveUsers(){localStorage.setItem('mceUsers',JSON.stringify(users))}
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active')}
+function closeModal(){modal.style.display='none'}
+function showAlert(msg){alertBox.innerText=msg;alertBox.style.display='block';setTimeout(()=>alertBox.style.display='none',3000)}
+
+function genAccNo(){let newAcc;do{newAcc=''+Math.floor(1000000000+Math.random()*9000000);}while(users.find(u=>u.accNo===newAcc));return newAcc}
+
+// SMART AUTH - v53
+function checkEmail(){
+  const existing = users.find(u=>u.email===email.value);
+  if(existing && email.value.length>3){
+    authTitle.innerText='Welcome Back';
+    authSub.innerText='Enter your PIN to Sign In';
+    nameField.style.display='none';
+    authBtn.innerText='SIGN IN';
+    authMode='login';
+  }else if(email.value.length>3){
+    authTitle.innerText='Create Account';
+    authSub.innerText='Join MCE BANK today';
+    nameField.style.display='block';
+    authBtn.innerText='CREATE ACCOUNT';
+    authMode='signup';
+  }
+}
+
+function handleAuth(){if(authMode==='signup') createAccount();if(authMode==='login') login();}
+
+// CREATE ACCOUNT - v52
+function createAccount(){
+  if(!regName.value||!email.value||!pin.value){alert('Fill all fields');return}
+  if(users.find(u=>u.email===email.value)){alert('Email already exists');return}
+  const user={
+    name:regName.value,email:email.value,pin:pin.value,
+    accNo:genAccNo(),balance:300,currency:'$',country:'+1',
+    transactions:[{type:'Welcome Bonus',amt:300,date:'Today'}],
+    cardFrozen:false,notifications:[]
+  };
+  users.push(user);saveUsers();loginUser(user);
+  showAlert('$300 Welcome Bonus Added!');
+}
+
+// LOGIN - v53
+function login(){
+  currentUser = users.find(u=>u.email===email.value && u.pin===pin.value);
+  if(!currentUser){alert('Wrong PIN');return}
+  loginUser(currentUser);
+}
+
+// FORGOT PIN - v53
+function forgotPin(){
+  modal.style.display='flex';
+  modalBody.innerHTML=`<h2>Forgot PIN</h2><input id="resetEmail" placeholder="Your Email"><button class="btn-orange" onclick="resetPin()">Reset to 1234</button>`;
+}
+
+function resetPin(){
+  const user = users.find(u=>u.email===resetEmail.value);
+  if(!user){alert('Email not found');return}
+  user.pin='1234';saveUsers();closeModal();showAlert('PIN reset to 1234');
+}
+
+function loginUser(user){
+  currentUser=user;
+  userName.innerText='Hi, '+currentUser.name.split(' ')[0];
+  accNo.innerText='Acc: '+currentUser.accNo;
+  balance.innerText=currentUser.currency+currentUser.balance.toLocaleString()+'.00';
+  setEmail.innerText=currentUser.email;
+  setPhone.innerText=currentUser.country;
+  setCountry.innerText=currentUser.country+' ›';
+  setCurr.innerText=currentUser.currency+' ›';
+  cardName.innerText=currentUser.name.toUpperCase();
+  cardStatus.innerText=currentUser.cardFrozen?'FROZEN':'ACTIVE';
+  cardStatus.style.background=currentUser.cardFrozen?'var(--red)':'rgba(0,0,0,0.2)';
+  if(currentUser.notifications.length>0) bellDot.style.display='block';
+  renderTx();
+  showPage('homePage');
+}
+
+function renderTx(){
+  txList.innerHTML=currentUser.transactions.slice(0,5).map(t=>
+    `<div class="tx"><div><b>${t.type}</b><br><small>${t.date}</small></div>
+    <div style="color:${t.amt>0?'var(--green)':'var(--red)'}">${t.amt>0?'+':''}${currentUser.currency}${Math.abs(t.amt)}</div></div>`
+  ).join('') || '<div style="padding:20px;color:var(--gray)">No transactions</div>';
+}
+
+function logout(){currentUser=null;email.value='';pin.value='';showPage('authPage')}
+
+// TRANSFER - v54 WITH AUTO NAME
+function openTransfer(){
+  modal.style.display='flex';
+  modalBody.innerHTML=`<h2>Transfer Money</h2>
+  <input id="tAcc" placeholder="Recipient Account Number" onkeyup="findRecipient(this.value)">
+  <div class="recipient-info" id="recipientInfo"></div>
+  <input id="tAmt" type="number" placeholder="Amount">
+  <input id="tPin" type="password" placeholder="Enter PIN" maxlength="4">
+  <button class="btn-orange" onclick="doTransfer()">Send</button>`;
+}
+
+function findRecipient(acc){
+  const recipient = users.find(u=>u.accNo===acc);
+  const info = document.getElementById('recipientInfo');
+  if(recipient && acc.length>=10){
+    info.style.display='block';
+    info.innerHTML=`✓ Sending to: <b>${recipient.name}</b><br>Acc: ${recipient.accNo}`;
+  }else{
+    info.style.display='none';
+  }
+}
+
+function doTransfer(){
+  if(tPin.value!==currentUser.pin){alert('Wrong PIN');return}
+  const recipient = users.find(u=>u.accNo===tAcc.value);
+  if(!recipient){alert('Account not found');return}
+  const amt = parseFloat(tAmt.value);
+  if(amt>currentUser.balance){alert('Insufficient Balance');return}
+
+  // UPDATE BOTH USERS - BACKEND LOGIC
+  currentUser.balance -= amt;
+  recipient.balance += amt;
+  const now = new Date().toLocaleDateString();
+  currentUser.transactions.unshift({type:'To '+recipient.name,amt:-amt,date:now});
+  recipient.transactions.unshift({type:'From '+currentUser.name,amt:amt,date:now});
+  recipient.notifications.unshift({type:'Money Received',msg:`${currentUser.currency}${amt} from ${currentUser.name}`,date:now});
+
+  saveUsers();
+  loginUser(currentUser);
+  closeModal();
+  showAlert(`Sent ${currentUser.currency}${amt} to ${recipient.name}`);
+}
+
+// OTHER FEATURES
+function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Deposit</h2><input type="number" placeholder="Amount"><button class="btn-orange" onclick="closeModal()">Deposit</button>`}
+
+function openNotifications(){
+  bellDot.style.display='none';
+  modal.style.display='flex';
+  modalBody.innerHTML=`<h2>Notifications</h2>`+currentUser.notifications.map(n=>`<div class="tx"><div><b>${n.type}</b><br><small>${n.msg}</small></div></div>`).join('')+`<button class="btn-orange" onclick="closeModal()">Close</button>`;
+  currentUser.notifications=[];saveUsers();
+}
+
+function freezeCard(){
+  currentUser.cardFrozen=!currentUser.cardFrozen;
+  saveUsers();loginUser(currentUser);
+  showAlert(currentUser.cardFrozen?'Card Frozen':'Card Activated');
+}
+
+function copyCard(){
+  navigator.clipboard.writeText(document.getElementById('cardNum').innerText);
+  showAlert('Card Details Copied');
+}
+
+// SETTINGS - v53
+function openCountryPicker(){
+  modal.style.display='flex';
+  modalBody.innerHTML=`<h2>Select Country</h2><input placeholder="Search" onkeyup="filterCountries(this.value)">
+  <div id="countryList">`+countries.map(c=>`<div class="setting" onclick="selectCountry('${c.code}','${c.currency}')"><div>${c.name}</div><div>${c.code}</div></div>`).join('')+`</div>`;
+}
+
+function filterCountries(val){
+  document.getElementById('countryList').innerHTML=countries.filter(c=>c.name.toLowerCase().includes(val.toLowerCase())).map(c=>`<div class="setting" onclick="selectCountry('${c.code}','${c.currency}')"><div>${c.name}</div><div>${c.code}</div></div>`).join('');
+}
+
+function selectCountry(code,curr){
+  currentUser.country=code;currentUser.currency=curr;saveUsers();
+  setCountry.innerText=code+' ›';setCurr.innerText=curr+' ›';
+  loginUser(currentUser);closeModal();
+}
+
+function openCurrency(){
+  modal.style.display='flex';
+  modalBody.innerHTML=`<h2>All Currencies</h2><select id="currSel"><option value="$">$ USD</option><option value="₦">₦ NGN</option><option value="€">€ EUR</option><option value="£">£ GBP</option><option value="₵">₵ GHS</option></select><button class="btn-orange" onclick="saveCurr()">Save</button>`;
+}
+
+function saveCurr(){currentUser.currency=currSel.value;saveUsers();setCurr.innerText=currSel.value+' ›';loginUser(currentUser);closeModal()}
+</script>
+</body>
+</html>
