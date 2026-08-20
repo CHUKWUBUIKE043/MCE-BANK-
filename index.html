@@ -3,39 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK - v85</title>
+<title>MCE BANK - v88</title>
 <style>
-:root{--purple:#7c3aed;--green:#22c55e;--black:#0a0a0a;--dark:#151515}
+:root{--purple:#7c3aed;--green:#22c55e;--black:#0a0a0a;--dark:#151515;--red:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif}
 body{background:var(--black);color:#fff;padding-bottom:90px}
 .page{display:none}.page.active{display:block}
+.auth-box{max-width:400px;margin:30px auto;padding:30px;background:var(--dark);border-radius:20px;border:1px solid #222}
 .header{padding:20px;font-size:24px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
 .notif-icon{position:relative;cursor:pointer}
 .notif-badge{position:absolute;background:red;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;top:-5px;right:-8px}
 .balance-card{background:linear-gradient(135deg,#4f46e5 0%,#06b6d4 50%,#22c55e 100%);margin:0 16px;padding:24px;border-radius:20px}
 .balance{font-size:36px;font-weight:900;margin:10px 0}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 16px;text-align:center}
-.btn-grid{background:var(--dark);padding:18px 10px;border-radius:16px;cursor:pointer}
+.btn-grid{background:var(--dark);padding:18px 10px;border-radius:16px;cursor:pointer;border:1px solid #222}
 .btn-icon{font-size:32px;margin-bottom:8px}
 .grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;margin:20px 16px;text-align:center}
 .section{background:var(--dark);margin:12px 16px;padding:16px;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
 .txn-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222}
-.btn{width:100%;padding:14px;background:linear-gradient(90deg,var(--purple) 0%,var(--green) 100%);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer}
-.input{width:100%;padding:14px;background:#222;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0}
-.bottom-nav{position:fixed;bottom:0;width:100%;background:#0f0f0f;border-top:1px solid #222;display:flex;justify-content:space-around;padding:10px 0 20px 0}
+.btn{width:100%;padding:14px;background:linear-gradient(90deg,var(--purple) 0%,var(--green) 100%);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px}
+.btn-red{width:calc(100% - 32px);margin:20px 16px;padding:14px;background:red;color:#fff;border:none;border-radius:10px;font-weight:700}
+.input{width:100%;padding:14px;background:#222;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0;font-size:16px}
+.error{background:var(--red);padding:10px;border-radius:8px;margin:10px 0;display:none}
+.success{background:var(--green);padding:10px;border-radius:8px;margin:10px 0;display:none}
+.bottom-nav{position:fixed;bottom:0;width:100%;background:#0f0f0f;border-top:1px solid #222;display:none;justify-content:space-around;padding:10px 0 20px 0}
 .nav-item{text-align:center;color:#888;font-size:11px;cursor:pointer;flex:1}
 .nav-item.active{color:var(--green)}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);justify-content:center;align-items:center;z-index:99}
 .modal-content{background:var(--dark);padding:24px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
+.otp-box{display:flex;gap:8px;justify-content:center}
+.otp-input{width:45px;height:45px;text-align:center;font-size:20px}
 </style>
 </head>
 <body>
 
-<!-- HOME -->
-<div id="homePage" class="page active">
+<!-- 1. LOGIN -->
+<div id="loginPage" class="page active">
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px;color:var(--green)">MCE BANK</h2>
+    <div class="error" id="loginError"></div>
+    <input id="loginEmail" class="input" placeholder="Email or Phone">
+    <input id="loginPass" class="input" type="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <p style="text-align:center;margin-top:15px;color:#888;cursor:pointer" onclick="showPage('forgotPage')">Forgot Password?</p>
+    <p style="text-align:center;margin-top:10px">No account? <span style="color:var(--green);cursor:pointer" onclick="showPage('registerPage')">Create One</span></p>
+  </div>
+</div>
+
+<!-- 2. REGISTER -->
+<div id="registerPage" class="page">
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px">Create Account</h2>
+    <div class="error" id="regError"></div>
+    <input id="regName" class="input" placeholder="Full Name">
+    <input id="regPhone" class="input" placeholder="Phone Number">
+    <input id="regEmail" class="input" placeholder="Email">
+    <select id="regCountry" class="input">
+      <option value="$">USA $</option>
+      <option value="₦">Nigeria ₦</option>
+      <option value="£">UK £</option>
+    </select>
+    <input id="regPass" class="input" type="password" placeholder="Password - Min 6 characters">
+    <button class="btn" onclick="sendOTP()">Send OTP</button>
+    <p style="text-align:center;margin-top:15px">Have account? <span style="color:var(--green);cursor:pointer" onclick="showPage('loginPage')">Login</span></p>
+  </div>
+</div>
+
+<!-- 3. OTP VERIFICATION -->
+<div id="otpPage" class="page">
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px">Verify OTP</h2>
+    <p style="text-align:center;color:#888;margin-bottom:20px">Code sent to <span id="otpPhone"></span></p>
+    <div class="otp-box">
+      <input class="otp-input input" maxlength="1" onkeyup="moveOTP(this,0)">
+      <input class="otp-input input" maxlength="1" onkeyup="moveOTP(this,1)">
+      <input class="otp-input input" maxlength="1" onkeyup="moveOTP(this,2)">
+      <input class="otp-input input" maxlength="1" onkeyup="moveOTP(this,3)">
+    </div>
+    <button class="btn" onclick="verifyOTP()">Verify & Create Account</button>
+  </div>
+</div>
+
+<!-- 4. FORGOT PASSWORD -->
+<div id="forgotPage" class="page">
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px">Reset Password</h2>
+    <div class="error" id="forgotError"></div>
+    <div class="success" id="forgotSuccess"></div>
+    <input id="forgotEmail" class="input" placeholder="Enter your Email">
+    <button class="btn" onclick="resetPassword()">Show Password</button>
+    <p style="text-align:center;margin-top:15px"><span style="color:var(--green);cursor:pointer" onclick="showPage('loginPage')">Back to Login</span></p>
+  </div>
+</div>
+
+<!-- 5. HOME DASHBOARD - EXACTLY LIKE YOUR SCREENSHOT -->
+<div id="homePage" class="page">
   <div class="header">
     <div>Hi, <span id="userName">USER</span></div>
-    <div class="notif-icon" onclick="openNotifications()">🔔<span class="notif-badge" id="notifCount" style="display:none">0</span></div>
+    <div class="notif-icon" onclick="openNotifications()">🔔<span class="notif-badge" id="notifCount" style="display:none">1</span></div>
   </div>
   
   <div class="balance-card">
@@ -55,6 +120,7 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
     <p style="text-align:center;color:#888;padding:20px">No transactions yet</p>
   </div>
 
+  <!-- ALL 8 ICONS WORKING - EXACTLY LIKE SCREENSHOT -->
   <div class="grid8">
     <div class="btn-grid" onclick="openAirtime()"><div class="btn-icon" style="color:orange">📶</div><div>Airtime</div></div>
     <div class="btn-grid" onclick="openData()"><div class="btn-icon">📱</div><div>Data</div></div>
@@ -67,28 +133,28 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
   </div>
 </div>
 
-<!-- NOTIFICATIONS PAGE -->
+<!-- 6. NOTIFICATIONS -->
 <div id="notifPage" class="page">
   <div class="header"><div onclick="switchPage('homePage')">←</div><div>Notifications</div><div></div></div>
   <div id="notifList" style="padding:0 16px"></div>
 </div>
 
-<!-- ME -->
+<!-- 7. ME -->
 <div id="settingsPage" class="page">
   <div class="header">👤 Me</div>
   <div class="section"><div>📧</div><div><b>Email</b><br><span id="setEmail"></span></div></div>
   <div class="section"><div>📱</div><div><b>Phone</b><br><span id="setPhone"></span></div></div>
   <div class="section"><div>🏦</div><div><b>Account</b><br><span id="setAcc"></span></div></div>
   <div class="section" onclick="openCurrency()"><div>💱</div><div><b>Currency & Country</b><br><span id="setCurrency">USA $</span></div><div style="margin-left:auto">></div></div>
-  <button class="btn" style="background:red;margin:20px 16px" onclick="logout()">Sign Out</button>
+  <button class="btn-red" onclick="logout()">Sign Out</button>
 </div>
 
 <!-- BOTTOM NAV -->
-<div class="bottom-nav">
+<div class="bottom-nav" id="bottomNav">
   <div class="nav-item active" onclick="switchPage('homePage',this)"><div class="nav-icon">🏠</div>Home</div>
-  <div class="nav-item" onclick="alert('Rewards')"><div class="nav-icon">💎</div>Rewards</div>
-  <div class="nav-item" onclick="alert('Finance')"><div class="nav-icon">📊</div>Finance</div>
-  <div class="nav-item" onclick="alert('Cards')"><div class="nav-icon">💳</div>Cards</div>
+  <div class="nav-item" onclick="alert('Rewards: Earn points')"><div class="nav-icon">💎</div>Rewards</div>
+  <div class="nav-item" onclick="alert('Finance: Savings')"><div class="nav-icon">📊</div>Finance</div>
+  <div class="nav-item" onclick="alert('Cards: Order Card')"><div class="nav-icon">💳</div>Cards</div>
   <div class="nav-item" onclick="switchPage('settingsPage',this)"><div class="nav-icon">👤</div>Me</div>
 </div>
 
@@ -97,34 +163,44 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
 <script>
 let users = JSON.parse(localStorage.getItem('mceUsers') || '[]');
 let currentUser = JSON.parse(localStorage.getItem('mceCurrent') || 'null');
+let tempRegData = {};
 let showBalance = true;
+let generatedOTP = "1234";
 
-const countries = [
-  {name:'USA',currency:'$'},
-  {name:'Nigeria',currency:'₦'},
-  {name:'UK',currency:'£'},
-  {name:'Europe',currency:'€'},
-  {name:'Ghana',currency:'GH₵'},
-  {name:'Canada',currency:'C$'}
-];
+const countries = [{name:'USA',currency:'$'},{name:'Nigeria',currency:'₦'},{name:'UK',currency:'£'}];
 
-function switchPage(pageId, el){
+function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if(id==='loginPage' || id==='registerPage' || id==='forgotPage' || id==='otpPage'){
+    document.getElementById('bottomNav').style.display='none';
+  }
+}
+function switchPage(pageId, el){
+  showPage(pageId);
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   if(el) el.classList.add('active');
   if(pageId==='notifPage') loadNotifications();
+  if(pageId==='homePage' || pageId==='settingsPage'){
+    document.getElementById('bottomNav').style.display='flex';
+  }
 }
 function closeModal(){modal.style.display='none'}
 function formatBalance(num){return currentUser.currency + num.toLocaleString('en-US',{minimumFractionDigits:2})}
 function toggleBalance(){showBalance=!showBalance;eye.innerText=showBalance?'👁️':'🙈';balance.innerText=showBalance?formatBalance(currentUser.balance):'****'}
 function save(){localStorage.setItem('mceUsers',JSON.stringify(users));localStorage.setItem('mceCurrent',JSON.stringify(currentUser))}
 
+// CHECK LOGIN ON LOAD
 window.onload=function(){
   if(currentUser){
     loginUser(currentUser);
+    showPage('homePage');
+    document.getElementById('bottomNav').style.display='flex';
     loadRecentTransactions();
     updateNotifBadge();
+  }else{
+    showPage('loginPage');
+    document.getElementById('bottomNav').style.display='none';
   }
 }
 
@@ -139,7 +215,58 @@ function loginUser(user){
   setCurrency.innerText=countries.find(c=>c.currency===currentUser.currency)?.name + ' ' + currentUser.currency;
 }
 
-// RECENT TRANSACTIONS
+// REGISTER WITH OTP
+function sendOTP(){
+  regError.style.display='none';
+  const name=regName.value.trim(), phone=regPhone.value.trim(), email=regEmail.value.trim().toLowerCase(), pass=regPass.value;
+  if(!name || !phone || !email || !pass){regError.innerText="❌ Fill all fields";regError.style.display='block';return}
+  if(pass.length<6){regError.innerText="❌ Password must be 6+ characters";regError.style.display='block';return}
+  if(users.find(u=>u.email.toLowerCase()===email)){regError.innerText="❌ Email already exists";regError.style.display='block';return}
+  if(users.find(u=>u.phone===phone)){regError.innerText="❌ Phone already exists";regError.style.display='block';return}
+  
+  tempRegData = {name,email,phone,password:pass,currency:regCountry.value};
+  otpPhone.innerText=phone;
+  showPage('otpPage');
+  alert('Your OTP is: '+generatedOTP); // Demo OTP
+}
+
+function moveOTP(input, index){
+  if(input.value.length===1){
+    const next = document.querySelectorAll('.otp-input')[index+1];
+    if(next) next.focus();
+  }
+}
+
+function verifyOTP(){
+  const otpInputs = document.querySelectorAll('.otp-input');
+  const enteredOTP = Array.from(otpInputs).map(i=>i.value).join('');
+  if(enteredOTP !== generatedOTP){alert('❌ Wrong OTP');return}
+  
+  const newUser={...tempRegData,balance:0,accNo:'10'+Math.floor(Math.random()*90000000+10000000),transactions:[]};
+  users.push(newUser);save();
+  loginUser(newUser);showPage('homePage');document.getElementById('bottomNav').style.display='flex';
+  addNotification('Welcome to MCE Bank! Tap to claim $50,000 bonus');
+}
+
+// LOGIN
+function login(){
+  loginError.style.display='none';
+  const input=loginEmail.value.trim().toLowerCase(), pass=loginPass.value;
+  const user=users.find(u=>(u.email.toLowerCase()===input||u.phone===input)&&u.password===pass);
+  if(!user){loginError.innerText="❌ Wrong login";loginError.style.display='block';return}
+  loginUser(user);showPage('homePage');document.getElementById('bottomNav').style.display='flex';loadRecentTransactions();updateNotifBadge()
+}
+
+// FORGOT PASSWORD
+function resetPassword(){
+  forgotError.style.display='none';forgotSuccess.style.display='none';
+  const email=forgotEmail.value.trim().toLowerCase();
+  const user=users.find(u=>u.email.toLowerCase()===email);
+  if(!user){forgotError.innerText="❌ Email not found";forgotError.style.display='block';return}
+  forgotSuccess.innerText="✅ Your password: "+user.password;forgotSuccess.style.display='block';
+}
+
+// TRANSACTIONS + NOTIFICATIONS + CLAIM BONUS
 function addTransaction(type, amount){
   if(!currentUser.transactions) currentUser.transactions=[];
   currentUser.transactions.unshift({type, amount, date:new Date().toLocaleString()});
@@ -158,20 +285,32 @@ function loadRecentTransactions(){
   `).join('');
 }
 
-// NOTIFICATIONS
 function addNotification(msg){
   let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');
-  notifs.unshift({msg, time:'Just now', read:false});
+  notifs.unshift({msg, time:'Just now', read:false, claim:msg.includes('bonus')});
   localStorage.setItem('mceNotifs_'+currentUser.accNo, JSON.stringify(notifs));
   updateNotifBadge();
 }
 function loadNotifications(){
   let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');
   if(notifs.length===0){notifList.innerHTML='<p style="text-align:center;color:#888;padding:40px">No notifications</p>';return}
-  notifList.innerHTML = notifs.map(n=>`<div class="section"><div><b>${n.msg}</b><br><small style="color:#888">${n.time}</small></div></div>`).join('');
+  notifList.innerHTML = notifs.map((n,i)=>`
+    <div class="section">
+      <div style="flex:1"><b>${n.msg}</b><br><small style="color:#888">${n.time}</small></div>
+      ${n.claim ? `<button class="btn" style="width:auto;padding:8px 16px" onclick="claimBonus(${i})">Claim</button>` : ''}
+    </div>
+  `).join('');
   notifs.forEach(n=>n.read=true);
   localStorage.setItem('mceNotifs_'+currentUser.accNo, JSON.stringify(notifs));
   document.getElementById('notifCount').style.display='none';
+}
+function claimBonus(index){
+  currentUser.balance += 50000;
+  addTransaction('Member Bonus', 50000);
+  let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');
+  notifs.splice(index,1);
+  localStorage.setItem('mceNotifs_'+currentUser.accNo, JSON.stringify(notifs));
+  save();alert('$50,000 Bonus Claimed!');location.reload()
 }
 function updateNotifBadge(){
   let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');
@@ -181,46 +320,26 @@ function updateNotifBadge(){
 }
 function openNotifications(){switchPage('notifPage')}
 
-// BANK FUNCTIONS WITH NOTIF + HISTORY
+// ALL 8 BANK FUNCTIONS WORKING
 function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Add Money</h2><input id="dAmt" class="input" type="number"><button class="btn" onclick="doDeposit()">Add</button>`}
-function doDeposit(){
-  const amt=parseFloat(dAmt.value);
-  currentUser.balance+=amt;
-  addTransaction('Deposit', amt);
-  addNotification(`${currentUser.currency}${amt} added to your account`);
-  save();location.reload()
-}
+function doDeposit(){const amt=parseFloat(dAmt.value);currentUser.balance+=amt;addTransaction('Deposit', amt);addNotification(`${currentUser.currency}${amt} added`);save();location.reload()}
 
-function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer</h2><input id="tAcc" class="input" placeholder="Account Number"><input id="tAmt" class="input" type="number" placeholder="Amount"><button class="btn" onclick="doTransfer()">Send</button>`}
-function doTransfer(){
-  const amt=parseFloat(tAmt.value);
-  currentUser.balance-=amt;
-  addTransaction('Transfer to '+tAcc.value, -amt);
-  addNotification(`${currentUser.currency}${amt} sent to ${tAcc.value}`);
-  save();alert('Transfer Sent!');location.reload()
-}
+function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer</h2><input id="tAcc" class="input" placeholder="Account"><input id="tAmt" class="input" type="number"><button class="btn" onclick="doTransfer()">Send</button>`}
+function doTransfer(){const amt=parseFloat(tAmt.value);currentUser.balance-=amt;addTransaction('Transfer', -amt);addNotification(`${currentUser.currency}${amt} sent`);save();alert('Sent!');location.reload()}
 
 function openWithdraw(){modal.style.display='flex';modalBody.innerHTML=`<h2>Withdraw</h2><input id="wAmt" class="input" type="number"><button class="btn" onclick="doWithdraw()">Withdraw</button>`}
-function doWithdraw(){
-  const amt=parseFloat(wAmt.value);
-  currentUser.balance-=amt;
-  addTransaction('Withdrawal', -amt);
-  addNotification(`${currentUser.currency}${amt} withdrawn`);
-  save();location.reload()
-}
+function doWithdraw(){const amt=parseFloat(wAmt.value);currentUser.balance-=amt;addTransaction('Withdrawal', -amt);addNotification(`${currentUser.currency}${amt} withdrawn`);save();location.reload()}
 
-// ALL OTHER ICONS WORKING
-function openAirtime(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Airtime</h2><input class="input" placeholder="Phone"><input class="input" type="number" placeholder="Amount"><button class="btn" onclick="alert('Airtime bought');closeModal()">Buy</button>`}
-function openData(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Data</h2><button class="btn" onclick="alert('1GB bought')">1GB</button>`}
-function openBills(){modal.style.display='flex';modalBody.innerHTML=`<h2>Pay Bills</h2><button class="btn" onclick="alert('Bill paid')">Electricity</button>`}
-function openTV(){modal.style.display='flex';modalBody.innerHTML=`<h2>TV</h2><button class="btn" onclick="alert('DSTV paid')">DSTV</button>`}
-function openSafeBox(){modal.style.display='flex';modalBody.innerHTML=`<h2>SafeBox</h2><p>Earn 5% interest</p>`}
-function openLoan(){modal.style.display='flex';modalBody.innerHTML=`<h2>Apply Loan</h2><input id="loanAmt" class="input" type="number"><button class="btn" onclick="doLoan()">Get Loan</button>`}
-function doLoan(){currentUser.balance+=parseFloat(loanAmt.value);addTransaction('Loan', parseFloat(loanAmt.value));addNotification(`Loan of ${currentUser.currency}${loanAmt.value} credited`);save();location.reload()}
-function openGame(){alert('Game Center')}
-function openMore(){alert('More Services')}
+function openAirtime(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Airtime</h2><input class="input" placeholder="Phone"><input class="input" type="number" placeholder="Amount"><button class="btn" onclick="alert('Airtime purchased');closeModal()">Buy</button>`}
+function openData(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Data</h2><button class="btn" onclick="alert('1GB Data purchased')">1GB - $5</button>`}
+function openBills(){modal.style.display='flex';modalBody.innerHTML=`<h2>Pay Bills</h2><button class="btn" onclick="alert('Electricity bill paid')">Electricity</button>`}
+function openTV(){modal.style.display='flex';modalBody.innerHTML=`<h2>TV Subscription</h2><button class="btn" onclick="alert('DSTV paid')">DSTV</button>`}
+function openSafeBox(){modal.style.display='flex';modalBody.innerHTML=`<h2>SafeBox</h2><p>Lock money and earn 5% interest</p>`}
+function openLoan(){modal.style.display='flex';modalBody.innerHTML=`<h2>Apply Loan</h2><input id="loanAmt" class="input" type="number" placeholder="Amount"><button class="btn" onclick="doLoan()">Get Loan</button>`}
+function doLoan(){const amt=parseFloat(loanAmt.value);currentUser.balance+=amt;addTransaction('Loan', amt);addNotification(`Loan of ${currentUser.currency}${amt} credited`);save();location.reload()}
+function openGame(){modal.style.display='flex';modalBody.innerHTML=`<h2>Game Center</h2><p>Play and win money</p>`}
+function openMore(){modal.style.display='flex';modalBody.innerHTML=`<h2>More Services</h2><div class="btn" onclick="alert('Betting')">Betting</div><div class="btn" onclick="alert('Insurance')">Insurance</div>`}
 
-// CURRENCY
 function openCurrency(){
   modal.style.display='flex';
   modalBody.innerHTML=`<h2>Select Country</h2>` + countries.map(c=>
@@ -228,16 +347,6 @@ function openCurrency(){
   ).join('');
 }
 function changeCurrency(cur){currentUser.currency=cur;save();location.reload()}
-
-// REGISTER - NO WELCOME BONUS, DEFAULT $
-function register(){
-  const email=regEmail.value.trim().toLowerCase();
-  const phone=regPhone.value.trim();
-  if(users.find(u=>u.email.toLowerCase()===email)){alert('Email exists');return}
-  if(users.find(u=>u.phone===phone)){alert('Phone exists');return}
-  const newUser={name:regName.value,email,phone,password:regPass.value,currency:'$',balance:0,accNo:'10'+Math.floor(Math.random()*90000000+10000000),transactions:[]};
-  users.push(newUser);save();alert('Account Created with $0.00');location.reload()
-}
 
 function logout(){localStorage.removeItem('mceCurrent');location.reload()}
 </script>
