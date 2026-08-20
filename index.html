@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK - v99</title>
+<title>MCE BANK - v101</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
 :root{--purple:#7c3aed;--green:#22c55e;--black:#0a0a0a;--dark:#151515;--red:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif}
@@ -27,17 +29,12 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
 .btn-red{width:calc(100% - 32px);margin:20px 16px;padding:14px;background:red;color:#fff;border:none;border-radius:10px;font-weight:700}
 .input{width:100%;padding:14px;background:#222;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0;font-size:16px}
 .error{background:var(--red);padding:10px;border-radius:8px;margin:10px 0;display:none}
-.success{background:var(--green);padding:10px;border-radius:8px;margin:10px 0;display:none}
 .bottom-nav{position:fixed;bottom:0;width:100%;background:#0f0f0f;border-top:1px solid #222;display:none;justify-content:space-around;padding:10px 0 20px 0}
 .nav-item{text-align:center;color:#888;font-size:11px;cursor:pointer;flex:1}
 .nav-item.active{color:var(--green)}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);justify-content:center;align-items:center;z-index:99}
 .modal-content{background:var(--dark);padding:24px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
 .recipient-info{background:#222;padding:12px;border-radius:10px;margin:10px 0}
-.country-item{display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #222;cursor:pointer}
-.country-item:hover{background:#222}
-.user-select{padding:12px;border:1px solid #333;border-radius:10px;margin:8px 0;cursor:pointer}
-.user-select:hover{background:#222}
 .copy-btn{font-size:12px;background:var(--green);padding:4px 10px;border-radius:6px;cursor:pointer;margin-left:10px}
 </style>
 </head>
@@ -61,20 +58,11 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
     <h2 style="text-align:center;margin-bottom:20px">Create Account</h2>
     <div class="error" id="regError"></div>
     <input id="regName" class="input" placeholder="Full Name">
-    <select id="regCountry" class="input"></select>
     <input id="regPhone" class="input" placeholder="Phone Number">
     <input id="regEmail" class="input" placeholder="Email">
     <input id="regPass" class="input" type="password" placeholder="Password - Min 6">
-    <button class="btn" onclick="sendOTP()">Send OTP</button>
+    <button class="btn" onclick="register()">Create Account</button>
     <p style="text-align:center;margin-top:15px">Have account? <span style="color:var(--green);cursor:pointer" onclick="showPage('loginPage')">Login</span></p>
-  </div>
-</div>
-
-<div id="otpPage" class="page">
-  <div class="auth-box">
-    <h2 style="text-align:center;margin-bottom:20px">Verify OTP</h2>
-    <input id="otpInput" class="input" placeholder="Enter 1234">
-    <button class="btn" onclick="verifyOTP()">Verify & Create Account</button>
   </div>
 </div>
 
@@ -94,46 +82,15 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
   <div class="section"><div><b>📄 Recent Transaction</b></div></div>
   <div id="recentTxn" style="padding:0 16px"><p style="text-align:center;color:#888;padding:20px">No transactions yet</p></div>
   <div class="grid8">
-    <div class="btn-grid" onclick="openAirtime()"><div class="btn-icon" style="color:orange">📶</div><div>Airtime</div></div>
-    <div class="btn-grid" onclick="openData()"><div class="btn-icon">📱</div><div>Data</div></div>
-    <div class="btn-grid" onclick="openBills()"><div class="btn-icon" style="color:yellow">💡</div><div>Bills</div></div>
-    <div class="btn-grid" onclick="openTV()"><div class="btn-icon">📺</div><div>TV</div></div>
-    <div class="btn-grid" onclick="openSafeBox()"><div class="btn-icon" style="color:orange">🔒</div><div>SafeBox</div></div>
-    <div class="btn-grid" onclick="openLoan()"><div class="btn-icon" style="color:var(--green)">$</div><div>Loan</div></div>
-    <div class="btn-grid" onclick="openGame()"><div class="btn-icon">🎮</div><div>Game</div></div>
-    <div class="btn-grid" onclick="openMore()"><div class="btn-icon">⋯</div><div>More</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:orange">📶</div><div>Airtime</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">📱</div><div>Data</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:yellow">💡</div><div>Bills</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">📺</div><div>TV</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:orange">🔒</div><div>SafeBox</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:var(--green)">$</div><div>Loan</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">🎮</div><div>Game</div></div>
+    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">⋯</div><div>More</div></div>
   </div>
-</div>
-
-<!-- REWARDS -->
-<div id="rewardsPage" class="page">
-  <div class="header"><div onclick="switchPage('homePage')">←</div><div>Rewards</div><div></div></div>
-  <div class="balance-card"><div>Your Points</div><div class="balance" id="points">0 pts</div></div>
-  <div id="rewardsList"></div>
-</div>
-
-<!-- FINANCE -->
-<div id="financePage" class="page">
-  <div class="header"><div onclick="switchPage('homePage')">←</div><div>Finance</div><div></div></div>
-  <div class="section"><div>💰</div><div><b>Savings Balance</b><br><span id="savingsBal">$0.00</span></div><div style="margin-left:auto"><button class="btn" style="width:auto;padding:8px 16px" onclick="openSavings()">Save</button></div></div>
-  <div class="section"><div>📈</div><div><b>Investments</b><br><span id="investBal">$0.00</span></div></div>
-  <div class="section"><div>🎯</div><div><b>This Month Spent</b><br><span id="spentBal">$0.00</span></div></div>
-</div>
-
-<!-- CARDS -->
-<div id="cardsPage" class="page">
-  <div class="header"><div onclick="switchPage('homePage')">←</div><div>Cards</div><div></div></div>
-  <div class="card-box">
-    <div style="font-size:12px">MCE BANK CARD</div>
-    <div style="font-size:20px;font-weight:900;margin:20px 0" id="cardNumber">**** **** **** 1234</div>
-    <div style="display:flex;justify-content:space-between">
-      <div><small>NAME</small><br><span id="cardName">USER</span></div>
-      <div><small>EXPIRES</small><br>12/29</div>
-    </div>
-  </div>
-  <div class="section" onclick="freezeCard()"><div>🧊</div><div><b id="freezeText">Freeze Card</b></div></div>
-  <div class="section" onclick="alert('PIN changed')"><div>🔑</div><div><b>Change PIN</b></div></div>
-  <div class="section" onclick="alert('Order new card')"><div>💳</div><div><b>Order New Card</b></div></div>
 </div>
 
 <!-- NOTIFICATIONS -->
@@ -142,167 +99,132 @@ body{background:var(--black);color:#fff;padding-bottom:90px}
   <div id="notifList" style="padding:0 16px"></div>
 </div>
 
-<!-- ME / SETTINGS -->
+<!-- ME -->
 <div id="settingsPage" class="page">
   <div class="header">👤 Me</div>
-  <div class="section" onclick="editName()"><div>👤</div><div><b>Name</b><br><span id="setName"></span></div><div style="margin-left:auto">Edit</div></div>
+  <div class="section"><div>👤</div><div><b>Name</b><br><span id="setName"></span></div></div>
   <div class="section"><div>📧</div><div><b>Email</b><br><span id="setEmail"></span></div></div>
-  <div class="section"><div>📱</div><div><b>Phone</b><br><span id="setPhone"></span></div></div>
   <div class="section"><div>🏦</div><div><b>Account</b><br><span id="setAcc"></span><span class="copy-btn" onclick="copyAcc()">Copy</span></div></div>
-  <div class="section" onclick="openCountrySettings()"><div>🌍</div><div><b>Country & Currency</b><br><span id="setCountry">USA $ +1</span></div><div style="margin-left:auto">></div></div>
   <button class="btn-red" onclick="logout()">Sign Out</button>
 </div>
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav" id="bottomNav">
-  <div class="nav-item active" onclick="switchPage('homePage',this)"><div class="nav-icon">🏠</div>Home</div>
-  <div class="nav-item" onclick="switchPage('rewardsPage',this)"><div class="nav-icon">💎</div>Rewards</div>
-  <div class="nav-item" onclick="switchPage('financePage',this)"><div class="nav-icon">📊</div>Finance</div>
-  <div class="nav-item" onclick="switchPage('cardsPage',this)"><div class="nav-icon">💳</div>Cards</div>
-  <div class="nav-item" onclick="switchPage('settingsPage',this)"><div class="nav-icon">👤</div>Me</div>
+  <div class="nav-item active" onclick="switchPage('homePage',this)"><div>🏠</div>Home</div>
+  <div class="nav-item" onclick="switchPage('settingsPage',this)"><div>👤</div>Me</div>
 </div>
 
 <div class="modal" id="modal"><div class="modal-content"><span style="float:right;font-size:26px;cursor:pointer" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
 
 <script>
-let users = JSON.parse(localStorage.getItem('mceUsers') || '[]');
-let currentUser = JSON.parse(localStorage.getItem('mceCurrent') || 'null');
-let tempRegData = {};
+// 1. PUT YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let currentUser = null;
 let showBalance = true;
 let foundRecipient = null;
 
-// GLOBAL MOCK DATABASE - This simulates server. Add test users here
-let GLOBAL_USERS = [
-  {name:"MONICA", accNo:"1024713007", currency:"$", country:"USA"},
-  {name:"OLIVIA", accNo:"1071730016", currency:"₦", country:"Nigeria"},
-  {name:"JENNIFER", accNo:"1098765432", currency:"£", country:"UK"}
-];
-
-const allCountries = [
-  {name:"USA",code:"+1",currency:"$",currencyName:"USD"},{name:"Nigeria",code:"+234",currency:"₦",currencyName:"NGN"},{name:"UK",code:"+44",currency:"£",currencyName:"GBP"},
-  {name:"Canada",code:"+1",currency:"C$",currencyName:"CAD"},{name:"Australia",code:"+61",currency:"A$",currencyName:"AUD"},{name:"Germany",code:"+49",currency:"€",currencyName:"EUR"},
-  {name:"France",code:"+33",currency:"€",currencyName:"EUR"},{name:"India",code:"+91",currency:"₹",currencyName:"INR"},{name:"China",code:"+86",currency:"¥",currencyName:"CNY"},
-  {name:"Japan",code:"+81",currency:"¥",currencyName:"JPY"},{name:"South Africa",code:"+27",currency:"R",currencyName:"ZAR"},{name:"Ghana",code:"+233",currency:"₵",currencyName:"GHS"},
-  {name:"Kenya",code:"+254",currency:"KSh",currencyName:"KES"},{name:"Brazil",code:"+55",currency:"R$",currencyName:"BRL"},{name:"UAE",code:"+971",currency:"د.إ",currencyName:"AED"}
-];
-
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='loginPage'||id==='registerPage'||id==='otpPage'){document.getElementById('bottomNav').style.display='none';}}
-function switchPage(pageId, el){showPage(pageId);document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el) el.classList.add('active');if(pageId==='notifPage') loadNotifications();if(['homePage','rewardsPage','financePage','cardsPage','settingsPage'].includes(pageId)){document.getElementById('bottomNav').style.display='flex';}if(pageId==='rewardsPage') loadRewards();if(pageId==='financePage') loadFinance();if(pageId==='cardsPage') loadCards();}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function switchPage(pageId, el){showPage(pageId);document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el) el.classList.add('active');if(pageId==='notifPage') loadNotifications();}
 function closeModal(){modal.style.display='none'}
-function formatBalance(num){return currentUser.currency + num.toLocaleString('en-US',{minimumFractionDigits:2})}
+function formatBalance(num){return '$' + num.toLocaleString('en-US',{minimumFractionDigits:2})}
 function toggleBalance(){showBalance=!showBalance;eye.innerText=showBalance?'👁️':'🙈';balance.innerText=showBalance?formatBalance(currentUser.balance):'****'}
-function save(){localStorage.setItem('mceUsers',JSON.stringify(users));localStorage.setItem('mceCurrent',JSON.stringify(currentUser))}
-function copyAcc(){navigator.clipboard.writeText(currentUser.accNo);alert('Account Number Copied: '+currentUser.accNo)}
+function copyAcc(){navigator.clipboard.writeText(currentUser.accNo);alert('Copied: '+currentUser.accNo)}
 
-window.onload=function(){
-  regCountry.innerHTML = allCountries.map(c=>`<option value='${JSON.stringify(c)}'>${c.name} ${c.currency} ${c.code}</option>`).join('');
-  if(currentUser){loginUser(currentUser);showPage('homePage');document.getElementById('bottomNav').style.display='flex';loadRecentTransactions();updateNotifBadge();}
-  else{showPage('loginPage');document.getElementById('bottomNav').style.display='none';}
+// REGISTER
+async function register(){
+  const name=regName.value, phone=regPhone.value, email=regEmail.value, pass=regPass.value;
+  const accNo = '10' + Math.floor(Math.random()*90000000+10000000);
+  await db.collection('users').doc(email).set({name,phone,email,password:pass,balance:0,accNo,transactions:[],notifications:[]});
+  alert('Account Created!');showPage('loginPage');
 }
 
-function loginUser(user){currentUser=user;userName.innerText=currentUser.name.split(' ')[0].toUpperCase();accNo.innerText=currentUser.accNo;balance.innerText=formatBalance(currentUser.balance);setName.innerText=currentUser.name;setEmail.innerText=currentUser.email;setPhone.innerText=currentUser.phone;setAcc.innerText=currentUser.accNo;setCountry.innerText=`${currentUser.country} ${currentUser.currency} ${currentUser.phoneCode}`;cardName.innerText=currentUser.name.toUpperCase();}
-
-// EDIT NAME
-function editName(){modal.style.display='flex';modalBody.innerHTML=`<h2>Edit Name</h2><input id="newName" class="input" value="${currentUser.name}"><button class="btn" onclick="saveName()">Save</button>`}
-function saveName(){currentUser.name=newName.value;save();location.reload()}
-
-// COUNTRY SETTINGS
-function openCountrySettings(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Select Country & Currency</h2><div style="max-height:400px;overflow-y:auto">` +
-  allCountries.map(c=>`<div class="country-item" onclick="changeCountry('${c.name}','${c.currency}','${c.code}','${c.currencyName}')"><div><b>${c.name}</b></div><div>${c.currency} ${c.code}</div></div>`).join('') + `</div>`;
+// LOGIN
+async function login(){
+  const input=loginEmail.value, pass=loginPass.value;
+  const snap = await db.collection('users').where('email','==',input).get();
+  if(snap.empty){loginError.innerText="❌ Wrong login";loginError.style.display='block';return}
+  const user = snap.docs[0].data();
+  if(user.password!==pass){loginError.innerText="❌ Wrong password";loginError.style.display='block';return}
+  currentUser=user;
+  userName.innerText=user.name.split(' ')[0];accNo.innerText=user.accNo;balance.innerText=formatBalance(user.balance);
+  setName.innerText=user.name;setEmail.innerText=user.email;setAcc.innerText=user.accNo;
+  showPage('homePage');document.getElementById('bottomNav').style.display='flex';loadRecentTransactions();
 }
-function changeCountry(name,currency,code,currencyName){currentUser.country=name;currentUser.currency=currency;currentUser.currencyName=currencyName;currentUser.phoneCode=code;save();location.reload()}
 
-// REWARDS
-function loadRewards(){
-  points.innerText=(currentUser.points||0)+' pts';
-  rewardsList.innerHTML=`
-    <div class="reward-box"><div><b>Daily Login</b><br><small>Earn 10 points</small></div><button class="btn" style="width:auto;padding:8px 20px" onclick="claimReward(10)">Claim</button></div>
-    <div class="reward-box"><div><b>Refer Friend</b><br><small>Earn 500 points</small></div><button class="btn" style="width:auto;padding:8px 20px" onclick="claimReward(500)">Claim</button></div>
-    <div class="reward-box"><div><b>First Transfer</b><br><small>Earn 100 points</small></div><button class="btn" style="width:auto;padding:8px 20px" onclick="claimReward(100)">Claim</button></div>
-  `;
-}
-function claimReward(pts){currentUser.points=(currentUser.points||0)+pts;save();loadRewards();alert('You earned '+pts+' points!')}
-
-// FINANCE
-function loadFinance(){
-  savingsBal.innerText=formatBalance(currentUser.savings||0);
-  investBal.innerText=formatBalance(currentUser.investment||0);
-  let spent = currentUser.transactions?.filter(t=>t.amount<0).reduce((a,b)=>a+b.amount,0)||0;
-  spentBal.innerText=formatBalance(Math.abs(spent));
-}
-function openSavings(){modal.style.display='flex';modalBody.innerHTML=`<h2>Save Money</h2><input id="saveAmt" class="input" type="number" placeholder="Amount"><button class="btn" onclick="doSave()">Save</button>`}
-function doSave(){const amt=parseFloat(saveAmt.value);if(currentUser.balance<amt){alert('Insufficient');return}currentUser.balance-=amt;currentUser.savings=(currentUser.savings||0)+amt;addTransaction('Savings', -amt);save();location.reload()}
-
-// CARDS
-function loadCards(){cardName.innerText=currentUser.name.toUpperCase();freezeText.innerText=currentUser.cardFrozen?'Unfreeze Card':'Freeze Card';}
-function freezeCard(){currentUser.cardFrozen=!currentUser.cardFrozen;save();loadCards();alert(currentUser.cardFrozen?'Card Frozen':'Card Unfrozen')}
-
-// TRANSFER - FIXED TO SEARCH GLOBAL + LOCAL
+// TRANSFER - THE MAIN FIX
 function openTransfer(){
   modal.style.display='flex';
   modalBody.innerHTML=`<h2>Transfer</h2>
-  <input id="tSearch" class="input" placeholder="Enter Account Number" onkeyup="searchGlobalUser()">
+  <input id="tSearch" class="input" placeholder="Enter Account Number" onkeyup="searchUser()">
   <div id="recipientInfo"></div>
   <input id="tAmt" class="input" type="number" placeholder="Amount">
-  <button class="btn" onclick="doTransfer()">Send</button>
-  <p style="color:#888;font-size:12px;margin-top:10px">Your Acc: ${currentUser.accNo}</p>`;
+  <button class="btn" onclick="doTransfer()">Send</button>`;
 }
 
-function searchGlobalUser(){
+async function searchUser(){
   const val = tSearch.value.trim();
-  // Search both local users AND global mock database
-  foundRecipient = users.find(u=>u.accNo===val) || GLOBAL_USERS.find(u=>u.accNo===val);
-  
-  if(foundRecipient){
-    recipientInfo.innerHTML = `<div class="recipient-info"><b>To: ${foundRecipient.name}</b><br><small>Acc: ${foundRecipient.accNo} | ${foundRecipient.country}</small></div>`;
+  const snap = await db.collection('users').where('accNo','==',val).get();
+  if(!snap.empty){
+    foundRecipient = snap.docs[0].data();
+    recipientInfo.innerHTML = `<div class="recipient-info"><b>To: ${foundRecipient.name}</b><br><small>Acc: ${foundRecipient.accNo}</small></div>`;
   }else{
     recipientInfo.innerHTML = val.length>5? `<div style="color:red">No user found</div>` : '';
   }
 }
 
-function doTransfer(){
+async function doTransfer(){
   const amt=parseFloat(tAmt.value);
-  if(!foundRecipient){alert('❌ Account not found. Check Account Number');return}
-  if(currentUser.balance<amt){alert('❌ Insufficient balance');return}
+  if(!foundRecipient){alert('❌ Account not found');return}
+  if(currentUser.balance<amt){alert('❌ Insufficient');return}
 
-  // Deduct from sender
-  currentUser.balance-=amt;
-  addTransaction('Transfer to '+foundRecipient.name, -amt);
-  addNotification(`${currentUser.currency}${amt} sent to ${foundRecipient.name}`);
+  // 1. Deduct sender
+  currentUser.balance -= amt;
+  const senderRef = db.collection('users').doc(currentUser.email);
+  await senderRef.update({
+    balance: currentUser.balance,
+    transactions: firebase.firestore.FieldValue.arrayUnion({type:'Transfer to '+foundRecipient.name, amount:-amt, date:new Date().toLocaleString()})
+  });
 
-  // For demo: Money goes to recipient. In real app this would hit server
-  alert('✅ Transfer Successful to '+foundRecipient.name + '\n\nNOTE: In real banking, money will reflect on recipient phone instantly');
-  
-  save();
-  location.reload()
+  // 2. Credit receiver
+  const receiverRef = db.collection('users').doc(foundRecipient.email);
+  await receiverRef.update({
+    balance: firebase.firestore.FieldValue.increment(amt),
+    transactions: firebase.firestore.FieldValue.arrayUnion({type:'Transfer from '+currentUser.name, amount:amt, date:new Date().toLocaleString()}),
+    notifications: firebase.firestore.FieldValue.arrayUnion({msg:`$${amt} received from ${currentUser.name}`, time:'Just now'})
+  });
+
+  alert('✅ Transfer Successful to '+foundRecipient.name);
+  location.reload();
 }
 
-// OTHER FUNCTIONS
-function sendOTP(){const name=regName.value.trim();const country = JSON.parse(regCountry.value);const phone=country.code + regPhone.value.trim();const email=regEmail.value.trim().toLowerCase();const pass=regPass.value;if(pass.length<6){regError.innerText="❌ Password 6+ chars";regError.style.display='block';return}if(users.find(u=>u.email.toLowerCase()===email)){regError.innerText="❌ Email exists";regError.style.display='block';return}tempRegData={name,email,phone,password:pass,country:country.name,currency:country.currency,currencyName:country.currencyName,phoneCode:country.code,points:0,savings:0,investment:0,cardFrozen:false};showPage('otpPage');alert('OTP: 1234')}
-function verifyOTP(){if(otpInput.value!=='1234'){alert('❌ Wrong OTP');return}const newUser={...tempRegData,balance:0,accNo:'10'+Math.floor(Math.random()*90000000+10000000),transactions:[]};users.push(newUser);save();loginUser(newUser);showPage('homePage');document.getElementById('bottomNav').style.display='flex';addNotification('Welcome! Tap to claim $50,000 bonus')}
-function login(){const input=loginEmail.value.trim().toLowerCase(), pass=loginPass.value;const user=users.find(u=>(u.email.toLowerCase()===input||u.phone===input)&&u.password===pass);if(!user){loginError.innerText="❌ Wrong login";loginError.style.display='block';return}loginUser(user);showPage('homePage');document.getElementById('bottomNav').style.display='flex';loadRecentTransactions();updateNotifBadge()}
-function addTransaction(type, amount){if(!currentUser.transactions) currentUser.transactions=[];currentUser.transactions.unshift({type, amount, date:new Date().toLocaleString()});if(currentUser.transactions.length>5) currentUser.transactions.pop();save();}
-function loadRecentTransactions(){if(!currentUser.transactions || currentUser.transactions.length===0){recentTxn.innerHTML='<p style="text-align:center;color:#888;padding:20px">No transactions yet</p>';return}recentTxn.innerHTML = currentUser.transactions.map(t=>`<div class="txn-item"><div><b>${t.type}</b><br><small style="color:#888">${t.date}</small></div><div style="color:${t.amount>0?'var(--green)':'red'};font-weight:700">${t.amount>0?'+':'-'}${formatBalance(Math.abs(t.amount))}</div></div>`).join('');}
-function addNotification(msg){let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');notifs.unshift({msg, time:'Just now', read:false, claim:msg.includes('bonus')});localStorage.setItem('mceNotifs_'+currentUser.accNo, JSON.stringify(notifs));updateNotifBadge();}
-function loadNotifications(){let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');if(notifs.length===0){notifList.innerHTML='<p style="text-align:center;color:#888;padding:40px">No notifications</p>';return}notifList.innerHTML = notifs.map((n,i)=>`<div class="section"><div style="flex:1"><b>${n.msg}</b><br><small style="color:#888">${n.time}</small></div>${n.claim? `<button class="btn" style="width:auto;padding:8px 16px" onclick="claimBonus(${i})">Claim</button>` : ''}</div>`).join('');notifs.forEach(n=>n.read=true);localStorage.setItem('mceNotifs_'+currentUser.accNo, JSON.stringify(notifs));document.getElementById('notifCount').style.display='none';}
-function claimBonus(index){currentUser.balance += 50000;addTransaction('Member Bonus', 50000);let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');notifs.splice(index,1);localStorage.setItem('mceNotifs_'+currentUser.accNo, JSON.stringify(notifs));save();alert('$50,000 Bonus Claimed!');location.reload()}
-function updateNotifBadge(){let notifs = JSON.parse(localStorage.getItem('mceNotifs_'+currentUser.accNo) || '[]');const unread = notifs.filter(n=>!n.read).length;document.getElementById('notifCount').innerText = unread;document.getElementById('notifCount').style.display = unread>0?'block':'none';}
+async function loadRecentTransactions(){
+  const snap = await db.collection('users').doc(currentUser.email).get();
+  const txns = snap.data().transactions || [];
+  recentTxn.innerHTML = txns.length===0? '<p style="text-align:center;color:#888">No transactions yet</p>' :
+  txns.slice(0,5).map(t=>`<div class="txn-item"><div><b>${t.type}</b><br><small>${t.date}</small></div><div style="color:${t.amount>0?'var(--green)':'red'}">${t.amount>0?'+':'-'}${formatBalance(Math.abs(t.amount))}</div></div>`).join('');
+}
+
+async function loadNotifications(){
+  const snap = await db.collection('users').doc(currentUser.email).get();
+  const notifs = snap.data().notifications || [];
+  notifList.innerHTML = notifs.length===0? '<p style="text-align:center;color:#888">No notifications</p>' :
+  notifs.map(n=>`<div class="section"><b>${n.msg}</b><br><small>${n.time}</small></div>`).join('');
+}
+
 function openNotifications(){switchPage('notifPage')}
 function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Add Money</h2><input id="dAmt" class="input" type="number"><button class="btn" onclick="doDeposit()">Add</button>`}
-function doDeposit(){const amt=parseFloat(dAmt.value);currentUser.balance+=amt;addTransaction('Deposit', amt);addNotification(`${currentUser.currency}${amt} added`);save();location.reload()}
-function openWithdraw(){modal.style.display='flex';modalBody.innerHTML=`<h2>Withdraw</h2><input id="wAmt" class="input" type="number"><button class="btn" onclick="doWithdraw()">Withdraw</button>`}
-function doWithdraw(){const amt=parseFloat(wAmt.value);currentUser.balance-=amt;addTransaction('Withdrawal', -amt);addNotification(`${currentUser.currency}${amt} withdrawn`);save();location.reload()}
-function openAirtime(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Airtime</h2><input class="input" placeholder="Phone"><input class="input" type="number" placeholder="Amount"><button class="btn" onclick="alert('Airtime purchased');closeModal()">Buy</button>`}
-function openData(){modal.style.display='flex';modalBody.innerHTML=`<h2>Buy Data</h2><button class="btn" onclick="alert('Data purchased');closeModal()">1GB</button>`}
-function openBills(){modal.style.display='flex';modalBody.innerHTML=`<h2>Pay Bills</h2><button class="btn" onclick="alert('Bill paid');closeModal()">Electricity</button>`}
-function openTV(){modal.style.display='flex';modalBody.innerHTML=`<h2>TV Subscription</h2><button class="btn" onclick="alert('TV paid');closeModal()">DSTV</button>`}
-function openSafeBox(){modal.style.display='flex';modalBody.innerHTML=`<h2>SafeBox</h2><p>Lock money and earn 5% interest</p>`}
-function openLoan(){modal.style.display='flex';modalBody.innerHTML=`<h2>Apply Loan</h2><input class="input" type="number" placeholder="Amount"><button class="btn" onclick="alert('Loan credited');closeModal()">Get Loan</button>`}
-function openGame(){alert('Game Center')}
-function openMore(){alert('More Services')}
-function logout(){localStorage.removeItem('mceCurrent');location.reload()}
+async function doDeposit(){const amt=parseFloat(dAmt.value);currentUser.balance+=amt;await db.collection('users').doc(currentUser.email).update({balance:currentUser.balance});location.reload()}
+function logout(){currentUser=null;location.reload()}
 </script>
 </body>
 </html>
