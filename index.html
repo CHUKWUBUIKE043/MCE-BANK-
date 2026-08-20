@@ -3,228 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK - v101</title>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<title>MCE BANK v=102</title>
 <style>
-:root{--purple:#7c3aed;--green:#22c55e;--black:#0a0a0a;--dark:#151515;--red:#ef4444}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif}
-body{background:var(--black);color:#fff;padding-bottom:90px}
-.page{display:none}.page.active{display:block}
-.auth-box{max-width:400px;margin:30px auto;padding:30px;background:var(--dark);border-radius:20px;border:1px solid #222}
-.header{padding:20px;font-size:24px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
-.notif-icon{position:relative;cursor:pointer}
-.notif-badge{position:absolute;background:red;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;top:-5px;right:-8px}
-.balance-card{background:linear-gradient(135deg,#4f46e5 0%,#06b6d4 50%,#22c55e 100%);margin:0 16px;padding:24px;border-radius:20px}
-.balance{font-size:36px;font-weight:900;margin:10px 0}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 16px;text-align:center}
-.btn-grid{background:var(--dark);padding:18px 10px;border-radius:16px;cursor:pointer;border:1px solid #222}
-.btn-icon{font-size:32px;margin-bottom:8px}
-.grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;margin:20px 16px;text-align:center}
-.section{background:var(--dark);margin:12px 16px;padding:16px;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
-.card-box{background:linear-gradient(135deg,#7c3aed,#22c55e);padding:20px;border-radius:16px;margin:12px 16px}
-.reward-box{display:flex;justify-content:space-between;align-items:center;background:var(--dark);margin:12px 16px;padding:16px;border-radius:14px}
-.txn-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222}
-.btn{width:100%;padding:14px;background:linear-gradient(90deg,var(--purple) 0%,var(--green) 100%);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px}
-.btn-red{width:calc(100% - 32px);margin:20px 16px;padding:14px;background:red;color:#fff;border:none;border-radius:10px;font-weight:700}
-.input{width:100%;padding:14px;background:#222;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0;font-size:16px}
-.error{background:var(--red);padding:10px;border-radius:8px;margin:10px 0;display:none}
-.bottom-nav{position:fixed;bottom:0;width:100%;background:#0f0f0f;border-top:1px solid #222;display:none;justify-content:space-around;padding:10px 0 20px 0}
-.nav-item{text-align:center;color:#888;font-size:11px;cursor:pointer;flex:1}
-.nav-item.active{color:var(--green)}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);justify-content:center;align-items:center;z-index:99}
-.modal-content{background:var(--dark);padding:24px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
-.recipient-info{background:#222;padding:12px;border-radius:10px;margin:10px 0}
-.copy-btn{font-size:12px;background:var(--green);padding:4px 10px;border-radius:6px;cursor:pointer;margin-left:10px}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0a0a0a;color:#fff;margin:0;padding:20px}
+.container{max-width:420px;margin:0 auto;background:#1a1a1a;border-radius:20px;padding:25px;border:2px solid #00ff88}
+h1{color:#00ff88;text-align:center;margin:0 0 20px;font-size:28px}
+.balance{font-size:36px;font-weight:bold;text-align:center;color:#00ff88;margin:20px 0}
+.card{background:#2a2a2a;padding:15px;border-radius:12px;margin:10px 0;border:1px solid #333}
+input{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #444;background:#0a0a0a;color:#fff;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:14px;margin:10px 0;border:none;border-radius:12px;background:#00ff88;color:#000;font-weight:bold;font-size:16px;cursor:pointer}
+button:active{transform:scale(0.98)}
+.login-screen{text-align:center}
+.success{color:#00ff88;font-size:14px}
+.error{color:#ff4444;font-size:14px}
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div id="loginPage" class="page active">
-  <div class="auth-box">
-    <h2 style="text-align:center;margin-bottom:20px;color:var(--green)">MCE BANK</h2>
-    <div class="error" id="loginError"></div>
-    <input id="loginEmail" class="input" placeholder="Email or Phone">
-    <input id="loginPass" class="input" type="password" placeholder="Password">
-    <button class="btn" onclick="login()">Login</button>
-    <p style="text-align:center;margin-top:15px">No account? <span style="color:var(--green);cursor:pointer" onclick="showPage('registerPage')">Create One</span></p>
-  </div>
+<div class="container">
+<h1>💚 MCE BANK v=102</h1>
+<div id="app">Loading...</div>
 </div>
 
-<!-- REGISTER -->
-<div id="registerPage" class="page">
-  <div class="auth-box">
-    <h2 style="text-align:center;margin-bottom:20px">Create Account</h2>
-    <div class="error" id="regError"></div>
-    <input id="regName" class="input" placeholder="Full Name">
-    <input id="regPhone" class="input" placeholder="Phone Number">
-    <input id="regEmail" class="input" placeholder="Email">
-    <input id="regPass" class="input" type="password" placeholder="Password - Min 6">
-    <button class="btn" onclick="register()">Create Account</button>
-    <p style="text-align:center;margin-top:15px">Have account? <span style="color:var(--green);cursor:pointer" onclick="showPage('loginPage')">Login</span></p>
-  </div>
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<!-- HOME -->
-<div id="homePage" class="page">
-  <div class="header"><div>Hi, <span id="userName">USER</span></div><div class="notif-icon" onclick="openNotifications()">🔔<span class="notif-badge" id="notifCount" style="display:none">1</span></div></div>
-  <div class="balance-card">
-    <div style="display:flex;justify-content:space-between"><div>Available Balance 🛡️</div><div onclick="toggleBalance()" id="eye">👁️</div></div>
-    <div class="balance" id="balance">$0.00</div>
-    <div style="font-size:12px;opacity:0.8;display:flex;align-items:center">Acc: <span id="accNo"></span><span class="copy-btn" onclick="copyAcc()">Copy</span></div>
-  </div>
-  <div class="grid3">
-    <div class="btn-grid" onclick="openDeposit()"><div class="btn-icon">⬇️</div><div>Add<br>Money</div></div>
-    <div class="btn-grid" onclick="openTransfer()"><div class="btn-icon">💸</div><div>Transfer</div></div>
-    <div class="btn-grid" onclick="openWithdraw()"><div class="btn-icon">⬆️</div><div>Withdraw</div></div>
-  </div>
-  <div class="section"><div><b>📄 Recent Transaction</b></div></div>
-  <div id="recentTxn" style="padding:0 16px"><p style="text-align:center;color:#888;padding:20px">No transactions yet</p></div>
-  <div class="grid8">
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:orange">📶</div><div>Airtime</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">📱</div><div>Data</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:yellow">💡</div><div>Bills</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">📺</div><div>TV</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:orange">🔒</div><div>SafeBox</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon" style="color:var(--green)">$</div><div>Loan</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">🎮</div><div>Game</div></div>
-    <div class="btn-grid" onclick="alert('Coming Soon')"><div class="btn-icon">⋯</div><div>More</div></div>
-  </div>
-</div>
-
-<!-- NOTIFICATIONS -->
-<div id="notifPage" class="page">
-  <div class="header"><div onclick="switchPage('homePage')">←</div><div>Notifications</div><div></div></div>
-  <div id="notifList" style="padding:0 16px"></div>
-</div>
-
-<!-- ME -->
-<div id="settingsPage" class="page">
-  <div class="header">👤 Me</div>
-  <div class="section"><div>👤</div><div><b>Name</b><br><span id="setName"></span></div></div>
-  <div class="section"><div>📧</div><div><b>Email</b><br><span id="setEmail"></span></div></div>
-  <div class="section"><div>🏦</div><div><b>Account</b><br><span id="setAcc"></span><span class="copy-btn" onclick="copyAcc()">Copy</span></div></div>
-  <button class="btn-red" onclick="logout()">Sign Out</button>
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav" id="bottomNav">
-  <div class="nav-item active" onclick="switchPage('homePage',this)"><div>🏠</div>Home</div>
-  <div class="nav-item" onclick="switchPage('settingsPage',this)"><div>👤</div>Me</div>
-</div>
-
-<div class="modal" id="modal"><div class="modal-content"><span style="float:right;font-size:26px;cursor:pointer" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
-
-<script>
-// 1. PUT YOUR FIREBASE CONFIG HERE
+// YOUR FIREBASE KEYS
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDamODVM4Eu4xH2WSGCuhbqTmd73F0bYwE",
+  authDomain: "mce-bank.firebaseapp.com",
+  projectId: "mce-bank",
+  storageBucket: "mce-bank.firebasestorage.app",
+  messagingSenderId: "643210223068",
+  appId: "1:643210223068:web:645ec21686d0bad4bc0319"
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 let currentUser = null;
-let showBalance = true;
-let foundRecipient = null;
+let unsubscribe = null;
 
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function switchPage(pageId, el){showPage(pageId);document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el) el.classList.add('active');if(pageId==='notifPage') loadNotifications();}
-function closeModal(){modal.style.display='none'}
-function formatBalance(num){return '$' + num.toLocaleString('en-US',{minimumFractionDigits:2})}
-function toggleBalance(){showBalance=!showBalance;eye.innerText=showBalance?'👁️':'🙈';balance.innerText=showBalance?formatBalance(currentUser.balance):'****'}
-function copyAcc(){navigator.clipboard.writeText(currentUser.accNo);alert('Copied: '+currentUser.accNo)}
+const appDiv = document.getElementById('app');
 
-// REGISTER
-async function register(){
-  const name=regName.value, phone=regPhone.value, email=regEmail.value, pass=regPass.value;
-  const accNo = '10' + Math.floor(Math.random()*90000000+10000000);
-  await db.collection('users').doc(email).set({name,phone,email,password:pass,balance:0,accNo,transactions:[],notifications:[]});
-  alert('Account Created!');showPage('loginPage');
+// SHOW LOGIN
+function showLogin() {
+  appDiv.innerHTML = `
+    <div class="login-screen">
+      <h2>Welcome</h2>
+      <input id="name" placeholder="Enter Your Name">
+      <input id="pin" placeholder="4 Digit PIN" type="password" maxlength="4">
+      <button onclick="login()">Login / Create Account</button>
+      <p class="success">Now works on ANY device</p>
+    </div>
+  `;
 }
 
-// LOGIN
-async function login(){
-  const input=loginEmail.value, pass=loginPass.value;
-  const snap = await db.collection('users').where('email','==',input).get();
-  if(snap.empty){loginError.innerText="❌ Wrong login";loginError.style.display='block';return}
-  const user = snap.docs[0].data();
-  if(user.password!==pass){loginError.innerText="❌ Wrong password";loginError.style.display='block';return}
-  currentUser=user;
-  userName.innerText=user.name.split(' ')[0];accNo.innerText=user.accNo;balance.innerText=formatBalance(user.balance);
-  setName.innerText=user.name;setEmail.innerText=user.email;setAcc.innerText=user.accNo;
-  showPage('homePage');document.getElementById('bottomNav').style.display='flex';loadRecentTransactions();
-}
-
-// TRANSFER - THE MAIN FIX
-function openTransfer(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Transfer</h2>
-  <input id="tSearch" class="input" placeholder="Enter Account Number" onkeyup="searchUser()">
-  <div id="recipientInfo"></div>
-  <input id="tAmt" class="input" type="number" placeholder="Amount">
-  <button class="btn" onclick="doTransfer()">Send</button>`;
-}
-
-async function searchUser(){
-  const val = tSearch.value.trim();
-  const snap = await db.collection('users').where('accNo','==',val).get();
-  if(!snap.empty){
-    foundRecipient = snap.docs[0].data();
-    recipientInfo.innerHTML = `<div class="recipient-info"><b>To: ${foundRecipient.name}</b><br><small>Acc: ${foundRecipient.accNo}</small></div>`;
-  }else{
-    recipientInfo.innerHTML = val.length>5? `<div style="color:red">No user found</div>` : '';
+// LOGIN FUNCTION
+window.login = async function() {
+  const name = document.getElementById('name').value.trim();
+  const pin = document.getElementById('pin').value.trim();
+  if(!name || pin.length !== 4) return alert('Enter name and 4 digit PIN');
+  
+  currentUser = name.toLowerCase();
+  const userRef = doc(db, "users", currentUser);
+  const snap = await getDoc(userRef);
+  
+  if(!snap.exists()) {
+    await setDoc(userRef, {name: name, pin: pin, balance: 10000});
+  } else {
+    if(snap.data().pin !== pin) return alert('Wrong PIN');
   }
+  
+  showDashboard();
 }
 
-async function doTransfer(){
-  const amt=parseFloat(tAmt.value);
-  if(!foundRecipient){alert('❌ Account not found');return}
-  if(currentUser.balance<amt){alert('❌ Insufficient');return}
-
-  // 1. Deduct sender
-  currentUser.balance -= amt;
-  const senderRef = db.collection('users').doc(currentUser.email);
-  await senderRef.update({
-    balance: currentUser.balance,
-    transactions: firebase.firestore.FieldValue.arrayUnion({type:'Transfer to '+foundRecipient.name, amount:-amt, date:new Date().toLocaleString()})
+// SHOW DASHBOARD
+function showDashboard() {
+  const userRef = doc(db, "users", currentUser);
+  if(unsubscribe) unsubscribe();
+  
+  unsubscribe = onSnapshot(userRef, (snap) => {
+    const data = snap.data();
+    appDiv.innerHTML = `
+      <div class="card">
+        <p>Welcome, ${data.name}</p>
+        <div class="balance">₦${data.balance.toLocaleString()}</div>
+      </div>
+      <div class="card">
+        <h3>Send Money</h3>
+        <input id="to" placeholder="Receiver Name">
+        <input id="amount" placeholder="Amount" type="number">
+        <button onclick="sendMoney()">Send</button>
+        <p id="msg"></p>
+      </div>
+      <button onclick="logout()" style="background:#444;color:#fff">Logout</button>
+    `;
   });
-
-  // 2. Credit receiver
-  const receiverRef = db.collection('users').doc(foundRecipient.email);
-  await receiverRef.update({
-    balance: firebase.firestore.FieldValue.increment(amt),
-    transactions: firebase.firestore.FieldValue.arrayUnion({type:'Transfer from '+currentUser.name, amount:amt, date:new Date().toLocaleString()}),
-    notifications: firebase.firestore.FieldValue.arrayUnion({msg:`$${amt} received from ${currentUser.name}`, time:'Just now'})
-  });
-
-  alert('✅ Transfer Successful to '+foundRecipient.name);
-  location.reload();
 }
 
-async function loadRecentTransactions(){
-  const snap = await db.collection('users').doc(currentUser.email).get();
-  const txns = snap.data().transactions || [];
-  recentTxn.innerHTML = txns.length===0? '<p style="text-align:center;color:#888">No transactions yet</p>' :
-  txns.slice(0,5).map(t=>`<div class="txn-item"><div><b>${t.type}</b><br><small>${t.date}</small></div><div style="color:${t.amount>0?'var(--green)':'red'}">${t.amount>0?'+':'-'}${formatBalance(Math.abs(t.amount))}</div></div>`).join('');
+// SEND MONEY
+window.sendMoney = async function() {
+  const to = document.getElementById('to').value.trim().toLowerCase();
+  const amount = parseInt(document.getElementById('amount').value);
+  const msg = document.getElementById('msg');
+  
+  if(!to || !amount || amount < 100) return msg.innerHTML = '<span class="error">Min ₦100</span>';
+  
+  const fromRef = doc(db, "users", currentUser);
+  const toRef = doc(db, "users", to);
+  
+  const fromSnap = await getDoc(fromRef);
+  const toSnap = await getDoc(toRef);
+  
+  if(!toSnap.exists()) return msg.innerHTML = '<span class="error">User not found</span>';
+  if(fromSnap.data().balance < amount) return msg.innerHTML = '<span class="error">Insufficient balance</span>';
+  
+  await updateDoc(fromRef, {balance: fromSnap.data().balance - amount});
+  await updateDoc(toRef, {balance: toSnap.data().balance + amount});
+  
+  msg.innerHTML = '<span class="success">₦'+amount+' sent to '+to+'</span>';
+  document.getElementById('amount').value = '';
+  document.getElementById('to').value = '';
 }
 
-async function loadNotifications(){
-  const snap = await db.collection('users').doc(currentUser.email).get();
-  const notifs = snap.data().notifications || [];
-  notifList.innerHTML = notifs.length===0? '<p style="text-align:center;color:#888">No notifications</p>' :
-  notifs.map(n=>`<div class="section"><b>${n.msg}</b><br><small>${n.time}</small></div>`).join('');
+// LOGOUT
+window.logout = function() {
+  currentUser = null;
+  if(unsubscribe) unsubscribe();
+  showLogin();
 }
 
-function openNotifications(){switchPage('notifPage')}
-function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Add Money</h2><input id="dAmt" class="input" type="number"><button class="btn" onclick="doDeposit()">Add</button>`}
-async function doDeposit(){const amt=parseFloat(dAmt.value);currentUser.balance+=amt;await db.collection('users').doc(currentUser.email).update({balance:currentUser.balance});location.reload()}
-function logout(){currentUser=null;location.reload()}
+showLogin();
 </script>
 </body>
 </html>
