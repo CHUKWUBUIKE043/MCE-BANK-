@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK - v71</title>
+<title>MCE BANK - v72 FINAL</title>
 <style>
 :root{--green:#22c55e;--green-dark:#16a34a;--blue:#1e3a8a;--black:#0a0a0a;--card:#fff;--text:#1e293b;--gray:#64748b;--red:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif}
@@ -32,7 +32,6 @@ body{background:#f1f5f9;min-height:100vh}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:25px 20px}
 .btn-grid{background:#1a1a1a;padding:18px 10px;border-radius:16px;text-align:center;cursor:pointer;border:1px solid #27272a}
 .btn-icon{font-size:28px;color:var(--green);margin-bottom:6px}
-.section-title{padding:0 20px;margin-top:15px;font-weight:700}
 .tx{display:flex;justify-content:space-between;padding:14px;background:#1a1a1a;margin:8px 20px;border-radius:12px;border:1px solid #27272a}
 .bottom-nav{position:fixed;bottom:0;width:100%;background:#1a1a1a;border-top:1px solid #27272a;display:flex;justify-content:space-around;padding:12px 0}
 .nav-item{text-align:center;color:var(--gray);cursor:pointer;font-size:12px}
@@ -40,7 +39,6 @@ body{background:#f1f5f9;min-height:100vh}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:99}
 .modal-content{background:#1a1a1a;padding:24px;border-radius:20px;width:90%;max-width:420px;border:1px solid #27272a;color:#fff;max-height:80vh;overflow-y:auto}
 .setting{background:#1a1a1a;margin:8px 20px;padding:16px;border-radius:14px;display:flex;justify-content:space-between;cursor:pointer;border:1px solid #27272a}
-.card-display{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);padding:20px;border-radius:16px;color:#fff;margin:20px}
 .alert{position:fixed;top:20px;right:20px;background:var(--green);color:#fff;padding:14px 20px;border-radius:12px;z-index:999;display:none}
 </style>
 </head>
@@ -48,7 +46,7 @@ body{background:#f1f5f9;min-height:100vh}
 
 <div id="alert" class="alert"></div>
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN PAGE v63 -->
 <div id="loginPage" class="page active">
   <div class="card-page"><div class="card">
     <div class="login-header">MCE Bank</div>
@@ -59,12 +57,11 @@ body{background:#f1f5f9;min-height:100vh}
       <div class="checkbox"><input type="checkbox" id="remember"> <label>Remember Me</label></div>
       <button class="btn-primary" onclick="login()">Login</button>
       <button class="btn-secondary" onclick="showPage('registerPage')">Create Your Account</button>
-      <div style="text-align:center;margin-top:10px"><a onclick="alert('Contact support@mcebank.com')">Forgot Password?</a></div>
     </div>
   </div></div>
 </div>
 
-<!-- REGISTER PAGE -->
+<!-- REGISTER PAGE v64 -->
 <div id="registerPage" class="page">
   <div class="card-page"><div class="card">
     <div class="content">
@@ -84,13 +81,13 @@ body{background:#f1f5f9;min-height:100vh}
   </div></div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- DASHBOARD v65 + v66 -->
 <div id="dashboardPage" class="page">
   <div class="dashboard">
     <div class="topbar">
       <div class="welcome" id="userName">Hi, USER</div>
       <div class="icons">
-        <span onclick="alert('24/7 Support')">🎧</span>
+        <span onclick="alert('Support')">🎧</span>
         <span onclick="openNotifications()">🔔<div class="bell-dot" id="bellDot"></div></span>
       </div>
     </div>
@@ -105,39 +102,17 @@ body{background:#f1f5f9;min-height:100vh}
       <div class="btn-grid" onclick="openWithdraw()"><div class="btn-icon">⬆️</div><div>Withdraw</div></div>
       <div class="btn-grid" onclick="showPage('cardsPage')"><div class="btn-icon">💳</div><div>Cards</div></div>
     </div>
-    <div class="section-title">Recent Transactions</div>
+    <div style="padding:0 20px;font-weight:700">Recent Transactions</div>
     <div id="txList"></div>
     <div class="bottom-nav">
       <div class="nav-item active" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
       <div class="nav-item" onclick="showPage('cardsPage')"><div>💳</div>Cards</div>
-      <div class="nav-item" onclick="alert('Analytics')"><div>📊</div>Analytics</div>
       <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
     </div>
   </div>
 </div>
 
-<!-- CARDS PAGE -->
-<div id="cardsPage" class="page">
-  <div class="dashboard">
-    <div class="topbar"><div class="welcome">My Cards</div></div>
-    <div class="card-display">
-      <div style="display:flex;justify-content:space-between"><div>MCE BANK<br>VISA DEBIT</div><div id="cardStatus" style="background:rgba(0,0,0,0.3);padding:4px 10px;border-radius:20px;font-size:11px">ACTIVE</div></div>
-      <div style="font-size:22px;margin:15px 0" id="cardNum">4532 •••• •••• 8819</div>
-      <div style="display:flex;justify-content:space-between"><div><small>CARDHOLDER</small><br><b id="cardName">JOHN DOE</b></div><div><small>EXPIRES</small><br><b>09/29</b></div></div>
-    </div>
-    <div style="display:flex;gap:10px;margin:0 20px">
-      <button class="btn-green" style="background:var(--red)" onclick="freezeCard()">🔒 Freeze Card</button>
-      <button class="btn-green" onclick="copyCard()">📋 Copy Details</button>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
-      <div class="nav-item active"><div>💳</div>Cards</div>
-      <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
-    </div>
-  </div>
-</div>
-
-<!-- SETTINGS PAGE -->
+<!-- SETTINGS v70 -->
 <div id="settingsPage" class="page">
   <div class="dashboard">
     <div class="topbar"><div class="welcome">Settings</div></div>
@@ -145,14 +120,28 @@ body{background:#f1f5f9;min-height:100vh}
     <div class="setting"><div>📱 Phone</div><div id="setPhone">+1</div></div>
     <div class="setting" onclick="openCountryPicker()"><div>🌍 Country Code</div><div id="setCountry">+1 ›</div></div>
     <div class="setting" onclick="openCurrencyPicker()"><div>💱 Currency</div><div id="setCurr">$ ›</div></div>
-    <div class="setting" onclick="changePin()"><div>🔒 Change PIN</div><div>›</div></div>
-    <div class="setting" onclick="alert('2FA: ON')"><div>🛡️ 2FA Security</div><div>ON ›</div></div>
-    <div class="setting" onclick="alert('Download Statement')"><div>📥 Statements</div><div>›</div></div>
     <button class="btn-green" style="margin:20px;width:calc(100% - 40px);background:var(--red)" onclick="logout()">Sign Out</button>
     <div class="bottom-nav">
       <div class="nav-item" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
-      <div class="nav-item" onclick="showPage('cardsPage')"><div>💳</div>Cards</div>
-      <div class="nav-item active"><div>👤</div>Me</div>
+      <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
+    </div>
+  </div>
+</div>
+
+<!-- CARDS v66 -->
+<div id="cardsPage" class="page">
+  <div class="dashboard">
+    <div class="topbar"><div class="welcome">My Cards</div></div>
+    <div style="background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);padding:20px;border-radius:16px;color:#fff;margin:20px">
+      <div>MCE BANK VISA</div>
+      <div style="font-size:22px;margin:15px 0" id="cardNum">4532 •••• •••• 8819</div>
+      <div><b id="cardName">JOHN DOE</b></div>
+    </div>
+    <button class="btn-green" style="margin:0 20px;background:var(--red)" onclick="freezeCard()">🔒 Freeze Card</button>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
+      <div class="nav-item active"><div>💳</div>Cards</div>
+      <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
     </div>
   </div>
 </div>
@@ -164,21 +153,10 @@ let users = JSON.parse(localStorage.getItem('mceUsers') || '[]');
 let currentUser = null;
 let showBalance = true;
 
-// 60+ COUNTRIES + CURRENCIES
 const countries = [
   {code:"+1",curr:"$",name:"USA"},{code:"+234",curr:"₦",name:"Nigeria"},{code:"+44",curr:"£",name:"UK"},{code:"+233",curr:"₵",name:"Ghana"},
-  {code:"+254",curr:"KSh",name:"Kenya"},{code:"+27",curr:"R",name:"South Africa"},{code:"+20",curr:"E£",name:"Egypt"},{code:"+212",curr:"MAD",name:"Morocco"},
-  {code:"+213",curr:"DZD",name:"Algeria"},{code:"+216",curr:"TND",name:"Tunisia"},{code:"+251",curr:"ETB",name:"Ethiopia"},{code:"+256",curr:"UGX",name:"Uganda"},
-  {code:"+255",curr:"TZS",name:"Tanzania"},{code:"+250",curr:"RWF",name:"Rwanda"},{code:"+263",curr:"ZiG",name:"Zimbabwe"},{code:"+260",curr:"ZK",name:"Zambia"},
-  {code:"+225",curr:"CFA",name:"Ivory Coast"},{code:"+228",curr:"CFA",name:"Togo"},{code:"+223",curr:"CFA",name:"Mali"},{code:"+226",curr:"CFA",name:"Burkina Faso"},
-  {code:"+237",curr:"CFA",name:"Cameroon"},{code:"+33",curr:"€",name:"France"},{code:"+49",curr:"€",name:"Germany"},{code:"+39",curr:"€",name:"Italy"},
-  {code:"+34",curr:"€",name:"Spain"},{code:"+31",curr:"€",name:"Netherlands"},{code:"+351",curr:"€",name:"Portugal"},{code:"+86",curr:"¥",name:"China"},
-  {code:"+81",curr:"¥",name:"Japan"},{code:"+82",curr:"₩",name:"South Korea"},{code:"+91",curr:"₹",name:"India"},{code:"+92",curr:"Rs",name:"Pakistan"},
-  {code:"+880",curr:"৳",name:"Bangladesh"},{code:"+62",curr:"Rp",name:"Indonesia"},{code:"+60",curr:"RM",name:"Malaysia"},{code:"+65",curr:"S$",name:"Singapore"},
-  {code:"+66",curr:"฿",name:"Thailand"},{code:"+63",curr:"₱",name:"Philippines"},{code:"+84",curr:"₫",name:"Vietnam"},{code:"+971",curr:"AED",name:"UAE"},
-  {code:"+966",curr:"SAR",name:"Saudi Arabia"},{code:"+90",curr:"₺",name:"Turkey"},{code:"+7",curr:"₽",name:"Russia"},{code:"+55",curr:"R$",name:"Brazil"},
-  {code:"+52",curr:"MX$",name:"Mexico"},{code:"+54",curr:"AR$",name:"Argentina"},{code:"+61",curr:"A$",name:"Australia"},{code:"+64",curr:"NZ$",name:"New Zealand"},
-  {code:"+1",curr:"C$",name:"Canada"}
+  {code:"+254",curr:"KSh",name:"Kenya"},{code:"+27",curr:"R",name:"South Africa"},{code:"+20",curr:"E£",name:"Egypt"},{code:"+86",curr:"¥",name:"China"},
+  {code:"+91",curr:"₹",name:"India"},{code:"+971",curr:"AED",name:"UAE"},{code:"+966",curr:"SAR",name:"Saudi Arabia"},{code:"+61",curr:"A$",name:"Australia"}
 ];
 
 function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active')}
@@ -192,8 +170,9 @@ window.onload=function(){
   regCountry.innerHTML = countries.map(c=>`<option value="${c.code}|${c.curr}">${c.name} ${c.code} ${c.curr}</option>`).join('');
 }
 
+// FIXED DUPLICATE CHECK v72
 function checkDuplicate(){
-  const emailDup = users.find(u=>u.email===regEmail.value);
+  const emailDup = users.find(u=>u.email.toLowerCase()===regEmail.value.toLowerCase());
   const phoneDup = users.find(u=>u.phone===regPhone.value);
   emailError.innerText = emailDup? 'Email already registered' : '';
   phoneError.innerText = phoneDup? 'Phone already registered' : '';
@@ -203,7 +182,7 @@ function register(){
   if(!regName.value||!regEmail.value||!regCountry.value||!regPhone.value||!regPin.value){alert('Fill all fields');return}
   if(regPin.value!==regPin2.value){alert('Passwords do not match');return}
   if(!agree.checked){alert('Agree to Terms');return}
-  if(users.find(u=>u.email===regEmail.value)){alert('Email already exists');return}
+  if(users.find(u=>u.email.toLowerCase()===regEmail.value.toLowerCase())){alert('Email already exists');return}
   if(users.find(u=>u.phone===regPhone.value)){alert('Phone already exists');return}
   
   const [countryCode, currency] = regCountry.value.split('|');
@@ -211,8 +190,7 @@ function register(){
     name:regName.value,email:regEmail.value,phone:regPhone.value,country:countryCode,currency:currency,pin:regPin.value,
     accNo:genAccNo(),balance:300,
     transactions:[{type:'$300 Welcome Bonus',amt:300,date:'Today'}],
-    cardFrozen:false,
-    notifications:[{type:'$50 Member Bonus',msg:'Click bell to claim your $50 new member bonus',amount:50,claimed:false}]
+    notifications:[{type:'$50 Member Bonus',msg:'Click bell to claim',amount:50,claimed:false}]
   };
   users.push(user);localStorage.setItem('mceUsers',JSON.stringify(users));
   loginUser(user);
@@ -220,7 +198,7 @@ function register(){
 }
 
 function login(){
-  const user = users.find(u=>u.email===loginEmail.value && u.pin===loginPin.value);
+  const user = users.find(u=>u.email.toLowerCase()===loginEmail.value.toLowerCase() && u.pin===loginPin.value);
   if(!user){alert('Wrong Email or Password');return}
   loginUser(user);
 }
@@ -243,18 +221,13 @@ function loginUser(user){
 function renderTx(){
   txList.innerHTML=currentUser.transactions.slice(0,10).map(t=>
     `<div class="tx"><div><b>${t.type}</b><br><small>${t.date}</small></div>
-    <div style="color:${t.amt>0?'var(--green)':'var(--red)'};font-weight:700">${t.amt>0?'+':''}${formatBalance(Math.abs(t.amt))}</div></div>`
-  ).join('') || '<div style="padding:20px;text-align:center;color:var(--gray)">No transactions</div>';
+    <div style="color:${t.amt>0?'var(--green)':'var(--red)'}">${t.amt>0?'+':''}${formatBalance(Math.abs(t.amt))}</div></div>`
+  ).join('');
 }
 
 function openCountryPicker(){
   modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Select Country</h2><input id="searchCountry" class="input" placeholder="Search..." onkeyup="filterCountries()">
-  <div id="countryList">${countries.map(c=>`<div onclick="selectCountry('${c.code}|${c.curr}')" style="padding:12px;border-bottom:1px solid #333;cursor:pointer">${c.name} ${c.code} ${c.curr}</div>`).join('')}</div>`;
-}
-function filterCountries(){
-  const val=searchCountry.value.toLowerCase();
-  countryList.innerHTML=countries.filter(c=>c.name.toLowerCase().includes(val)).map(c=>`<div onclick="selectCountry('${c.code}|${c.curr}')" style="padding:12px;border-bottom:1px solid #333;cursor:pointer">${c.name} ${c.code} ${c.curr}</div>`).join('');
+  modalBody.innerHTML=`<h2>Select Country</h2>`+countries.map(c=>`<div onclick="selectCountry('${c.code}|${c.curr}')" style="padding:12px;border-bottom:1px solid #333;cursor:pointer">${c.name} ${c.code} ${c.curr}</div>`).join('');
 }
 function selectCountry(val){
   const [code,curr]=val.split('|');
@@ -263,7 +236,7 @@ function selectCountry(val){
   saveUsers();
   loginUser(currentUser);
   closeModal();
-  showAlert('Country and Currency Updated');
+  showAlert('Updated');
 }
 
 function openCurrencyPicker(){
@@ -294,21 +267,18 @@ function openNotifications(){
   modalBody.innerHTML=`<h2>Notifications</h2>`+currentUser.notifications.map(n=>`<div class="tx"><div><b>${n.type}</b><br><small>${n.msg}</small></div></div>`).join('')+`<button class="btn-green" onclick="closeModal()">Close</button>`;
 }
 
-function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Deposit Money</h2><input id="dAmt" type="number" class="input" placeholder="Enter Amount"><button class="btn-green" onclick="doDeposit()">Deposit Now</button>`;}
-function doDeposit(){const amt=parseFloat(dAmt.value);if(!amt||amt<=0){alert('Enter valid amount');return}currentUser.balance+=amt;currentUser.transactions.unshift({type:'Deposit',amt:amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();showAlert(`${formatBalance(amt)} Deposited`);}
+function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Deposit</h2><input id="dAmt" type="number" class="input" placeholder="Amount"><button class="btn-green" onclick="doDeposit()">Deposit</button>`;}
+function doDeposit(){const amt=parseFloat(dAmt.value);if(!amt){alert('Invalid');return}currentUser.balance+=amt;currentUser.transactions.unshift({type:'Deposit',amt:amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();}
 
-function openWithdraw(){modal.style.display='flex';modalBody.innerHTML=`<h2>Withdraw Money</h2><input id="wAmt" type="number" class="input" placeholder="Enter Amount"><button class="btn-green" onclick="doWithdraw()">Withdraw Now</button>`;}
-function doWithdraw(){const amt=parseFloat(wAmt.value);if(!amt||amt<=0){alert('Enter valid amount');return}if(amt>currentUser.balance){alert('Insufficient Balance');return}currentUser.balance-=amt;currentUser.transactions.unshift({type:'Withdraw',amt:-amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();showAlert(`${formatBalance(amt)} Withdrawn`);}
+function openWithdraw(){modal.style.display='flex';modalBody.innerHTML=`<h2>Withdraw</h2><input id="wAmt" type="number" class="input" placeholder="Amount"><button class="btn-green" onclick="doWithdraw()">Withdraw</button>`;}
+function doWithdraw(){const amt=parseFloat(wAmt.value);if(amt>currentUser.balance){alert('Insufficient');return}currentUser.balance-=amt;currentUser.transactions.unshift({type:'Withdraw',amt:-amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();}
 
-function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer Money</h2><input id="tAcc" class="input" placeholder="Recipient Account Number"><input id="tAmt" type="number" class="input" placeholder="Amount"><input id="tPin" type="password" class="input" placeholder="Enter PIN" maxlength="4"><button class="btn-green" onclick="doTransfer()">Send Money</button>`;}
-function doTransfer(){if(tPin.value!==currentUser.pin){alert('Wrong PIN');return}const recipient=users.find(u=>u.accNo===tAcc.value);if(!recipient){alert('Account not found');return}const amt=parseFloat(tAmt.value);if(amt>currentUser.balance){alert('Insufficient Balance');return}currentUser.balance-=amt;recipient.balance+=amt;currentUser.transactions.unshift({type:'To '+recipient.name,amt:-amt,date:'Today'});recipient.transactions.unshift({type:'From '+currentUser.name,amt:amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();showAlert(`Sent ${formatBalance(amt)} to ${recipient.name}`);}
+function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer</h2><input id="tAcc" class="input" placeholder="Recipient Account"><input id="tAmt" type="number" class="input" placeholder="Amount"><input id="tPin" type="password" class="input" placeholder="PIN"><button class="btn-green" onclick="doTransfer()">Send</button>`;}
+function doTransfer(){if(tPin.value!==currentUser.pin){alert('Wrong PIN');return}const recipient=users.find(u=>u.accNo===tAcc.value);if(!recipient){alert('Account not found');return}const amt=parseFloat(tAmt.value);currentUser.balance-=amt;recipient.balance+=amt;saveUsers();loginUser(currentUser);closeModal();}
 
 function freezeCard(){currentUser.cardFrozen=!currentUser.cardFrozen;saveUsers();loginUser(currentUser);showAlert(currentUser.cardFrozen?'Card Frozen':'Card Activated')}
-function copyCard(){navigator.clipboard.writeText(document.getElementById('cardNum').innerText);showAlert('Card Details Copied')}
-function changePin(){modal.style.display='flex';modalBody.innerHTML=`<h2>Change PIN</h2><input id="oldPin" type="password" class="input" placeholder="Old PIN"><input id="newPin" type="password" class="input" placeholder="New 4-digit PIN"><button class="btn-green" onclick="saveNewPin()">Update PIN</button>`;}
-function saveNewPin(){if(oldPin.value!==currentUser.pin){alert('Wrong Old PIN');return}currentUser.pin=newPin.value;saveUsers();closeModal();showAlert('PIN Changed Successfully')}
 function saveUsers(){localStorage.setItem('mceUsers',JSON.stringify(users))}
-function logout(){currentUser=null;loginEmail.value='';loginPin.value='';showPage('loginPage')}
+function logout(){currentUser=null;showPage('loginPage')}
 </script>
 </body>
 </html>
