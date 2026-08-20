@@ -3,282 +3,232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK - v72 FINAL</title>
+<title>MCE BANK - v81 FINAL</title>
 <style>
-:root{--green:#22c55e;--green-dark:#16a34a;--blue:#1e3a8a;--black:#0a0a0a;--card:#fff;--text:#1e293b;--gray:#64748b;--red:#ef4444}
+:root{--purple:#7c3aed;--green:#22c55e;--black:#0a0a0a;--dark:#151515;--card:#1f1f1f;--red:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif}
-body{background:#f1f5f9;min-height:100vh}
+body{background:var(--black);color:#fff;padding-bottom:90px}
 .page{display:none}.page.active{display:block}
-.card-page{background:#f1f5f9;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{background:var(--card);width:100%;max-width:450px;border-radius:8px;padding:0;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
-.login-header{background:linear-gradient(90deg,#ef4444 0%,#f97316 100%);padding:20px;text-align:center;color:#fff;font-size:28px;font-weight:700;margin:20px;border-radius:4px}
-.content{padding:25px}
-.content h2{font-size:18px;font-weight:600;color:var(--text);margin-bottom:20px}
-.input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:6px;font-size:15px;margin-bottom:15px;background:#fff}
-.input:focus{outline:none;border-color:var(--green)}
-.checkbox{display:flex;align-items:center;gap:8px;margin:15px 0;font-size:14px;color:var(--gray)}
-.btn-primary{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px}
-.btn-secondary{width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:15px}
-.btn-green{width:100%;padding:12px;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);color:#fff;border:none;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:15px}
-.error{color:var(--red);font-size:12px;margin-top:-10px;margin-bottom:10px}
-.dashboard{background:var(--black);color:#fff;min-height:100vh;padding-bottom:80px}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:20px}
-.welcome{font-size:22px;font-weight:900}
-.icons{display:flex;gap:15px;position:relative;font-size:24px;cursor:pointer}
-.bell-dot{position:absolute;top:0;right:0;width:10px;height:10px;background:var(--red);border-radius:50%;display:none}
-.balance-card{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);margin:0 20px;padding:25px;border-radius:20px;color:#fff}
-.balance{font-size:32px;font-weight:900;margin:10px 0}
-.eye{font-size:22px;cursor:pointer}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:25px 20px}
-.btn-grid{background:#1a1a1a;padding:18px 10px;border-radius:16px;text-align:center;cursor:pointer;border:1px solid #27272a}
-.btn-icon{font-size:28px;color:var(--green);margin-bottom:6px}
-.tx{display:flex;justify-content:space-between;padding:14px;background:#1a1a1a;margin:8px 20px;border-radius:12px;border:1px solid #27272a}
-.bottom-nav{position:fixed;bottom:0;width:100%;background:#1a1a1a;border-top:1px solid #27272a;display:flex;justify-content:space-around;padding:12px 0}
-.nav-item{text-align:center;color:var(--gray);cursor:pointer;font-size:12px}
+.header{padding:20px;font-size:24px;font-weight:900;display:flex;justify-content:space-between}
+.balance-card{background:linear-gradient(135deg,var(--purple) 0%,var(--green) 100%);margin:0 16px;padding:24px;border-radius:20px;box-shadow:0 8px 25px rgba(124,58,237,0.3)}
+.balance{font-size:36px;font-weight:900;margin:10px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:20px 16px;text-align:center}
+.btn-grid{background:var(--dark);padding:20px 10px;border-radius:16px;text-align:center;cursor:pointer;border:1px solid #222}
+.btn-grid:active{transform:scale(0.95)}
+.btn-icon{font-size:28px;margin-bottom:8px;color:var(--green)}
+.grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:20px 16px;text-align:center}
+.section{background:var(--card);margin:12px 16px;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.section:active{background:#2a2a2a}
+.card-design{background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);margin:16px;border-radius:20px;padding:20px;aspect-ratio:1.6}
+.reward-item{background:var(--dark);margin:12px 16px;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center}
+.btn{width:100%;padding:14px;background:linear-gradient(90deg,var(--purple) 0%,var(--green) 100%);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px}
+.btn-red{background:var(--red)}
+.input{width:100%;padding:14px;background:#222;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0;font-size:16px}
+.error{background:var(--red);padding:10px;border-radius:8px;margin:10px 0;display:none}
+.success{background:var(--green);padding:10px;border-radius:8px;margin:10px 0;display:none}
+.auth-box{max-width:400px;margin:50px auto;padding:30px;background:var(--dark);border-radius:20px;border:1px solid #222}
+.bottom-nav{position:fixed;bottom:0;width:100%;background:#0f0f0f;border-top:1px solid #222;display:flex;justify-content:space-around;padding:10px 0 20px 0}
+.nav-item{text-align:center;color:#888;font-size:11px;font-weight:600;cursor:pointer;flex:1}
 .nav-item.active{color:var(--green)}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:99}
-.modal-content{background:#1a1a1a;padding:24px;border-radius:20px;width:90%;max-width:420px;border:1px solid #27272a;color:#fff;max-height:80vh;overflow-y:auto}
-.setting{background:#1a1a1a;margin:8px 20px;padding:16px;border-radius:14px;display:flex;justify-content:space-between;cursor:pointer;border:1px solid #27272a}
-.alert{position:fixed;top:20px;right:20px;background:var(--green);color:#fff;padding:14px 20px;border-radius:12px;z-index:999;display:none}
+.nav-icon{font-size:24px;margin-bottom:4px}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);justify-content:center;align-items:center;z-index:99}
+.modal-content{background:var(--dark);padding:24px;border-radius:20px;width:90%;max-width:400px;border:1px solid #333}
 </style>
 </head>
 <body>
 
-<div id="alert" class="alert"></div>
-
-<!-- LOGIN PAGE v63 -->
+<!-- 1. LOGIN -->
 <div id="loginPage" class="page active">
-  <div class="card-page"><div class="card">
-    <div class="login-header">MCE Bank</div>
-    <div class="content">
-      <h2>Login To Your Account</h2>
-      <input type="email" id="loginEmail" class="input" placeholder="Email">
-      <input type="password" id="loginPin" class="input" placeholder="Password" maxlength="4">
-      <div class="checkbox"><input type="checkbox" id="remember"> <label>Remember Me</label></div>
-      <button class="btn-primary" onclick="login()">Login</button>
-      <button class="btn-secondary" onclick="showPage('registerPage')">Create Your Account</button>
-    </div>
-  </div></div>
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px">MCE BANK</h2>
+    <div class="error" id="loginError"></div>
+    <input id="loginEmail" class="input" placeholder="Email or Phone">
+    <input id="loginPass" class="input" type="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <p style="text-align:center;margin-top:15px;color:#888;cursor:pointer" onclick="showPage('forgotPage')">Forgot Password?</p>
+    <p style="text-align:center;margin-top:10px">No account? <span style="color:var(--green);cursor:pointer" onclick="showPage('registerPage')">Create One</span></p>
+  </div>
 </div>
 
-<!-- REGISTER PAGE v64 -->
+<!-- 2. REGISTER -->
 <div id="registerPage" class="page">
-  <div class="card-page"><div class="card">
-    <div class="content">
-      <h2>Create Your Account</h2>
-      <input type="text" id="regName" class="input" placeholder="Name">
-      <input type="email" id="regEmail" class="input" placeholder="E-Mail Address" onblur="checkDuplicate()">
-      <div id="emailError" class="error"></div>
-      <select id="regCountry" class="input"></select>
-      <input type="tel" id="regPhone" class="input" placeholder="Phone" onblur="checkDuplicate()">
-      <div id="phoneError" class="error"></div>
-      <input type="password" id="regPin" class="input" placeholder="Password" maxlength="4">
-      <input type="password" id="regPin2" class="input" placeholder="Confirm Password">
-      <div class="checkbox"><input type="checkbox" id="agree"> <label>I agree with Terms & Privacy</label></div>
-      <button class="btn-green" onclick="register()">Create My Account</button>
-      <div style="text-align:center"><a onclick="showPage('loginPage')">Already Have Account? Log In</a></div>
-    </div>
-  </div></div>
-</div>
-
-<!-- DASHBOARD v65 + v66 -->
-<div id="dashboardPage" class="page">
-  <div class="dashboard">
-    <div class="topbar">
-      <div class="welcome" id="userName">Hi, USER</div>
-      <div class="icons">
-        <span onclick="alert('Support')">🎧</span>
-        <span onclick="openNotifications()">🔔<div class="bell-dot" id="bellDot"></div></span>
-      </div>
-    </div>
-    <div class="balance-card">
-      <div style="display:flex;justify-content:space-between"><div>Available Balance</div><div class="eye" id="eyeIcon" onclick="toggleBalance()">👁️</div></div>
-      <div class="balance" id="balance">$0.00</div>
-      <div id="accNo" style="background:rgba(0,0,0,0.3);padding:8px 14px;border-radius:20px;display:inline-block;font-size:12px;margin-top:8px">Acc: 0000</div>
-    </div>
-    <div class="grid4">
-      <div class="btn-grid" onclick="openTransfer()"><div class="btn-icon">💸</div><div>Transfer</div></div>
-      <div class="btn-grid" onclick="openDeposit()"><div class="btn-icon">⬇️</div><div>Deposit</div></div>
-      <div class="btn-grid" onclick="openWithdraw()"><div class="btn-icon">⬆️</div><div>Withdraw</div></div>
-      <div class="btn-grid" onclick="showPage('cardsPage')"><div class="btn-icon">💳</div><div>Cards</div></div>
-    </div>
-    <div style="padding:0 20px;font-weight:700">Recent Transactions</div>
-    <div id="txList"></div>
-    <div class="bottom-nav">
-      <div class="nav-item active" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
-      <div class="nav-item" onclick="showPage('cardsPage')"><div>💳</div>Cards</div>
-      <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
-    </div>
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px">Create Account</h2>
+    <div class="error" id="regError"></div>
+    <div class="success" id="regSuccess"></div>
+    <input id="regName" class="input" placeholder="Full Name">
+    <input id="regEmail" class="input" placeholder="Email">
+    <input id="regPhone" class="input" placeholder="Phone Number">
+    <select id="regCountry" class="input">
+      <option value="₦">Nigeria ₦</option>
+      <option value="$">USA $</option>
+      <option value="£">UK £</option>
+    </select>
+    <input id="regPass" class="input" type="password" placeholder="Password">
+    <button class="btn" onclick="register()">Create My Account</button>
+    <p style="text-align:center;margin-top:15px">Have account? <span style="color:var(--green);cursor:pointer" onclick="showPage('loginPage')">Login</span></p>
   </div>
 </div>
 
-<!-- SETTINGS v70 -->
-<div id="settingsPage" class="page">
-  <div class="dashboard">
-    <div class="topbar"><div class="welcome">Settings</div></div>
-    <div class="setting"><div>📧 Email</div><div id="setEmail">email</div></div>
-    <div class="setting"><div>📱 Phone</div><div id="setPhone">+1</div></div>
-    <div class="setting" onclick="openCountryPicker()"><div>🌍 Country Code</div><div id="setCountry">+1 ›</div></div>
-    <div class="setting" onclick="openCurrencyPicker()"><div>💱 Currency</div><div id="setCurr">$ ›</div></div>
-    <button class="btn-green" style="margin:20px;width:calc(100% - 40px);background:var(--red)" onclick="logout()">Sign Out</button>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
-      <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
-    </div>
+<!-- 3. FORGOT PASSWORD -->
+<div id="forgotPage" class="page">
+  <div class="auth-box">
+    <h2 style="text-align:center;margin-bottom:20px">Reset Password</h2>
+    <div class="error" id="forgotError"></div>
+    <div class="success" id="forgotSuccess"></div>
+    <input id="forgotEmail" class="input" placeholder="Enter your Email">
+    <button class="btn" onclick="resetPassword()">Show Password</button>
+    <p style="text-align:center;margin-top:15px"><span style="color:var(--green);cursor:pointer" onclick="showPage('loginPage')">Back to Login</span></p>
   </div>
 </div>
 
-<!-- CARDS v66 -->
+<!-- 4. HOME -->
+<div id="homePage" class="page">
+  <div class="header"><div>Hi, <span id="userName">USER</span></div><div>⚙️</div></div>
+  <div class="balance-card">
+    <div>Available Balance <span onclick="toggleBalance()" id="eye">👁️</span></div>
+    <div class="balance" id="balance">₦0.00</div>
+    <div style="font-size:12px;opacity:0.8" id="accNo">Acc: 00000000</div>
+  </div>
+  <div class="grid3">
+    <div class="btn-grid" onclick="openDeposit()"><div class="btn-icon">⬇️</div><div>Add Money</div></div>
+    <div class="btn-grid" onclick="openTransfer()"><div class="btn-icon">💸</div><div>Transfer</div></div>
+    <div class="btn-grid" onclick="openWithdraw()"><div class="btn-icon">⬆️</div><div>Withdraw</div></div>
+  </div>
+  <div class="grid8">
+    <div class="btn-grid" onclick="alert('Buy Airtime')"><div class="btn-icon">📶</div><div>Airtime</div></div>
+    <div class="btn-grid" onclick="alert('Buy Data')"><div class="btn-icon">📱</div><div>Data</div></div>
+    <div class="btn-grid" onclick="alert('Pay Bills')"><div class="btn-icon">💡</div><div>Bills</div></div>
+    <div class="btn-grid" onclick="alert('TV')"><div class="btn-icon">📺</div><div>TV</div></div>
+    <div class="btn-grid" onclick="alert('SafeBox')"><div class="btn-icon">🔒</div><div>SafeBox</div></div>
+    <div class="btn-grid" onclick="openLoan()"><div class="btn-icon">₦</div><div>Loan</div></div>
+    <div class="btn-grid" onclick="alert('Game')"><div class="btn-icon">🎮</div><div>Game</div></div>
+    <div class="btn-grid" onclick="alert('More')"><div class="btn-icon">⋯</div><div>More</div></div>
+  </div>
+</div>
+
+<!-- 5. REWARDS -->
+<div id="rewardsPage" class="page">
+  <div class="header">💎 Rewards</div>
+  <div class="reward-item"><div><b>Your Points</b><br><small id="points">1,250 Points</small></div><button class="btn" style="width:auto;padding:8px 16px" onclick="redeemPoints()">Redeem</button></div>
+  <div class="reward-item"><div><b>Refer & Earn</b><br><small>Earn ₦500 per friend</small></div><button class="btn" style="width:auto;padding:8px 16px" onclick="alert('Link: mcebank.com/ref/'+currentUser.accNo)">Copy</button></div>
+</div>
+
+<!-- 6. FINANCE -->
+<div id="financePage" class="page">
+  <div class="header">📊 Finance</div>
+  <div class="balance-card"><div>Total Savings</div><div class="balance" id="savingsBalance">₦0.00</div></div>
+  <div class="section" onclick="openLoan()"><div><b>₦ Loan</b><br><small>Apply and get money instantly</small></div><div>></div></div>
+  <div class="section" onclick="alert('SafeBox: Earn 5%')"><div><b>🔒 SafeBox</b></div><div>></div></div>
+  <div class="section" onclick="alert('Fixed: Earn 12%')"><div><b>🏦 Fixed</b></div><div>></div></div>
+</div>
+
+<!-- 7. CARDS -->
 <div id="cardsPage" class="page">
-  <div class="dashboard">
-    <div class="topbar"><div class="welcome">My Cards</div></div>
-    <div style="background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);padding:20px;border-radius:16px;color:#fff;margin:20px">
-      <div>MCE BANK VISA</div>
-      <div style="font-size:22px;margin:15px 0" id="cardNum">4532 •••• •••• 8819</div>
-      <div><b id="cardName">JOHN DOE</b></div>
-    </div>
-    <button class="btn-green" style="margin:0 20px;background:var(--red)" onclick="freezeCard()">🔒 Freeze Card</button>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showPage('dashboardPage')"><div>🏠</div>Home</div>
-      <div class="nav-item active"><div>💳</div>Cards</div>
-      <div class="nav-item" onclick="showPage('settingsPage')"><div>👤</div>Me</div>
-    </div>
+  <div class="header">💳 Cards</div>
+  <div class="card-design">
+    <div style="font-weight:900;font-size:18px">MCE<span style="color:var(--green)">Pay</span></div>
+    <div style="font-size:22px;margin-top:50px" id="cardNum">4532 •••• •••• 8819</div>
+    <div id="cardName" style="margin-top:10px">USER</div>
   </div>
+  <div class="grid3">
+    <div class="btn-grid" onclick="alert('Card: '+cardNum.innerText)"><div class="btn-icon">•••</div><div>Details</div></div>
+    <div class="btn-grid" onclick="alert('Card Frozen')"><div class="btn-icon">🔒</div><div>Freeze</div></div>
+    <div class="btn-grid" onclick="alert('Online: ON')"><div class="btn-icon">🌐</div><div>Online</div></div>
+  </div>
+</div>
+
+<!-- 8. ME -->
+<div id="settingsPage" class="page">
+  <div class="header">👤 Me</div>
+  <div class="section"><div><b>📧 Email</b><br><span id="setEmail"></span></div></div>
+  <div class="section"><div><b>📱 Phone</b><br><span id="setPhone"></span></div></div>
+  <div class="section"><div><b>🏦 Account</b><br><span id="setAcc"></span></div></div>
+  <div class="section" onclick="alert('Tier 1: ₦50k daily limit')"><div><b>⭐ Account Tier</b></div><div>></div></div>
+  <button class="btn btn-red" style="margin:20px 16px" onclick="logout()">Sign Out</button>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchPage('homePage',this)"><div class="nav-icon">🏠</div>Home</div>
+  <div class="nav-item" onclick="switchPage('rewardsPage',this)"><div class="nav-icon">💎</div>Rewards</div>
+  <div class="nav-item" onclick="switchPage('financePage',this)"><div class="nav-icon">📊</div>Finance</div>
+  <div class="nav-item" onclick="switchPage('cardsPage',this)"><div class="nav-icon">💳</div>Cards</div>
+  <div class="nav-item" onclick="switchPage('settingsPage',this)"><div class="nav-icon">👤</div>Me</div>
 </div>
 
 <div class="modal" id="modal"><div class="modal-content"><span style="float:right;font-size:26px;cursor:pointer" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
 
 <script>
 let users = JSON.parse(localStorage.getItem('mceUsers') || '[]');
-let currentUser = null;
+let currentUser = JSON.parse(localStorage.getItem('mceCurrent') || 'null');
 let showBalance = true;
 
-const countries = [
-  {code:"+1",curr:"$",name:"USA"},{code:"+234",curr:"₦",name:"Nigeria"},{code:"+44",curr:"£",name:"UK"},{code:"+233",curr:"₵",name:"Ghana"},
-  {code:"+254",curr:"KSh",name:"Kenya"},{code:"+27",curr:"R",name:"South Africa"},{code:"+20",curr:"E£",name:"Egypt"},{code:"+86",curr:"¥",name:"China"},
-  {code:"+91",curr:"₹",name:"India"},{code:"+971",curr:"AED",name:"UAE"},{code:"+966",curr:"SAR",name:"Saudi Arabia"},{code:"+61",curr:"A$",name:"Australia"}
-];
-
-function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active')}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function switchPage(pageId, el){
+  showPage(pageId);
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
 function closeModal(){modal.style.display='none'}
-function showAlert(msg){alertBox.innerText=msg;alertBox.style.display='block';setTimeout(()=>alertBox.style.display='none',3000)}
-function genAccNo(){let newAcc;do{newAcc='10'+Math.floor(1000000+Math.random()*9000000);}while(users.find(u=>u.accNo===newAcc));return newAcc}
 function formatBalance(num){return currentUser.currency + num.toLocaleString('en-US',{minimumFractionDigits:2})}
-function toggleBalance(){showBalance=!showBalance;eyeIcon.innerText = showBalance? '👁️' : '🙈';balance.innerText = showBalance? formatBalance(currentUser.balance) : '••••'}
+function toggleBalance(){showBalance=!showBalance;eye.innerText=showBalance?'👁️':'🙈';balance.innerText=showBalance?formatBalance(currentUser.balance):'****'}
+function save(){localStorage.setItem('mceUsers',JSON.stringify(users));localStorage.setItem('mceCurrent',JSON.stringify(currentUser))}
 
-window.onload=function(){
-  regCountry.innerHTML = countries.map(c=>`<option value="${c.code}|${c.curr}">${c.name} ${c.code} ${c.curr}</option>`).join('');
-}
-
-// FIXED DUPLICATE CHECK v72
-function checkDuplicate(){
-  const emailDup = users.find(u=>u.email.toLowerCase()===regEmail.value.toLowerCase());
-  const phoneDup = users.find(u=>u.phone===regPhone.value);
-  emailError.innerText = emailDup? 'Email already registered' : '';
-  phoneError.innerText = phoneDup? 'Phone already registered' : '';
-}
-
+// REGISTER WITH DUPLICATE CHECK
 function register(){
-  if(!regName.value||!regEmail.value||!regCountry.value||!regPhone.value||!regPin.value){alert('Fill all fields');return}
-  if(regPin.value!==regPin2.value){alert('Passwords do not match');return}
-  if(!agree.checked){alert('Agree to Terms');return}
-  if(users.find(u=>u.email.toLowerCase()===regEmail.value.toLowerCase())){alert('Email already exists');return}
-  if(users.find(u=>u.phone===regPhone.value)){alert('Phone already exists');return}
-  
-  const [countryCode, currency] = regCountry.value.split('|');
-  const user={
-    name:regName.value,email:regEmail.value,phone:regPhone.value,country:countryCode,currency:currency,pin:regPin.value,
-    accNo:genAccNo(),balance:300,
-    transactions:[{type:'$300 Welcome Bonus',amt:300,date:'Today'}],
-    notifications:[{type:'$50 Member Bonus',msg:'Click bell to claim',amount:50,claimed:false}]
-  };
-  users.push(user);localStorage.setItem('mceUsers',JSON.stringify(users));
-  loginUser(user);
-  showAlert('$300 Welcome Bonus Added!');
+  regError.style.display='none';
+  const name=regName.value.trim(), email=regEmail.value.trim().toLowerCase(), phone=regPhone.value.trim(), pass=regPass.value;
+  if(users.find(u=>u.email.toLowerCase()===email)){regError.innerText="❌ Email already exists";regError.style.display='block';return}
+  if(users.find(u=>u.phone===phone)){regError.innerText="❌ Phone already exists";regError.style.display='block';return}
+  const newUser={name,email,phone,password:pass,currency:regCountry.value,balance:300,accNo:'10'+Math.floor(Math.random()*90000000+10000000),transactions:[{type:'Welcome',amt:300,date:'Today'}]};
+  users.push(newUser);save();regSuccess.innerText="✅ Account Created!";regSuccess.style.display='block';setTimeout(()=>{loginUser(newUser);switchPage('homePage')},1500)
 }
 
+// LOGIN
 function login(){
-  const user = users.find(u=>u.email.toLowerCase()===loginEmail.value.toLowerCase() && u.pin===loginPin.value);
-  if(!user){alert('Wrong Email or Password');return}
-  loginUser(user);
+  loginError.style.display='none';
+  const input=loginEmail.value.trim().toLowerCase(), pass=loginPass.value;
+  const user=users.find(u=>(u.email.toLowerCase()===input||u.phone===input)&&u.password===pass);
+  if(!user){loginError.innerText="❌ Wrong login";loginError.style.display='block';return}
+  loginUser(user);switchPage('homePage')
 }
 
 function loginUser(user){
-  currentUser=user;
-  userName.innerText='Hi, '+currentUser.name.split(' ')[0];
+  currentUser=user;save();
+  userName.innerText=currentUser.name.split(' ')[0].toUpperCase();
   accNo.innerText='Acc: '+currentUser.accNo;
   balance.innerText=formatBalance(currentUser.balance);
-  setEmail.innerText=currentUser.email;
-  setPhone.innerText=currentUser.phone;
-  setCountry.innerText=currentUser.country+' ›';
-  setCurr.innerText=currentUser.currency+' ›';
+  savingsBalance.innerText=formatBalance(currentUser.balance*0.3);
+  setEmail.innerText=currentUser.email;setPhone.innerText=currentUser.phone;setAcc.innerText=currentUser.accNo;
   cardName.innerText=currentUser.name.toUpperCase();
-  if(currentUser.notifications.some(n=>!n.claimed)) bellDot.style.display='block';
-  renderTx();
-  showPage('dashboardPage');
 }
 
-function renderTx(){
-  txList.innerHTML=currentUser.transactions.slice(0,10).map(t=>
-    `<div class="tx"><div><b>${t.type}</b><br><small>${t.date}</small></div>
-    <div style="color:${t.amt>0?'var(--green)':'var(--red)'}">${t.amt>0?'+':''}${formatBalance(Math.abs(t.amt))}</div></div>`
-  ).join('');
+// FORGOT PASSWORD
+function resetPassword(){
+  forgotError.style.display='none';forgotSuccess.style.display='none';
+  const email=forgotEmail.value.trim().toLowerCase();
+  const user=users.find(u=>u.email.toLowerCase()===email);
+  if(!user){forgotError.innerText="❌ Email not found";forgotError.style.display='block';return}
+  forgotSuccess.innerText="✅ Your password: "+user.password;forgotSuccess.style.display='block';
 }
 
-function openCountryPicker(){
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Select Country</h2>`+countries.map(c=>`<div onclick="selectCountry('${c.code}|${c.curr}')" style="padding:12px;border-bottom:1px solid #333;cursor:pointer">${c.name} ${c.code} ${c.curr}</div>`).join('');
-}
-function selectCountry(val){
-  const [code,curr]=val.split('|');
-  currentUser.country=code;
-  currentUser.currency=curr;
-  saveUsers();
-  loginUser(currentUser);
-  closeModal();
-  showAlert('Updated');
-}
+// ALL BANK FUNCTIONS
+function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Add Money</h2><input id="dAmt" class="input" type="number"><button class="btn" onclick="doDeposit()">Add</button>`}
+function doDeposit(){currentUser.balance+=parseFloat(dAmt.value);save();location.reload()}
+function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer</h2><input id="tAcc" class="input" placeholder="Account"><input id="tAmt" class="input" type="number"><button class="btn" onclick="doTransfer()">Send</button>`}
+function doTransfer(){currentUser.balance-=parseFloat(tAmt.value);save();alert('Sent!');location.reload()}
+function openWithdraw(){modal.style.display='flex';modalBody.innerHTML=`<h2>Withdraw</h2><input id="wAmt" class="input" type="number"><button class="btn" onclick="doWithdraw()">Withdraw</button>`}
+function doWithdraw(){currentUser.balance-=parseFloat(wAmt.value);save();location.reload()}
+function openLoan(){modal.style.display='flex';modalBody.innerHTML=`<h2>Apply Loan</h2><input id="loanNIN" class="input" placeholder="NIN"><input id="loanBVN" class="input" placeholder="BVN"><input id="loanPhone" class="input" placeholder="Phone"><input id="loanEmail" class="input" placeholder="Email"><input id="loanAmount" class="input" type="number" placeholder="Amount"><button class="btn" onclick="submitLoan()">Get Loan</button>`}
+function submitLoan(){currentUser.balance+=parseFloat(loanAmount.value);save();closeModal();location.reload();alert('₦'+loanAmount.value+' Credited!')}
+function redeemPoints(){alert('₦100 Redeemed!');points.innerText='1,150 Points'}
+function logout(){localStorage.removeItem('mceCurrent');location.reload()}
 
-function openCurrencyPicker(){
-  const uniqueCurr = [...new Set(countries.map(c=>c.curr))];
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Select Currency</h2>`+uniqueCurr.map(c=>`<div onclick="selectCurrency('${c}')" style="padding:12px;border-bottom:1px solid #333;cursor:pointer">${c}</div>`).join('');
-}
-function selectCurrency(curr){
-  currentUser.currency=curr;
-  saveUsers();
-  loginUser(currentUser);
-  closeModal();
-  showAlert('Currency Updated to '+curr);
-}
-
-function openNotifications(){
-  const unclaimed = currentUser.notifications.find(n=>!n.claimed);
-  if(unclaimed){
-    currentUser.balance += unclaimed.amount;
-    unclaimed.claimed = true;
-    currentUser.transactions.unshift({type:unclaimed.type,amt:unclaimed.amount,date:'Today'});
-    saveUsers();
-    loginUser(currentUser);
-    showAlert(`${formatBalance(unclaimed.amount)} Claimed!`);
-  }
-  bellDot.style.display='none';
-  modal.style.display='flex';
-  modalBody.innerHTML=`<h2>Notifications</h2>`+currentUser.notifications.map(n=>`<div class="tx"><div><b>${n.type}</b><br><small>${n.msg}</small></div></div>`).join('')+`<button class="btn-green" onclick="closeModal()">Close</button>`;
-}
-
-function openDeposit(){modal.style.display='flex';modalBody.innerHTML=`<h2>Deposit</h2><input id="dAmt" type="number" class="input" placeholder="Amount"><button class="btn-green" onclick="doDeposit()">Deposit</button>`;}
-function doDeposit(){const amt=parseFloat(dAmt.value);if(!amt){alert('Invalid');return}currentUser.balance+=amt;currentUser.transactions.unshift({type:'Deposit',amt:amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();}
-
-function openWithdraw(){modal.style.display='flex';modalBody.innerHTML=`<h2>Withdraw</h2><input id="wAmt" type="number" class="input" placeholder="Amount"><button class="btn-green" onclick="doWithdraw()">Withdraw</button>`;}
-function doWithdraw(){const amt=parseFloat(wAmt.value);if(amt>currentUser.balance){alert('Insufficient');return}currentUser.balance-=amt;currentUser.transactions.unshift({type:'Withdraw',amt:-amt,date:'Today'});saveUsers();loginUser(currentUser);closeModal();}
-
-function openTransfer(){modal.style.display='flex';modalBody.innerHTML=`<h2>Transfer</h2><input id="tAcc" class="input" placeholder="Recipient Account"><input id="tAmt" type="number" class="input" placeholder="Amount"><input id="tPin" type="password" class="input" placeholder="PIN"><button class="btn-green" onclick="doTransfer()">Send</button>`;}
-function doTransfer(){if(tPin.value!==currentUser.pin){alert('Wrong PIN');return}const recipient=users.find(u=>u.accNo===tAcc.value);if(!recipient){alert('Account not found');return}const amt=parseFloat(tAmt.value);currentUser.balance-=amt;recipient.balance+=amt;saveUsers();loginUser(currentUser);closeModal();}
-
-function freezeCard(){currentUser.cardFrozen=!currentUser.cardFrozen;saveUsers();loginUser(currentUser);showAlert(currentUser.cardFrozen?'Card Frozen':'Card Activated')}
-function saveUsers(){localStorage.setItem('mceUsers',JSON.stringify(users))}
-function logout(){currentUser=null;showPage('loginPage')}
+window.onload=function(){if(currentUser){loginUser(currentUser);switchPage('homePage')}}
 </script>
 </body>
 </html>
