@@ -4,220 +4,295 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MCE BANK</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
-  body { background: #000; font-family: system-ui; }
-.gradient-btn { background: linear-gradient(90deg, #8B5CF6 0%, #10B981 100%); }
-.nav-active { color: #10B981; }
-.card-blue { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
-.notif-dot { background: red; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 0; right: 0; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#0a0a0a;color:#fff;min-height:100vh;padding-bottom:80px}
+.hidden{display:none!important}
+.screen{padding:20px;max-width:500px;margin:0 auto}
+h1{text-align:center;font-size:24px;margin:20px 0;font-weight:700}
+input{width:100%;padding:14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0;font-size:16px}
+.btn{width:100%;padding:14px;background:linear-gradient(90deg,#8b5cf6,#10b981);border:none;border-radius:12px;color:#fff;font-weight:700;font-size:16px;margin:10px 0;cursor:pointer}
+.btn-secondary{background:#1a1a1a;border:1px solid #333}
+.link{text-align:center;color:#10b981;cursor:pointer;margin:10px 0}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.bell{font-size:24px;cursor:pointer}
+.balance-card{background:linear-gradient(135deg,#3b82f6,#10b981);padding:20px;border-radius:20px;margin:20px 0}
+.balance-label{display:flex;align-items:center;gap:8px;font-size:14px}
+.eye{margin-left:auto;cursor:pointer;font-size:20px}
+.balance-amount{font-size:36px;font-weight:700;margin:10px 0}
+.acc{font-size:12px;opacity:0.8}
+.grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}
+.grid-item{background:#1a1a1a;padding:15px;border-radius:15px;text-align:center;cursor:pointer}
+.grid-icon{font-size:28px;margin-bottom:5px}
+.section{background:#1a1a1a;padding:15px;border-radius:15px;margin:10px 0}
+.tx-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #222}
+.nav-item{text-align:center;color:#666;font-size:12px;cursor:pointer}
+.nav-item.active{color:#10b981}
+.setting-item{display:flex;align-items:center;padding:15px;background:#1a1a1a;border-radius:12px;margin:8px 0;cursor:pointer}
+.setting-icon{font-size:24px;margin-right:12px}
+.setting-arrow{margin-left:auto}
+.safety-banner{background:linear-gradient(90deg,#f59e0b,#10b981);padding:12px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin:15px 0}
+.tier-badge{background:#333;padding:4px 10px;border-radius:20px;font-size:12px}
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100;overflow-y:auto}
+.modal-content{background:#1a1a1a;padding:20px;border-radius:20px;width:100%;max-width:420px}
+.receipt{background:#fff;color:#000;padding:25px;border-radius:20px;text-align:center}
+.receipt.amount{font-size:32px;font-weight:700;margin:15px 0}
+.receipt-row{display:flex;justify-content:space-between;margin:10px 0;font-size:14px}
+.checkmark{width:70px;height:70px;background:#10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:40px;color:#fff}
 </style>
 </head>
-<body class="text-white">
+<body>
 
 <!-- LOGIN -->
-<div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-sm bg-[#111] rounded-2xl p-6">
-    <h1 class="text-3xl font-bold text-center mb-8">MCE BANK</h1>
-    <input id="email" type="text" placeholder="Email or Phone" class="w-full bg-[#222] rounded-lg p-3 mb-4 outline-none">
-    <input id="password" type="password" placeholder="Password" class="w-full bg-[#222] rounded-lg p-3 mb-6 outline-none">
-    <button onclick="login()" class="w-full gradient-btn font-bold py-3 rounded-lg mb-3">Login</button>
-    <button onclick="signup()" class="w-full bg-[#222] font-bold py-3 rounded-lg">Create Account</button>
-    <p id="loginMsg" class="text-center text-red-400 mt-3"></p>
+<div id="loginScreen" class="screen">
+  <h1>MCE BANK</h1>
+  <input id="loginEmail" placeholder="Email or Phone">
+  <input id="loginPass" type="password" placeholder="Password">
+  <button class="btn" onclick="login()">Login</button>
+  <div class="link">Forgot Password?</div>
+  <div style="text-align:center">No account? <span class="link" onclick="showSignup()">Create One</span></div>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupScreen" class="screen hidden">
+  <h1>Create Account</h1>
+  <input id="signupName" placeholder="Full Name">
+  <input id="signupEmail" placeholder="Email">
+  <input id="signupPass" type="password" placeholder="Password">
+  <select id="signupCurrency" style="width:100%;padding:14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:#fff;margin:10px 0">
+    <option value="$">USD $</option><option value="₦">NGN ₦</option><option value="£">GBP £</option>
+  </select>
+  <button class="btn" onclick="signup()">Create Account</button>
+  <div class="link" onclick="showLogin()">Back to Login</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboardScreen" class="hidden">
+  <div class="screen">
+    <div class="topbar">
+      <h2 id="greeting">Hi, USER</h2>
+      <div style="display:flex;gap:15px"><div class="bell">🔔</div><div onclick="showTab('me')">⚙️</div></div>
+    </div>
+
+    <div class="balance-card">
+      <div class="balance-label">Available Balance 🛡️ <span class="eye" onclick="toggleBalance()">👁️</span></div>
+      <div id="balanceAmount" class="balance-amount">$0.00</div>
+      <div id="accNumber" class="acc">Account: 0000000</div>
+    </div>
+
+    <div class="grid8" id="mainGrid"></div>
+
+    <div class="section"><b>📄 Recent Transaction</b></div>
+    <div id="transactions"><div style="text-align:center;color:#666;padding:20px">No transactions yet</div></div>
+  </div>
+  <div class="nav">
+    <div class="nav-item active" onclick="showTab('dashboard')"><div>🏠</div>Home</div>
+    <div class="nav-item"><div>💎</div>Rewards</div>
+    <div class="nav-item"><div>💳</div>Cards</div>
+    <div class="nav-item" onclick="showTab('me')"><div>👤</div>Me</div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app" class="hidden min-h-screen flex-col">
-  <!-- HEADER -->
-  <div class="flex justify-between items-center p-4">
-    <div>
-      <h2 class="text-xl font-bold">Hi, <span id="userName"></span> 👋</h2>
-      <p class="text-sm text-gray-400">Acct: <span id="accountNumber"></span></p>
+<!-- ME TAB -->
+<div id="meScreen" class="hidden">
+  <div class="screen">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <div style="width:50px;height:50px;background:#333;border-radius:50%"></div>
+      <div><h2 id="meGreeting">Hi, USER</h2><div class="tier-badge">1 Upgrade to Tier 2</div></div>
     </div>
-    <div class="relative" onclick="showPage('notifPage')">
-      <div class="text-2xl">🔔</div>
-      <div id="notifDot" class="notif-dot hidden"></div>
-    </div>
+    <div style="margin:20px 0"><div>Total Balance <span onclick="toggleBalance()">👁️</span></div><div id="meBalance" style="font-size:32px;font-weight:700">$0.00</div></div>
+    <div class="safety-banner"><div><b>⚠️ 4 Safety Tips</b></div><button class="btn" style="width:auto;padding:8px 15px">View</button></div>
+    <div class="setting-item"><div class="setting-icon">📋</div>Transaction History<div class="setting-arrow">></div></div>
+    <div class="setting-item"><div class="setting-icon">⏱️</div><div>Account Limits</div><div class="setting-arrow">></div></div>
+    <div class="setting-item"><div class="setting-icon">💳</div><div>Bank Card/Account</div><div class="setting-arrow">></div></div>
+    <div class="setting-item"><div class="setting-icon">💰</div><div>Currency<select id="currencySelect" onchange="changeCurrency()" style="background:#333;border:none;color:#fff;padding:5px;border-radius:5px;margin-left:10px"><option value="$">USD $</option><option value="₦">NGN ₦</option><option value="£">GBP £</option></select></div></div>
+    <button class="btn btn-secondary" onclick="logout()">Logout</button>
   </div>
-
-  <!-- HOME -->
-  <div id="homePage" class="flex-1 px-4 pb-24">
-    <div class="bg-[#111] rounded-2xl p-4">
-      <p class="text-gray-400">Available Balance</p>
-      <p class="text-3xl font-bold">₦<span id="balance">0</span></p>
-    </div>
-    <div class="bg-[#111] rounded-2xl p-4 mt-4">
-      <h3 class="font-bold mb-2">Send Money</h3>
-      <input id="receiverAcc" oninput="lookupName()" placeholder="Enter 10 digit Account Number" maxlength="10" class="w-full bg-[#222] rounded p-2 mb-2">
-      <p id="receiverName" class="text-green-400 text-sm mb-2 h-5"></p>
-      <input id="amount" type="number" placeholder="Amount" class="w-full bg-[#222] rounded p-2 mb-2">
-      <button onclick="sendMoney()" class="w-full gradient-btn font-bold py-2 rounded">Send</button>
-    </div>
-    <div class="bg-[#111] rounded-2xl p-4 mt-4">
-      <h3 class="font-bold">Recent Transactions</h3>
-      <div id="txList" class="text-sm text-gray-400 mt-2">No transactions yet</div>
-    </div>
-  </div>
-
-  <!-- OTHER PAGES -->
-  <div id="rewardsPage" class="hidden flex-1 p-4 pb-24"><h2 class="text-2xl font-bold">Rewards</h2></div>
-  <div id="financePage" class="hidden flex-1 p-4 pb-24"><h2 class="text-2xl font-bold">Finance</h2></div>
-  <div id="cardsPage" class="hidden flex-1 p-4 pb-24">
-    <h2 class="text-2xl font-bold">Cards</h2>
-    <div class="card-blue rounded-2xl p-4 mt-4">
-      <p>MCE BANK • VISA</p>
-      <p class="text-2xl tracking-widest mt-4" id="cardNumber">****</p>
-      <p class="mt-2">CARDHOLDER: <span id="cardName"></span></p>
-    </div>
-  </div>
-  <div id="notifPage" class="hidden flex-1 p-4 pb-24"><h2 class="text-2xl font-bold">Notifications</h2><div id="notifList"></div></div>
-
-  <!-- RECEIPT -->
-  <div id="receiptPage" class="hidden flex-1 p-4 text-center">
-    <div class="text-green-500 text-6xl mb-4">✓</div>
-    <h2 class="text-green-500 text-2xl font-bold">Transfer Successful</h2>
-    <p class="text-4xl font-bold mt-4" id="receiptAmount">₦0</p>
-    <div class="bg-[#111] rounded-2xl p-4 mt-4 text-left">
-      <p>To: <span id="receiptTo"></span></p>
-      <p>Acct: <span id="receiptAcc"></span></p>
-      <p>Date: <span id="receiptDate"></span></p>
-    </div>
-    <button onclick="goHome()" class="w-full gradient-btn font-bold py-3 rounded-lg mt-4">Done</button>
-  </div>
-
-  <!-- BOTTOM NAV -->
-  <div class="fixed bottom-0 left-0 right-0 bg-[#111] flex justify-around py-2">
-    <div onclick="showPage('homePage')" class="text-center nav-active"><div>🏠</div><div class="text-xs">Home</div></div>
-    <div onclick="showPage('rewardsPage')" class="text-center text-gray-500"><div>💎</div><div class="text-xs">Rewards</div></div>
-    <div onclick="showPage('financePage')" class="text-center text-gray-500"><div>📊</div><div class="text-xs">Finance</div></div>
-    <div onclick="showPage('cardsPage')" class="text-center text-gray-500"><div>💳</div><div class="text-xs">Cards</div></div>
-    <div onclick="showPage('homePage')" class="text-center text-gray-500"><div>👤</div><div class="text-xs">Me</div></div>
+  <div class="nav">
+    <div class="nav-item" onclick="showTab('dashboard')"><div>🏠</div>Home</div>
+    <div class="nav-item"><div>💎</div>Rewards</div>
+    <div class="nav-item"><div>💳</div>Cards</div>
+    <div class="nav-item active"><div>👤</div>Me</div>
   </div>
 </div>
+
+<!-- TRANSFER MODAL -->
+<div id="transferModal" class="modal hidden"><div class="modal-content">
+  <h3>Send Money</h3>
+  <input id="toAccount" placeholder="Enter Account Number" oninput="lookupName()">
+  <div id="toName" style="color:#10b981;margin:10px 0;height:20px"></div>
+  <input id="amount" type="number" placeholder="Enter Amount">
+  <button class="btn" onclick="sendMoney()">Pay</button>
+  <button class="btn btn-secondary" onclick="closeModal('transferModal')">Cancel</button>
+</div></div>
+
+<!-- AIRTIME MODAL -->
+<div id="airtimeModal" class="modal hidden"><div class="modal-content">
+  <h3>Buy Airtime</h3>
+  <input id="airtelNumber" placeholder="Enter Phone Number">
+  <input id="airtelAmount" type="number" placeholder="Enter Amount">
+  <button class="btn" onclick="buyAirtime()">Continue</button>
+  <button class="btn btn-secondary" onclick="closeModal('airtimeModal')">Cancel</button>
+</div></div>
+
+<!-- DATA MODAL -->
+<div id="dataModal" class="modal hidden"><div class="modal-content">
+  <h3>Buy Data</h3>
+  <input id="dataNumber" placeholder="Enter Phone Number">
+  <input id="dataAmount" type="number" placeholder="Enter Amount">
+  <button class="btn" onclick="buyData()">Continue</button>
+  <button class="btn btn-secondary" onclick="closeModal('dataModal')">Cancel</button>
+</div></div>
+
+<!-- TO BANK MODAL -->
+<div id="toBankModal" class="modal hidden"><div class="modal-content">
+  <h3>Contact Manager</h3>
+  <p>Our manager will help you run this transfer. Chat us on WhatsApp.</p>
+  <button class="btn" onclick="alert('Redirecting to WhatsApp')">Chat Now</button>
+  <button class="btn btn-secondary" onclick="closeModal('toBankModal')">Close</button>
+</div></div>
+
+<!-- DEPOSIT MODAL -->
+<div id="depositModal" class="modal hidden"><div class="modal-content">
+  <h3>Deposit Funds</h3>
+  <div id="depositStep1">
+    <input id="depositAmount" type="number" placeholder="Enter Amount">
+    <input id="depositEmail" placeholder="Enter Account Email">
+    <button class="btn" onclick="showDepositConfirm()">Deposit</button>
+  </div>
+  <div id="depositStep2" class="hidden">
+    <p>Confirm your email and amount</p>
+    <p><b>Email:</b> <span id="confirmEmail"></span></p>
+    <p><b>Amount:</b> <span id="confirmAmount"></span></p>
+    <button class="btn" onclick="confirmDeposit()">Confirm</button>
+  </div>
+  <button class="btn btn-secondary" onclick="closeModal('depositModal')">Cancel</button>
+</div></div>
+
+<!-- MORE MODAL -->
+<div id="moreModal" class="modal hidden"><div class="modal-content">
+  <h3>More Services</h3>
+  <div class="grid8">
+    <div class="grid-item" onclick="alert('Betting')"><div class="grid-icon">🎲</div>Betting</div>
+    <div class="grid-item" onclick="alert('Bills')"><div class="grid-icon">📄</div>Bills</div>
+  </div>
+  <button class="btn btn-secondary" onclick="closeModal('moreModal')">Close</button>
+</div></div>
+
+<!-- RECEIPT MODAL -->
+<div id="receiptModal" class="modal hidden"><div class="modal-content">
+  <div class="receipt">
+    <div class="checkmark">✓</div>
+    <h3 id="receiptTitle">Transfer Successful</h3>
+    <div class="amount" id="receiptAmount">$0.00</div>
+    <div id="receiptType">BANK TRANSFER</div>
+    <hr style="margin:15px 0">
+    <div id="receiptDetails"></div>
+    <button class="btn" onclick="closeModal('receiptModal')">Done</button>
+  </div>
+</div></div>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyB9V8N7M6L5K4J3H2G1F0E9D8C7B6A5Z4",
-    authDomain: "mce-bank.firebaseapp.com",
-    projectId: "mce-bank",
-    storageBucket: "mce-bank.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abcdef1234567890"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  let currentUser = null;
-  let foundReceiver = null;
+let users = JSON.parse(localStorage.getItem('mce_users') || '{}');
+let currentUser = localStorage.getItem('mce_current');
+let balanceHidden = false;
+let currency = '$';
 
-  function generateAccount() {
-    return '01' + Math.floor(Math.random()*100000000).toString().padStart(8,'0');
-  }
-  function generateCardNumber() {
-    return '4' + Math.floor(Math.random()*1000000000000).toString().padStart(15,'0');
-  }
+const icons = [
+  {icon:'💵',name:'Transfer',action:()=>showModal('transferModal')},
+  {icon:'🏦',name:'To Bank',action:()=>showModal('toBankModal')},
+  {icon:'📱',name:'Airtime',action:()=>showModal('airtimeModal')},
+  {icon:'📶',name:'Data',action:()=>showModal('dataModal')},
+  {icon:'📄',name:'Bills',action:()=>alert('Coming Soon')},
+  {icon:'⬇️',name:'Deposit',action:()=>showModal('depositModal')},
+  {icon:'🎲',name:'Betting',action:()=>alert('Coming Soon')},
+  {icon:'⋯',name:'More',action:()=>showModal('moreModal')}
+];
 
-  async function signup() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    if(!email ||!password) return alert('Fill all fields');
+function renderIcons(){
+  const grid=document.getElementById('mainGrid');grid.innerHTML='';
+  icons.slice(0,6).forEach(i=>{grid.innerHTML+=`<div class="grid-item" onclick="icons[${icons.indexOf(i)}].action()"><div class="grid-icon">${i.icon}</div>${i.name}</div>`})
+}
+function showModal(id){document.getElementById(id).classList.remove('hidden')}
+function closeModal(id){document.getElementById(id).classList.add('hidden')}
+function showSignup(){loginScreen.classList.add('hidden');signupScreen.classList.remove('hidden')}
+function showLogin(){signupScreen.classList.add('hidden');loginScreen.classList.remove('hidden')}
+function showTab(tab){dashboardScreen.classList.add('hidden');meScreen.classList.add('hidden');tab=='dashboard'?dashboardScreen.classList.remove('hidden'):meScreen.classList.remove('hidden')}
 
-    const doc = await db.collection('users').doc(email).get();
-    if(doc.exists) {
-      document.getElementById('loginMsg').innerText = 'Email/Phone already exists';
-      return;
-    }
+function signup(){
+  const name=signupName.value,email=signupEmail.value,pass=signupPass.value;
+  currency=signupCurrency.value;const acc='01'+Math.floor(Math.random()*1000000000).toString().padStart(9,'0');
+  users[email]={name,pass,acc,balance:0,currency,tx:[]};localStorage.setItem('mce_users',JSON.stringify(users));loginUser(email)
+}
+function login(){const email=loginEmail.value,pass=loginPass.value;if(users[email]&&users[email].pass==pass)loginUser(email);else alert('Invalid login')}
+function loginUser(email){
+  currentUser=email;localStorage.setItem('mce_current',email);const user=users[email];currency=user.currency;
+  greeting.innerText=`Hi, ${user.name.toUpperCase()}`;meGreeting.innerText=`Hi, ${user.name.toUpperCase()}`;
+  accNumber.innerText=`Account: ${user.acc}`;currencySelect.value=currency;renderIcons();loadTx();updateBalance();
+  loginScreen.classList.add('hidden');signupScreen.classList.add('hidden');dashboardScreen.classList.remove('hidden')
+}
+function updateBalance(){const user=users[currentUser];const bal=currency+user.balance.toFixed(2);balanceAmount.innerText=balanceHidden?'****':bal;meBalance.innerText=balanceHidden?'****':bal}
+function toggleBalance(){balanceHidden=!balanceHidden;updateBalance()}
+function changeCurrency(){currency=currencySelect.value;users[currentUser].currency=currency;localStorage.setItem('mce_users',JSON.stringify(users));updateBalance()}
+function lookupName(){const acc=toAccount.value;for(let e in users)if(users[e].acc==acc){toName.innerText=users[e].name;return}toName.innerText=''}
 
-    const acc = generateAccount();
-    await db.collection('users').doc(email).set({
-      email, password, balance: 10000, name: email.split('@')[0],
-      accountNumber: acc, cardNumber: generateCardNumber(), transactions: [], notifications: []
-    });
-    login();
-  }
+function sendMoney(){
+  const toAcc=toAccount.value,amt=parseFloat(amount.value);if(!amt||amt<=0)return alert('Enter amount');
+  let receiver=null;for(let e in users)if(users[e].acc==toAcc)receiver=e;
+  if(!receiver)return alert('Account not found');if(users[currentUser].balance<amt)return alert('Insufficient balance');
 
-  async function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const doc = await db.collection('users').doc(email).get();
-    if(!doc.exists || doc.data().password!== password) {
-      document.getElementById('loginMsg').innerText = 'Wrong Email or Password';
-      return;
-    }
-    currentUser = doc.data();
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-    document.getElementById('userName').innerText = currentUser.name;
-    document.getElementById('accountNumber').innerText = currentUser.accountNumber;
-    document.getElementById('balance').innerText = currentUser.balance;
-    document.getElementById('cardNumber').innerText = currentUser.cardNumber;
-    document.getElementById('cardName').innerText = currentUser.name.toUpperCase();
+  users[currentUser].balance-=amt;users[receiver].balance+=amt;
+  const tx={type:'Transfer',amount:amt,to:users[receiver].name,date:new Date().toLocaleString()};
+  users[currentUser].tx.unshift(tx);users[receiver].tx.unshift({type:'Received',amount:amt,from:users[currentUser].name,date:tx.date});
+  localStorage.setItem('mce_users',JSON.stringify(users));
 
-    db.collection('users').doc(email).onSnapshot(snap => {
-      const data = snap.data();
-      document.getElementById('balance').innerText = data.balance;
-      loadTransactions(data.transactions);
-      loadNotifications(data.notifications);
-    });
-  }
+  showReceipt('Transfer Successful',amt,'BANK TRANSFER',`
+    <div class="receipt-row"><span>From:</span><span>${users[currentUser].name}</span></div>
+    <div class="receipt-row"><span>To:</span><span>${users[receiver].name}</span></div>
+    <div class="receipt-row"><span>Account:</span><span>${toAcc}</span></div>
+    <div class="receipt-row"><span>Date:</span><span>${tx.date}</span></div>
+  `);closeModal('transferModal');loadTx();updateBalance()
+}
 
-  async function lookupName() {
-    const acc = document.getElementById('receiverAcc').value;
-    if(acc.length!== 10) { document.getElementById('receiverName').innerText = ''; foundReceiver = null; return; }
+function buyAirtime(){
+  const num=airtelNumber.value,amt=parseFloat(airtelAmount.value);if(!num||!amt)return alert('Fill all');
+  users[currentUser].balance-=amt;users[currentUser].tx.unshift({type:'Airtime',amount:amt,to:num,date:new Date().toLocaleString()});
+  localStorage.setItem('mce_users',JSON.stringify(users));
+  showReceipt('Airtime Successful',amt,'AIRTIME RECHARGE',`<div class="receipt-row"><span>Number:</span><span>${num}</span></div><div class="receipt-row"><span>Amount:</span><span>${currency}${amt}</span></div>`);
+  closeModal('airtimeModal');loadTx();updateBalance()
+}
 
-    const snapshot = await db.collection('users').where('accountNumber','==',acc).get();
-    if(!snapshot.empty) {
-      foundReceiver = snapshot.docs[0].data();
-      document.getElementById('receiverName').innerText = 'To: ' + foundReceiver.name;
-    } else {
-      document.getElementById('receiverName').innerText = 'Account not found';
-      foundReceiver = null;
-    }
-  }
+function buyData(){
+  const num=dataNumber.value,amt=parseFloat(dataAmount.value);if(!num||!amt)return alert('Fill all');
+  users[currentUser].balance-=amt;users[currentUser].tx.unshift({type:'Data',amount:amt,to:num,date:new Date().toLocaleString()});
+  localStorage.setItem('mce_users',JSON.stringify(users));
+  showReceipt('Data Purchase Successful',amt,'DATA BUNDLE',`<div class="receipt-row"><span>Number:</span><span>${num}</span></div><div class="receipt-row"><span>Amount:</span><span>${currency}${amt}</span></div>`);
+  closeModal('dataModal');loadTx();updateBalance()
+}
 
-  async function sendMoney() {
-    const amount = parseInt(document.getElementById('amount').value);
-    if(!foundReceiver) return alert('Enter valid account number');
-    if(amount > currentUser.balance) return alert('Insufficient funds');
+function showDepositConfirm(){
+  const amt=depositAmount.value,email=depositEmail.value;if(!amt||!email)return alert('Fill all');
+  confirmEmail.innerText=email;confirmAmount.innerText=currency+amt;
+  depositStep1.classList.add('hidden');depositStep2.classList.remove('hidden')
+}
+function confirmDeposit(){
+  const amt=parseFloat(depositAmount.value);
+  users[currentUser].balance+=amt;users[currentUser].tx.unshift({type:'Deposit',amount:amt,date:new Date().toLocaleString()});
+  localStorage.setItem('mce_users',JSON.stringify(users));
+  showReceipt('Deposit Successful',amt,'DEPOSIT',`<div class="receipt-row"><span>Email:</span><span>${depositEmail.value}</span></div><div class="receipt-row"><span>Amount:</span><span>${currency}${amt}</span></div>`);
+  closeModal('depositModal');depositStep2.classList.add('hidden');depositStep1.classList.remove('hidden');loadTx();updateBalance()
+}
 
-    const tx = {type: 'Sent', to: foundReceiver.name, toAcc: foundReceiver.accountNumber, amount, date: new Date().toLocaleString()};
-    const rTx = {type: 'Received', from: currentUser.name, fromAcc: currentUser.accountNumber, amount, date: new Date().toLocaleString()};
+function showReceipt(title,amt,type,details){
+  receiptTitle.innerText=title;receiptAmount.innerText=currency+amt.toFixed(2);receiptType.innerText=type;receiptDetails.innerHTML=details;showModal('receiptModal')
+}
 
-    await db.collection('users').doc(currentUser.email).update({
-      balance: currentUser.balance - amount,
-      transactions: firebase.firestore.FieldValue.arrayUnion(tx)
-    });
-    await db.collection('users').doc(foundReceiver.email).update({
-      balance: foundReceiver.balance + amount,
-      transactions: firebase.firestore.FieldValue.arrayUnion(rTx),
-      notifications: firebase.firestore.FieldValue.arrayUnion(`You received ₦${amount} from ${currentUser.name}`)
-    });
-
-    document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('receiptPage').classList.remove('hidden');
-    document.getElementById('receiptAmount').innerText = '₦' + amount.toLocaleString() + '.00';
-    document.getElementById('receiptTo').innerText = foundReceiver.name;
-    document.getElementById('receiptAcc').innerText = foundReceiver.accountNumber;
-    document.getElementById('receiptDate').innerText = new Date().toLocaleDateString();
-  }
-
-  function loadTransactions(tx) {
-    if(tx.length === 0) return;
-    document.getElementById('txList').innerHTML = tx.slice(-5).reverse().map(t =>
-      `<p class="text-sm mb-1">${t.type} ${t.type==='Sent'?'to':'from'} ${t.to||t.from} ₦${t.amount}</p>`
-    ).join('');
-  }
-  function loadNotifications(n) {
-    document.getElementById('notifDot').classList.toggle('hidden', n.length === 0);
-    document.getElementById('notifList').innerHTML = n.length===0? '<p class="text-gray-400">No notifications</p>' : n.reverse().map(x => `<p class="bg-[#111] p-3 rounded mb-2">${x}</p>`).join('');
-  }
-  function showPage(id) {
-    document.querySelectorAll('#app > div[id$="Page"]').forEach(p => p.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-  }
-  function goHome() { showPage('homePage'); }
+function loadTx(){
+  const tx=users[currentUser].tx;transactions.innerHTML=tx.length?tx.map(t=>`<div class="tx-item"><div><b>${t.type}</b><br><small>${t.date}</small></div><div>${t.type=='Received'?'+':''}${currency}${t.amount}</div></div>`).join(''):'<div style="text-align:center;color:#666;padding:20px">No transactions yet</div>'
+}
+function logout(){localStorage.removeItem('mce_current');location.reload()}
+if(currentUser&&users[currentUser])loginUser(currentUser);
 </script>
 </body>
 </html>
