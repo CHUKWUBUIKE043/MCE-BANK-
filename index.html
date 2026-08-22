@@ -15,14 +15,15 @@
  .auth input{width:100%;padding:14px;margin:10px 0;border-radius:8px;border:none;font-size:16px}
  .auth button{width:100%;padding:14px;background:#00a859;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:bold;margin-top:10px}
  .auth a{color:#00a859;text-align:center;display:block;margin-top:15px;text-decoration:none}
- .error{color:#ff4d4d;font-size:14px;margin-top:5px}
+ .error{color:#ff4d4d;font-size:14px;margin-top:5px;text-align:center}
 
   /* DASHBOARD */
  .header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:20px;border-radius:0 0 30px 30px}
  .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+ .header-top .icons span{font-size:22px;margin-left:15px;cursor:pointer}
  .balance-card{background:rgba(255,255,255,0.15);padding:20px;border-radius:15px}
- .balance-card p{font-size:14px;opacity:0.9}
- .balance-card h1{font-size:32px;margin:8px 0}
+ .balance-card p{font-size:14px;opacity:0.9;display:flex;align-items:center;gap:8px}
+ .balance-card h1{font-size:32px;margin:8px 0;display:flex;align-items:center;gap:10px}
  .balance-card span{font-size:14px}
 
  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:20px}
@@ -30,8 +31,9 @@
  .btn div{font-size:28px;margin-bottom:8px}
  .btn p{font-size:12px;color:#1e3a8a;font-weight:600}
 
- .transactions{padding:20px}
+ .transactions{padding:20px 20px 80px 20px}
  .transactions h3{color:#1e3a8a;margin-bottom:10px}
+ .tx-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
  .no-tx{text-align:center;color:#999;padding:20px}
 
  .bottom-nav{position:fixed;bottom:0;width:100%;max-width:450px;background:#fff;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #eee}
@@ -77,10 +79,13 @@
     <div class="header">
       <div class="header-top">
         <h2 id="userName">Olivia Brown</h2>
-        <span>⚙️</span>
+        <div class="icons">
+          <span onclick="alert('No new notifications')">🔔</span>
+          <span>⚙️</span>
+        </div>
       </div>
       <div class="balance-card">
-        <p>Available Balance</p>
+        <p>Available Balance <span id="eye" onclick="toggleBalance()">👁️</span></p>
         <h1>$<span id="balance">0.00</span></h1>
         <span>Account: <span id="accNumber">5018901559</span></span>
       </div>
@@ -112,73 +117,15 @@
 
 </div>
 
-<!-- 3. TRANSFER POPUP -->
-<div id="transferPopup" class="popup hidden">
-  <div class="popup-box">
-    <div style="padding:20px">
-      <h3>Transfer</h3>
-      <div class="form">
-        <input type="text" id="toAccount" placeholder="Recipient Account Number" oninput="checkAccount()">
-        <p id="accStatus" style="font-size:13px"></p>
-        <input type="number" id="amount" placeholder="Amount">
-        <input type="password" id="pin" placeholder="4 Digit PIN" maxlength="4">
-      </div>
-      <button onclick="sendMoney()">Pay</button>
-      <button onclick="closePopup('transferPopup')" style="background:#ccc">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- 4. DEPOSIT POPUP -->
-<div id="depositPopup" class="popup hidden">
-  <div class="popup-box">
-    <div style="padding:20px">
-      <h3>Deposit</h3>
-      <div class="form">
-        <input type="number" id="depAmount" placeholder="Amount">
-        <input type="password" id="depPin" placeholder="4 Digit PIN" maxlength="4">
-      </div>
-      <button onclick="doDeposit()">Deposit</button>
-      <button onclick="closePopup('depositPopup')" style="background:#ccc">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- 5. AIRTIME POPUP -->
-<div id="airtimePopup" class="popup hidden">
-  <div class="popup-box">
-    <div style="padding:20px">
-      <h3>Buy Airtime</h3>
-      <div class="form">
-        <input type="text" id="airNumber" placeholder="Phone Number">
-        <input type="number" id="airAmount" placeholder="Amount">
-        <input type="password" id="airPin" placeholder="4 Digit PIN" maxlength="4">
-      </div>
-      <button onclick="buyAirtime()">Pay</button>
-      <button onclick="closePopup('airtimePopup')" style="background:#ccc">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- 6. RECEIPT POPUP -->
-<div id="receiptPopup" class="popup hidden">
-  <div class="popup-box">
-    <div class="popup-header">Transaction Successful</div>
-    <div class="popup-body">
-      <p><b>Date:</b> <span id="rDate"></span></p>
-      <p><b>Amount:</b> $<span id="rAmount"></span></p>
-      <p><b>From:</b> <span id="rFrom"></span></p>
-      <p><b>To:</b> <span id="rTo"></span></p>
-      <p><b>Reference:</b> <span id="rRef"></span></p>
-      <p><b>Status:</b> Success</p>
-      <button onclick="closePopup('receiptPopup')">Close</button>
-    </div>
-  </div>
-</div>
+<!-- POPUPS: TRANSFER, DEPOSIT, AIRTIME, RECEIPT -->
+<div id="transferPopup" class="popup hidden"><div class="popup-box"><div style="padding:20px"><h3>Transfer</h3><div class="form"><input type="text" id="toAccount" placeholder="Recipient Account Number" oninput="checkAccount()"><p id="accStatus" style="font-size:13px"></p><input type="number" id="amount" placeholder="Amount"><input type="password" id="pin" placeholder="4 Digit PIN" maxlength="4"></div><button onclick="sendMoney()">Pay</button><button onclick="closePopup('transferPopup')" style="background:#ccc">Cancel</button></div></div></div>
+<div id="depositPopup" class="popup hidden"><div class="popup-box"><div style="padding:20px"><h3>Deposit</h3><div class="form"><input type="number" id="depAmount" placeholder="Amount"><input type="password" id="depPin" placeholder="4 Digit PIN" maxlength="4"></div><button onclick="doDeposit()">Deposit</button><button onclick="closePopup('depositPopup')" style="background:#ccc">Cancel</button></div></div></div>
+<div id="airtimePopup" class="popup hidden"><div class="popup-box"><div style="padding:20px"><h3>Buy Airtime</h3><div class="form"><input type="text" id="airNumber" placeholder="Phone Number"><input type="number" id="airAmount" placeholder="Amount"><input type="password" id="airPin" placeholder="4 Digit PIN" maxlength="4"></div><button onclick="buyAirtime()">Pay</button><button onclick="closePopup('airtimePopup')" style="background:#ccc">Cancel</button></div></div></div>
+<div id="receiptPopup" class="popup hidden"><div class="popup-box"><div class="popup-header">Transaction Successful</div><div class="popup-body"><p><b>Date:</b> <span id="rDate"></span></p><p><b>Amount:</b> $<span id="rAmount"></span></p><p><b>From:</b> <span id="rFrom"></span></p><p><b>To:</b> <span id="rTo"></span></p><p><b>Reference:</b> <span id="rRef"></span></p><p><b>Status:</b> Success</p><button onclick="closePopup('receiptPopup')">Close</button></div></div></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs, addDoc, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -194,28 +141,48 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 let currentUser = null;
+let balanceVisible = true;
 
-// AUTH
-window.showSignup = () => {document.getElementById('loginForm').classList.add('hidden');document.getElementById('signupForm').classList.remove('hidden')}
-window.showLogin = () => {document.getElementById('signupForm').classList.add('hidden');document.getElementById('loginForm').classList.remove('hidden')}
+// AUTH TOGGLE
+window.showSignup = () => {document.getElementById('loginForm').classList.add('hidden');document.getElementById('signupForm').classList.remove('hidden');document.getElementById('authError').innerText=""}
+window.showLogin = () => {document.getElementById('signupForm').classList.add('hidden');document.getElementById('loginForm').classList.remove('hidden');document.getElementById('authError').innerText=""}
 
+// HIDE/SHOW BALANCE EYE
+window.toggleBalance=()=>{
+  balanceVisible=!balanceVisible;
+  document.getElementById('eye').innerText=balanceVisible?"👁️":"🙈";
+  document.getElementById('balance').innerText=balanceVisible?document.getElementById('balance').dataset.real:"****"
+}
+
+// SIGNUP WITH DUPLICATE EMAIL BLOCK + DIRECT TO DASHBOARD
 window.signup = async () => {
   const name=document.getElementById('signupName').value;
   const email=document.getElementById('signupEmail').value;
   const pass=document.getElementById('signupPassword').value;
   const confirm=document.getElementById('signupConfirm').value;
   const pin=document.getElementById('signupPin').value;
+  document.getElementById('authError').innerText="";
+  
+  if(!name||!email||!pass) return document.getElementById('authError').innerText="Fill all fields";
   if(pass!==confirm) return document.getElementById('authError').innerText="Passwords don't match";
   if(pin.length!==4) return document.getElementById('authError').innerText="PIN must be 4 digits";
-  const accNumber=Math.floor(1000000000 + Math.random()*9000000000).toString();
+  
+  // BLOCK DUPLICATE EMAIL
+  const methods = await fetchSignInMethodsForEmail(auth, email);
+  if(methods.length>0) return document.getElementById('authError').innerText="Account already exists. Please login.";
+  
+  const accNumber=Math.floor(1000000 + Math.random()*9000000000).toString();
   const userCred=await createUserWithEmailAndPassword(auth,email,pass);
-  await setDoc(doc(db,"users",userCred.user.uid),{name,email,accNumber,balance:5000,pin});
+  await setDoc(doc(db,"users",userCred.user.uid),{name,email,accNumber,balance:0,pin}); // $0 balance
 }
 
+// LOGIN
 window.login = async () => {
   const email=document.getElementById('loginEmail').value;
   const pass=document.getElementById('loginPassword').value;
-  await signInWithEmailAndPassword(auth,email,pass);
+  document.getElementById('authError').innerText="";
+  try{await signInWithEmailAndPassword(auth,email,pass)}
+  catch(e){document.getElementById('authError').innerText="Invalid email or password"}
 }
 
 onAuthStateChanged(auth,async(user)=>{
@@ -227,13 +194,17 @@ onAuthStateChanged(auth,async(user)=>{
     const data=snap.data();
     document.getElementById('userName').innerText=data.name;
     document.getElementById('accNumber').innerText=data.accNumber;
-    onSnapshot(doc(db,"users",user.uid),s=>document.getElementById('balance').innerText=s.data().balance.toFixed(2));
+    onSnapshot(doc(db,"users",user.uid),s=>{
+      const bal=s.data().balance.toFixed(2);
+      document.getElementById('balance').dataset.real=bal;
+      document.getElementById('balance').innerText=balanceVisible?bal:"****";
+    });
 
     const q=query(collection(db,"transactions"),where("participants","array-contains",user.uid),orderBy("date","desc"));
     onSnapshot(q,s=>{
       document.getElementById('txList').innerHTML="";
       if(s.empty) document.getElementById('txList').innerHTML='<p class="no-tx">No transactions yet</p>';
-      s.forEach(d=>{const tx=d.data();document.getElementById('txList').innerHTML+=`<p>${tx.type} $${tx.amount} - ${tx.date}</p>`});
+      s.forEach(d=>{const tx=d.data();document.getElementById('txList').innerHTML+=`<div class="tx-item"><span>${tx.type}</span><span>$${tx.amount}</span></div>`});
     });
   }
 });
