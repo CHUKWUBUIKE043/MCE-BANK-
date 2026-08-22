@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCE BANK v=111</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+  body{background:#000;color:#fff;min-height:100vh}
+ .page{display:none;padding:20px;padding-bottom:90px}
+ .page.active{display:block}
+ .logo{text-align:center;color:#3b82f6;font-size:28px;font-weight:700;margin:30px 0}
+ .title{text-align:center;font-size:24px;margin-bottom:20px}
+  input,select{width:100%;padding:14px;margin:10px 0;background:#1a1a1a;border:1px solid #333;border-radius:12px;color:#fff;font-size:16px}
+ .btn{width:100%;padding:16px;background:#3b82f6;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;margin-top:10px;cursor:pointer}
+ .btn:active{transform:scale(0.98)}
+ .link{text-align:center;color:#3b82f6;margin-top:15px;cursor:pointer}
+ .balance-box{background:#1a1a1a;padding:20px;border-radius:16px;margin:20px 0;text-align:center}
+ .balance{font-size:36px;font-weight:700;color:#3b82f6}
+ .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}
+ .icon-box{text-align:center;cursor:pointer}
+ .icon{background:#1a1a1a;width:60px;height:60px;border-radius:16px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px}
+ .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #222}
+ .nav-item{text-align:center;color:#666;font-size:12px;cursor:pointer}
+ .nav-item.active{color:#3b82f6}
+ .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+ .bell{font-size:24px;cursor:pointer;position:relative}
+ .badge{position:absolute;top:-5px;right:-5px;background:red;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center}
+ .card{background:linear-gradient(135deg,#3b82f6,#1e40af);padding:20px;border-radius:20px;margin:20px 0}
+ .card-row{display:flex;justify-content:space-between;margin:8px 0}
+ .limit-box{background:#1a1a1a;padding:15px;border-radius:12px;margin:10px 0;display:flex;justify-content:space-between}
+ .tx-item{background:#1a1a1a;padding:15px;border-radius:12px;margin:10px 0;display:flex;justify-content:space-between}
+ .popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:100}
+ .popup.active{display:flex}
+ .popup-box{background:#1a1a1a;padding:20px;border-radius:16px;width:90%;max-width:400px}
+ .notification{position:fixed;top:20px;right:20px;background:#3b82f6;padding:15px;border-radius:12px;display:none;z-index:200}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="page active" id="login">
+  <div class="logo">MCE BANK</div>
+  <div class="title">Login</div>
+  <input type="email" id="loginEmail" placeholder="Email">
+  <input type="password" id="loginPass" placeholder="Password">
+  <button class="btn" onclick="login()">Login</button>
+  <div class="link" onclick="showPage('signup')">Don't have an account? Sign Up</div>
+  <div class="link" onclick="showPage('forgot')">Forgot Password?</div>
+</div>
+
+<!-- SIGNUP -->
+<div class="page" id="signup">
+  <div class="logo">MCE BANK</div>
+  <div class="title">Sign Up</div>
+  <input type="text" id="signupName" placeholder="Full Name">
+  <input type="email" id="signupEmail" placeholder="Email">
+  <input type="password" id="signupPass" placeholder="Password">
+  <input type="password" id="signupPass2" placeholder="Confirm Password">
+  <input type="password" id="signupPin" placeholder="Transfer PIN 4 digits" maxlength="4">
+  <button class="btn" onclick="signup()">Create Account</button>
+  <div class="link" onclick="showPage('login')">Back to Login</div>
+</div>
+
+<!-- FORGOT -->
+<div class="page" id="forgot">
+  <div class="logo">MCE BANK</div>
+  <div class="title">Reset Password</div>
+  <input type="email" id="forgotEmail" placeholder="Enter Email">
+  <input type="password" id="forgotPass" placeholder="Enter New Password">
+  <input type="password" id="forgotPass2" placeholder="Confirm Password">
+  <button class="btn" onclick="resetPass()">Continue</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page" id="dashboard">
+  <div class="header">
+    <div class="logo" style="margin:0;font-size:20px">MCE BANK</div>
+    <div class="bell" onclick="showNotifications()">🔔<span class="badge" id="notifCount">0</span></div>
+  </div>
+  <div class="balance-box">
+    <div>Available Balance</div>
+    <div class="balance" id="balance">0.00</div>
+  </div>
+  <div class="grid">
+    <div class="icon-box" onclick="showPage('transfer')"><div class="icon">↗</div>Transfer</div>
+    <div class="icon-box" onclick="showPage('airtime')"><div class="icon">📱</div>Airtime</div>
+    <div class="icon-box" onclick="showPage('data')"><div class="icon">📶</div>Data</div>
+    <div class="icon-box" onclick="toBank()"><div class="icon">🏦</div>To Bank</div>
+    <div class="icon-box" onclick="showPage('deposit')"><div class="icon">💰</div>Deposit</div>
+    <div class="icon-box" onclick="toggleMore()"><div class="icon">⋯</div>More</div>
+    <div class="icon-box" id="betting" style="display:none"><div class="icon">⚽</div>Betting</div>
+    <div class="icon-box" id="bills" style="display:none"><div class="icon">📄</div>Bills</div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="showPage('dashboard')">🏠<br>Home</div>
+    <div class="nav-item">🎁<br>Rewards</div>
+    <div class="nav-item">💳<br>Cards</div>
+    <div class="nav-item" onclick="showPage('me')">👤<br>Me</div>
+  </div>
+</div>
+
+<!-- TRANSFER -->
+<div class="page" id="transfer">
+  <div class="title">Transfer</div>
+  <input type="text" id="transAcc" placeholder="Account Number" oninput="showName()">
+  <div id="accName" style="color:#3b82f6;margin:10px 0"></div>
+  <input type="number" id="transAmt" placeholder="Amount">
+  <button class="btn" onclick="doTransfer()">Pay</button>
+  <div class="link" onclick="showPage('dashboard')">Back</div>
+</div>
+
+<!-- AIRTIME -->
+<div class="page" id="airtime">
+  <div class="title">Airtime</div>
+  <input type="text" id="airNum" placeholder="Phone Number">
+  <input type="number" id="airAmt" placeholder="Amount">
+  <button class="btn" onclick="doAirtime()">Continue</button>
+  <div class="link" onclick="showPage('dashboard')">Back</div>
+</div>
+
+<!-- DATA -->
+<div class="page" id="data">
+  <div class="title">Data</div>
+  <input type="text" id="dataNum" placeholder="Phone Number">
+  <input type="number" id="dataAmt" placeholder="Amount">
+  <button class="btn" onclick="doData()">Continue</button>
+  <div class="link" onclick="showPage('dashboard')">Back</div>
+</div>
+
+<!-- DEPOSIT -->
+<div class="page" id="deposit">
+  <div class="title">Deposit</div>
+  <input type="number" id="depAmt" placeholder="Amount">
+  <input type="email" id="depEmail" placeholder="Email">
+  <button class="btn" onclick="doDeposit()">Confirm</button>
+  <div class="link" onclick="showPage('dashboard')">Back</div>
+</div>
+
+<!-- ME -->
+<div class="page" id="me">
+  <div class="title">Me</div>
+  <div class="limit-box" onclick="showHistory()"><span>Transaction History</span><span>›</span></div>
+  <div class="limit-box" onclick="showLimits()"><span>Account Limits</span><span>›</span></div>
+  <div class="limit-box" onclick="showCard()"><span>Bank Card/Account</span><span>›</span></div>
+  <div class="limit-box"><span>Currency</span>
+    <select id="currency" onchange="saveCurrency()">
+      <option value="$">USD $</option>
+      <option value="₦">NGN ₦</option>
+      <option value="£">GBP £</option>
+      <option value="€">EUR €</option>
+    </select>
+  </div>
+  <button class="btn" onclick="logout()">Logout</button>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showPage('dashboard')">🏠<br>Home</div>
+    <div class="nav-item">🎁<br>Rewards</div>
+    <div class="nav-item">💳<br>Cards</div>
+    <div class="nav-item active">👤<br>Me</div>
+  </div>
+</div>
+
+<!-- CARD -->
+<div class="page" id="card">
+  <div class="title">Bank Card</div>
+  <div class="card">
+    <div>MCE BANK</div>
+    <div>VISA DEBIT • PREMIUM PLATINUM</div>
+    <div id="cardNum">**** **** **** **** <span onclick="toggleHide()">👁</span></div>
+    <div class="card-row"><span id="cardName"></span><span id="cardExp"></span></div>
+    <div>CVV: <span id="cardCVV"></span></div>
+    <button class="btn" style="background:#ef4444">Freeze Card</button>
+    <button class="btn">Copy Card Details</button>
+  </div>
+  <div class="limit-box"><span>Daily ATM Withdrawal Limit</span><span id="atmLimit"></span></div>
+  <div class="limit-box"><span>Daily POS Purchase Limit</span><span id="posLimit"></span></div>
+  <div class="limit-box"><span>Linked Account</span><span id="linkedAcc"></span></div>
+  <div class="link" onclick="showPage('me')">Back</div>
+</div>
+
+<!-- POPUPS -->
+<div class="popup" id="popup"><div class="popup-box" id="popupText"></div></div>
+<div class="notification" id="notification"></div>
+
+<script>
+let currentUser = null;
+let users = JSON.parse(localStorage.getItem('mce_users')||'{}');
+let transactions = JSON.parse(localStorage.getItem('mce_tx')||'{}');
+let notifications = JSON.parse(localStorage.getItem('mce_notif')||'{}');
+let hideCard = true;
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id=='dashboard') updateBalance();
+  if(id=='me') loadMe();
+  if(id=='card') loadCard();
+}
+
+function signup(){
+  const name=document.getElementById('signupName').value;
+  const email=document.getElementById('signupEmail').value;
+  const pass=document.getElementById('signupPass').value;
+  const pass2=document.getElementById('signupPass2').value;
+  const pin=document.getElementById('signupPin').value;
+  if(pass!=pass2){alert('Passwords dont match');return}
+  users[email]={name,email,pass,pin,balance:0,card:genCard()};
+  transactions[email]=[];
+  notifications[email]=[];
+  localStorage.setItem('mce_users',JSON.stringify(users));
+  currentUser=email;
+  showPage('dashboard');
+}
+
+function login(){
+  const email=document.getElementById('loginEmail').value;
+  const pass=document.getElementById('loginPass').value;
+  if(users[email]&&users[email].pass==pass){
+    currentUser=email;
+    showPage('dashboard');
+  }else alert('Invalid credentials');
+}
+
+function resetPass(){
+  const email=document.getElementById('forgotEmail').value;
+  const pass=document.getElementById('forgotPass').value;
+  const pass2=document.getElementById('forgotPass2').value;
+  if(pass!=pass2){alert('Passwords dont match');return}
+  if(users[email]){
+    users[email].pass=pass;
+    localStorage.setItem('mce_users',JSON.stringify(users));
+    showPage('login');
+  }
+}
+
+function logout(){currentUser=null;showPage('login')}
+
+function updateBalance(){
+  const cur=document.getElementById('currency').value;
+  document.getElementById('balance').innerText=cur+users[currentUser].balance.toFixed(2);
+  document.getElementById('notifCount').innerText=notifications[currentUser].length;
+}
+
+function doTransfer(){
+  const amt=parseFloat(document.getElementById('transAmt').value);
+  users[currentUser].balance-=amt;
+  addTx('Transfer','-'+amt);
+  addNotif('Transfer of '+amt+' completed');
+  showReceipt('Transfer',amt);
+}
+
+function doAirtime(){
+  const amt=parseFloat(document.getElementById('airAmt').value);
+  users[currentUser].balance-=amt;
+  addTx('Airtime','-'+amt);
+  addNotif('Airtime purchase '+amt+' successful');
+  showReceipt('Airtime',amt);
+}
+
+function doData(){
+  const amt=parseFloat(document.getElementById('dataAmt').value);
+  users[currentUser].balance-=amt;
+  addTx('Data','-'+amt);
+  addNotif('Data purchase '+amt+' successful');
+  showReceipt('Data',amt);
+}
+
+function doDeposit(){
+  const amt=parseFloat(document.getElementById('depAmt').value);
+  users[currentUser].balance+=amt;
+  addTx('Deposit','+'+amt);
+  addNotif('Deposit of '+amt+' received');
+  showReceipt('Deposit',amt);
+}
+
+function addTx(type,amt){
+  transactions[currentUser].push({type,amt,date:new Date().toLocaleString()});
+  localStorage.setItem('mce_tx',JSON.stringify(transactions));
+  localStorage.setItem('mce_users',JSON.stringify(users));
+}
+
+function addNotif(msg){
+  notifications[currentUser].push(msg);
+  localStorage.setItem('mce_notif',JSON.stringify(notifications));
+}
+
+function showReceipt(type,amt){
+  document.getElementById('popupText').innerHTML=`<h3>${type} Successful</h3><p>Amount: ${amt}</p><button class="btn" onclick="closePopup()">OK</button>`;
+  document.getElementById('popup').classList.add('active');
+}
+
+function closePopup(){document.getElementById('popup').classList.remove('active')}
+
+function toBank(){alert('Contact manager to help you')}
+function toggleMore(){document.getElementById('betting').style.display='block';document.getElementById('bills').style.display='block'}
+
+function showHistory(){
+  let html='<h3>Transaction History</h3>';
+  transactions[currentUser].forEach(t=>html+=`<div class="tx-item"><span>${t.type}</span><span>${t.amt}</span></div>`);
+  html+='<button class="btn" onclick="showPage(\'me\')">Back</button>';
+  document.getElementById('popupText').innerHTML=html;
+  document.getElementById('popup').classList.add('active');
+}
+
+function showLimits(){
+  const cur=document.getElementById('currency').value;
+  alert(`Account Limits\nUsed: ${cur}50,000\nLimit: ${cur}200,000`);
+}
+
+function loadMe(){
+  document.getElementById('currency').value=localStorage.getItem('mce_cur')||'$';
+}
+
+function saveCurrency(){localStorage.setItem('mce_cur',document.getElementById('currency').value)}
+
+function genCard(){
+  return {
+    num:Math.floor(Math.random()*9000000000000000+1000000000000000).toString(),
+    exp:(Math.floor(Math.random()*12)+1)+'/'+(26+Math.floor(Math.random()*4)),
+    cvv:Math.floor(Math.random()*900+100)
+  }
+}
+
+function loadCard(){
+  const u=users[currentUser];
+  const cur=document.getElementById('currency').value;
+  document.getElementById('cardName').innerText=u.name;
+  document.getElementById('cardExp').innerText=u.card.exp;
+  document.getElementById('cardCVV').innerText=hideCard?'***':u.card.cvv;
+  document.getElementById('cardNum').innerHTML=hideCard?'**** **** '+u.card.num.slice(-4):u.card.num+' <span onclick="toggleHide()">👁</span>';
+  document.getElementById('atmLimit').innerText=cur+'500,000.00';
+  document.getElementById('posLimit').innerText=cur+'1,000,000.00';
+  document.getElementById('linkedAcc').innerText=`MCE BANK Checking (${u.card.num.slice(-4)})`;
+}
+
+function toggleHide(){hideCard=!hideCard;loadCard()}
+
+function showNotifications(){
+  let html='<h3>Notifications</h3>';
+  notifications[currentUser].forEach(n=>html+=`<div class="tx-item">${n}</div>`);
+  html+='<button class="btn" onclick="closePopup()">Close</button>';
+  document.getElementById('popupText').innerHTML=html;
+  document.getElementById('popup').classList.add('active');
+}
+</script>
+</body>
+</html>
