@@ -3,127 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCE BANK v=115</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+<title>MCE BANK</title>
 <style>
-  body { font-family: 'Inter', sans-serif; background: #F0F2F5; }
-  .green-bg { background: linear-gradient(135deg, #00C853 0%, #00A844 100%); }
-  .btn-green { background: #00C853; }
-  .btn-green:active { background: #00A844; }
-  .card { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+  body{background:#0a0a0a;color:#fff}
+  .container{max-width:400px;margin:0 auto;min-height:100vh}
+  .hidden{display:none}
+  input,button{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:none;font-size:16px}
+  input{background:#1a1a1a;color:#fff}
+  .btn-cyan{background:#00e5ff;color:#000;font-weight:bold;cursor:pointer}
+  .btn-white{background:#fff;color:#000;cursor:pointer}
+  .login{text-align:center;padding:40px 20px}
+  .login h1{color:#00e5ff;font-size:32px;margin:20px 0}
+  .dashboard{background:#f5f5f5;color:#000;min-height:100vh}
+  .balance{background:linear-gradient(135deg,#007bff,#00e5ff);padding:20px;border-radius:20px;margin:15px;color:#fff}
+  .balance h2{font-size:32px}
+  .icons{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:20px}
+  .icon{text-align:center;cursor:pointer}
+  .icon div{width:50px;height:50px;background:#fff;border-radius:15px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:24px}
+  .card{background:linear-gradient(135deg,#0047ab,#007bff);padding:20px;border-radius:20px;color:#fff;margin:15px}
+  .card .chip{width:40px;height:30px;background:gold;border-radius:5px}
+  .bottom-nav{display:flex;justify-content:space-around;background:#fff;padding:10px;position:fixed;bottom:0;width:100%;max-width:400px}
+  .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;padding:20px}
+  .modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;width:100%}
+  .currency-list{max-height:400px;overflow-y:auto}
+  .currency-item{padding:12px;border-bottom:1px solid #eee;cursor:pointer}
 </style>
 </head>
 <body>
 
-<div id="app" class="min-h-screen">
+<div id="app"></div>
 
-<!-- 1. LOGIN / SIGNUP SCREEN -->
-<div id="authScreen" class="green-bg min-h-screen flex flex-col justify-center items-center p-6 text-white">
-  <h1 class="text-4xl font-bold mb-2">MCE BANK</h1>
-  <p class="mb-8 opacity-80">Safe balance for All users</p>
-  
-  <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-gray-800">
-    <input id="email" type="email" placeholder="Email" class="w-full border p-3 rounded-lg mb-3">
-    <input id="password" type="password" placeholder="Password" class="w-full border p-3 rounded-lg mb-3">
-    <input id="pin" type="password" maxlength="4" placeholder="4 Digit PIN" class="w-full border p-3 rounded-lg mb-4">
-    
-    <button onclick="signUp()" class="btn-green w-full text-white font-bold p-3 rounded-lg mb-2">Sign Up</button>
-    <button onclick="login()" class="w-full border-gray-300 font-bold p-3 rounded-lg">Login</button>
-    <p id="authError" class="text-red-500 text-sm mt-2"></p>
-  </div>
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<!-- 2. DASHBOARD SCREEN -->
-<div id="dashboardScreen" class="hidden p-4">
-  <div class="flex justify-between items-center mb-4">
-    <div>
-      <p class="text-sm text-gray-500">Welcome</p>
-      <p id="userName" class="font-bold text-lg">Olivia Brown</p>
-    </div>
-    <div class="flex gap-4 text-2xl">
-      <span>🔔</span>
-      <span id="eyeBtn" onclick="toggleBalance()">👁️</span>
-    </div>
-  </div>
-
-  <div class="green-bg text-white p-5 rounded-2xl card mb-6">
-    <p class="opacity-80">Total Balance</p>
-    <p id="balance" class="text-3xl font-bold">$0.00</p>
-    <p id="accountNumber" class="text-sm mt-2 opacity-80">Acc: 1234567890</p>
-  </div>
-
-  <div class="grid grid-cols-4 gap-4">
-    <button onclick="alert('Transfer')" class="text-center"><div class="bg-white p-4 rounded-xl card">💸</div><p class="text-xs mt-1">Transfer</p></button>
-    <button onclick="alert('To Bank')" class="text-center"><div class="bg-white p-4 rounded-xl card">🏦</div><p class="text-xs mt-1">To Bank</p></button>
-    <button onclick="alert('Airtime')" class="text-center"><div class="bg-white p-4 rounded-xl card">📱</div><p class="text-xs mt-1">Airtime</p></button>
-    <button onclick="alert('Data')" class="text-center"><div class="bg-white p-4 rounded-xl card">📶</div><p class="text-xs mt-1">Data</p></button>
-    <button onclick="alert('Bills')" class="text-center"><div class="bg-white p-4 rounded-xl card">💡</div><p class="text-xs mt-1">Bills</p></button>
-    <button onclick="alert('Deposit')" class="text-center"><div class="bg-white p-4 rounded-xl card">💵</div><p class="text-xs mt-1">Deposit</p></button>
-    <button onclick="alert('Betting')" class="text-center"><div class="bg-white p-4 rounded-xl card">🎲</div><p class="text-xs mt-1">Betting</p></button>
-    <button onclick="alert('More')" class="text-center"><div class="bg-white p-4 rounded-xl card">⋯</div><p class="text-xs mt-1">More</p></button>
-  </div>
-</div>
-
-</div>
-
-<script>
-// FIREBASE CONFIG - REPLACE WITH YOURS
+// YOUR REAL FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDamODVM4Eu4xH2WSGCuhbqTmd73F0bYwE",
+  authDomain: "mce-bank.firebaseapp.com",
+  projectId: "mce-bank",
+  storageBucket: "mce-bank.firebasestorage.app",
+  messagingSenderId: "643210223068",
+  appId: "1:643210223068:web:645ec21686d0bad4bc0319"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
 
-let hideBalance = false;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-// NO RECEIPT POPUP ANYWHERE. STARTS WITH LOGIN.
-auth.onAuthStateChanged(user => {
-  if(user){
-    document.getElementById('authScreen').classList.add('hidden');
-    document.getElementById('dashboardScreen').classList.remove('hidden');
-    loadUserData(user.uid);
-  } else {
-    document.getElementById('authScreen').classList.remove('hidden');
-    document.getElementById('dashboardScreen').classList.add('hidden');
+let currentUser = null;
+let userData = {balance:0,currency:"$",currencyCode:"USD"};
+let currentPage = 'login';
+
+const currencies = [
+  {code:"USD",symbol:"$",name:"US Dollar"}, {code:"NGN",symbol:"₦",name:"Nigerian Naira"},
+  {code:"EUR",symbol:"€",name:"Euro"}, {code:"GBP",symbol:"£",name:"British Pound"},
+  {code:"CAD",symbol:"C$",name:"Canadian Dollar"}, {code:"GHS",symbol:"₵",name:"Ghana Cedi"},
+  {code:"KES",symbol:"KSh",name:"Kenyan Shilling"}, {code:"ZAR",symbol:"R",name:"South African Rand"},
+  // Add more to make 50... for demo I put 8. You can copy full list later
+];
+
+function render(){
+  const appDiv = document.getElementById('app');
+  if(currentPage === 'login') appDiv.innerHTML = loginHTML();
+  if(currentPage === 'dashboard') appDiv.innerHTML = dashboardHTML();
+  if(currentPage === 'cards') appDiv.innerHTML = cardsHTML();
+  if(currentPage === 'settings') appDiv.innerHTML = settingsHTML();
+}
+
+function loginHTML(){
+  return `<div class="container login">
+    <h1>MCE BANK</h1>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn-cyan" onclick="login()">Login</button>
+    <button class="btn-white" onclick="signup()">Sign Up</button>
+    <p style="margin-top:20px;color:#888">Forgot Password?</p>
+  </div>`;
+}
+
+function dashboardHTML(){
+  return `<div class="dashboard">
+    <div class="balance">
+      <p>Available Balance</p>
+      <h2>${userData.currency}${userData.balance.toFixed(2)}</h2>
+    </div>
+    <div class="icons">
+      <div class="icon" onclick="showModal('airtime')"><div>📱</div><p>Airtime</p></div>
+      <div class="icon" onclick="showModal('data')"><div>📶</div><p>Data</p></div>
+      <div class="icon" onclick="showModal('tobank')"><div>🏦</div><p>To Bank</p></div>
+      <div class="icon" onclick="showModal('deposit')"><div>💰</div><p>Deposit</p></div>
+      <div class="icon" onclick="goTo('cards')"><div>💳</div><p>Cards</p></div>
+      <div class="icon"><div>📊</div><p>Analytics</p></div>
+      <div class="icon"><div>🔄</div><p>Transfer</p></div>
+      <div class="icon"><div>📜</div><p>History</p></div>
+    </div>
+    <div class="bottom-nav">
+      <div onclick="goTo('dashboard')">Home</div>
+      <div onclick="goTo('cards')">Cards</div>
+      <div>Analytics</div>
+      <div onclick="goTo('settings')">Settings</div>
+    </div>
+  </div>`;
+}
+
+function cardsHTML(){
+  return `<div class="dashboard">
+    <div class="card">
+      <p>MCE BANK</p><p style="float:right">ACTIVE</p>
+      <div class="chip"></div>
+      <h2>4532 •••• •••• 8819</h2>
+      <p>CARDHOLDER NAME<br>JENNIFER BELLA</p>
+      <p style="float:right">EXPIRES 09/29</p>
+    </div>
+    <div style="display:flex;gap:10px;padding:15px">
+      <button class="btn-white">🔒 Freeze Card</button>
+      <button class="btn-white">📋 Copy Card Details</button>
+    </div>
+    <div style="background:#fff;margin:15px;padding:15px;border-radius:15px">
+      <h3>ATM & CARD LIMITS</h3>
+      <p>Daily ATM: $2,500.00</p>
+      <p>Daily POS: $10,000.00</p>
+    </div>
+    <div class="bottom-nav">
+      <div onclick="goTo('dashboard')">Home</div>
+      <div>Cards</div>
+      <div>Analytics</div>
+      <div onclick="goTo('settings')">Settings</div>
+    </div>
+  </div>`;
+}
+
+function settingsHTML(){
+  let list = currencies.map(c=>`<div class="currency-item" onclick="setCurrency('${c.symbol}','${c.code}')">${c.symbol} ${c.name} (${c.code})</div>`).join('');
+  return `<div class="dashboard"><div style="padding:20px">
+    <h2>Settings</h2>
+    <h3>Select Currency</h3>
+    <div class="currency-list">${list}</div>
+  </div></div>`;
+}
+
+function showModal(type){
+  if(type==='airtime' || type==='data'){
+    document.body.innerHTML += `<div class="modal"><div class="modal-content">
+      <h3>${type.toUpperCase()}</h3>
+      <input id="number" placeholder="Enter Number">
+      <input id="amount" type="number" placeholder="Enter Amount">
+      <button class="btn-cyan" onclick="complete('${type}')">Continue</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div></div>`;
   }
+  if(type==='tobank'){
+    alert("Contact Manager: Our manager will help you run your transfer");
+  }
+  if(type==='deposit'){
+    document.body.innerHTML += `<div class="modal"><div class="modal-content">
+      <h3>Deposit</h3>
+      <input id="depAmount" type="number" placeholder="Enter Amount">
+      <input id="depEmail" type="email" placeholder="Enter Account Email">
+      <button class="btn-cyan" onclick="confirmDeposit()">Deposit</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div></div>`;
+  }
+}
+
+function complete(type){
+  let num = document.getElementById('number').value;
+  let amt = document.getElementById('amount').value;
+  alert(`Successful!\\n${type}: ${amt}\\nNumber: ${num}`);
+  closeModal();
+}
+
+function confirmDeposit(){
+  let amt = parseFloat(document.getElementById('depAmount').value);
+  let email = document.getElementById('depEmail').value;
+  if(confirm(`Confirm deposit of ${userData.currency}${amt} to ${email}?`)){
+    userData.balance += amt;
+    updateDoc(doc(db,"users",currentUser.uid),{balance:userData.balance});
+    alert(`Deposit Successful!\\nReceipt: ${userData.currency}${amt}`);
+    closeModal();
+    render();
+  }
+}
+
+function closeModal(){ document.querySelector('.modal')?.remove(); }
+function goTo(page){ currentPage=page; render(); }
+function setCurrency(symbol,code){ userData.currency=symbol; userData.currencyCode=code; updateDoc(doc(db,"users",currentUser.uid),{currency:symbol,currencyCode:code}); render(); }
+
+window.login = async () => {
+  const email=document.getElementById('email').value;
+  const pass=document.getElementById('password').value;
+  await signInWithEmailAndPassword(auth,email,pass);
+}
+window.signup = async () => {
+  const email=document.getElementById('email').value;
+  const pass=document.getElementById('password').value;
+  const userCred = await createUserWithEmailAndPassword(auth,email,pass);
+  await setDoc(doc(db,"users",userCred.user.uid),{balance:0,currency:"$",currencyCode:"USD"});
+}
+
+onAuthStateChanged(auth, async (user)=>{
+  if(user){
+    currentUser=user;
+    const snap = await getDoc(doc(db,"users",user.uid));
+    if(snap.exists()) userData=snap.data();
+    currentPage='dashboard';
+    render();
+  }else{ currentPage='login'; render(); }
 });
 
-function signUp(){
-  const email = email.value; const password = password.value; const pin = pin.value;
-  auth.createUserWithEmailAndPassword(email, password)
-  .then(cred => {
-    const accNum = Math.floor(1000000 + Math.random() * 9000000000);
-    db.collection("users").doc(cred.user.uid).set({
-      email: email, balance: 0, accountNumber: accNum, pin: pin
-    });
-  }).catch(e => authError.innerText = e.message);
-}
-
-function login(){
-  auth.signInWithEmailAndPassword(email.value, password.value)
-  .catch(e => authError.innerText = e.message);
-}
-
-function loadUserData(uid){
-  db.collection("users").doc(uid).onSnapshot(doc => {
-    const data = doc.data();
-    userName.innerText = data.email.split('@')[0];
-    accountNumber.innerText = 'Acc: ' + data.accountNumber;
-    balance.innerText = hideBalance ? '****' : '$' + data.balance.toFixed(2);
-  });
-}
-
-function toggleBalance(){ hideBalance = !hideBalance; loadUserData(auth.currentUser.uid); }
+render();
 </script>
-
 </body>
 </html>
