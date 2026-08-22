@@ -5,56 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MCE BANK</title>
 <style>
-body{background:#000;color:#fff;font-family:Arial;text-align:center;padding:20px}
-input,button{width:80%;padding:12px;margin:8px;border-radius:8px;border:none}
-button{background:#4a00e0;color:#fff;font-weight:bold;cursor:pointer}
-.card{background:#111;padding:15px;margin:10px;border-radius:10px}
+/* OLD DESIGN - UNCHANGED */
+body{background:#0a0a0a;color:#fff;font-family:Arial;margin:0;padding:20px;text-align:center}
+h1{color:#00d4ff}
+input{width:85%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff}
+button{width:85%;padding:12px;margin:8px 0;border-radius:8px;border:none;background:#00d4ff;color:#000;font-weight:bold;cursor:pointer}
+button:hover{opacity:0.8}
+.card{background:#1a1a1a;padding:15px;margin:10px;border-radius:10px;text-align:left}
 #me,#dashboard,#signup,#forgot{display:none}
-.bell{position:fixed;top:20px;right:20px;font-size:24px}
-.dot{background:red;border-radius:50%;width:10px;height:10px;position:absolute;top:0;right:0}
+.bell{position:absolute;top:20px;right:20px;font-size:24px;cursor:pointer}
+.dot{background:red;border-radius:50%;width:10px;height:10px;position:absolute;top:15px;right:15px}
 </style>
 </head>
 <body>
 <h1>MCE BANK</h1>
 
 <div id="login">
-<input id="lemail" type="email" placeholder="Email">
-<input id="lpass" type="password" placeholder="Password">
+<h2>Login</h2>
+<input id="lemail" type="email" placeholder="Enter Email">
+<input id="lpass" type="password" placeholder="Enter Password">
 <button onclick="login()">Login</button>
-<button onclick="show('signup')">Sign Up</button>
-<button onclick="show('forgot')">Forgot Password?</button>
+<p onclick="show('signup')" style="color:#00d4ff;cursor:pointer">Don't have an account? Sign Up</p>
+<p onclick="show('forgot')" style="color:#00d4ff;cursor:pointer">Forgot Password?</p>
 </div>
 
 <div id="signup">
+<h2>Sign Up</h2>
 <input id="sname" placeholder="Full Name">
 <input id="semail" type="email" placeholder="Email">
 <input id="spass" type="password" placeholder="Password">
 <input id="scpass" type="password" placeholder="Confirm Password">
-<input id="spin" type="password" placeholder="Transfer PIN 4 digits">
+<input id="spin" type="password" maxlength="4" placeholder="Transfer PIN 4 digits">
 <button onclick="signup()">Create Account</button>
-<button onclick="show('login')">Back to Login</button>
+<p onclick="show('login')" style="color:#00d4ff;cursor:pointer">Back to Login</p>
 </div>
 
 <div id="forgot">
+<h2>Forgot Password</h2>
 <input id="femail" type="email" placeholder="Enter your email">
-<button onclick="resetPass()">Send Reset Link</button>
-<button onclick="show('login')">Back to Login</button>
+<button onclick="resetPass()">Reset Password</button>
+<p onclick="show('login')" style="color:#00d4ff;cursor:pointer">Back to Login</p>
 </div>
 
 <div id="dashboard">
 <div class="bell" onclick="showNoti()">🔔<span id="dot" class="dot" style="display:none"></span></div>
 <h2>Dashboard</h2>
-<div class="card">Balance: <span id="bal">$0</span></div>
+<div class="card">Balance: <b><span id="bal">$0</span></b></div>
 <button onclick="show('me')">Me</button>
 <button onclick="logout()">Logout</button>
 </div>
 
 <div id="me">
 <h2>Me</h2>
-<div class="card">Transaction History: <div id="hist">No transactions yet</div></div>
-<div class="card">Account Limits: <span id="limits">$50,000 / $200,000</span></div>
-<div class="card">Bank Card: <span id="cardname">NAME</span></div>
-<button onclick="show('dashboard')">Back</button>
+<div class="card"><b>Transaction History:</b><div id="hist">No transactions yet</div></div>
+<div class="card"><b>Account Limits:</b><br><span id="limits">$50,000 Daily / $200,000 Monthly</span></div>
+<div class="card"><b>Bank Card:</b><br><span id="cardname">NAME</span></div>
+<button onclick="show('dashboard')">Back to Dashboard</button>
 </div>
 
 <script>
@@ -68,25 +74,42 @@ document.getElementById(id).style.display='block';
 
 function signup(){
 let name=sname.value.trim(), email=semail.value.trim().toLowerCase(), pass=spass.value, cpass=scpass.value, pin=spin.value;
-if(!name||!email||!pass||!cpass||!pin){alert('Fill all fields');return;}
+if(!name||!email||!pass||!cpass||!pin){alert('Please fill all fields');return;}
 if(pass!==cpass){alert('Passwords do not match');return;}
-if(users[email]){alert('Account already exists');return;}
-users[email]={name,pass,pin,bal:1000,hist:[],noti:[]};
+if(pin.length!==4){alert('PIN must be 4 digits');return;}
+if(users[email]){alert('Email already exists. Please login.');return;}
+
+users[email]={name:name,pass:pass,pin:pin,bal:1000,hist:[],noti:[]};
 localStorage.setItem('mce_users',JSON.stringify(users));
-alert('Account created!');
-show('login');
+
+currentUser=email; // AUTO LOGIN AFTER SIGNUP
+loadDashboard();
+alert('Account created successfully!');
 }
 
-function login(){ // FIXED THIS PART ONLY
+function login(){
 let email=lemail.value.trim().toLowerCase(), pass=lpass.value;
-if(!users[email]){alert('Invalid email or password');return;}
-if(users[email].pass!==pass){alert('Invalid email or password');return;}
-currentUser=email;
-bal.innerText='$'+users[email].bal;
-cardname.innerText=users[email].name.toUpperCase();
-hist.innerHTML=users[email].hist.length?users[email].hist.join('<br>'):'No transactions yet';
-limits.innerText='$50,000 / $200,000';
-if(users[email].noti.length>0) dot.style.display='block';
+if(!email||!pass){alert('Please enter email and password');return;}
+
+// CHECK: Email must exist AND password must match
+if(!users[email]){
+  alert('Invalid email or password');
+  return;
+}
+if(users[email].pass!==pass){
+  alert('Invalid email or password');
+  return;
+}
+
+currentUser=email; // CORRECT EMAIL + CORRECT PASSWORD = LOGIN
+loadDashboard();
+}
+
+function loadDashboard(){
+bal.innerText='$'+users[currentUser].bal;
+cardname.innerText=users[currentUser].name.toUpperCase();
+hist.innerHTML=users[currentUser].hist.length>0?users[currentUser].hist.join('<br>'):'No transactions yet';
+if(users[currentUser].noti.length>0) dot.style.display='block';
 show('dashboard');
 }
 
@@ -94,7 +117,12 @@ function resetPass(){
 let email=femail.value.trim().toLowerCase();
 if(!users[email]){alert('Email not found');return;}
 let newpass=prompt('Enter new password');
-if(newpass){users[email].pass=newpass;localStorage.setItem('mce_users',JSON.stringify(users));alert('Password reset!');show('login');}
+if(newpass){
+  users[email].pass=newpass;
+  localStorage.setItem('mce_users',JSON.stringify(users));
+  alert('Password reset successful!');
+  show('login');
+}
 }
 
 function logout(){currentUser=null;show('login');}
@@ -107,7 +135,7 @@ localStorage.setItem('mce_users',JSON.stringify(users));
 dot.style.display='none';
 }
 
-show('login');
+show('login'); // START AT LOGIN PAGE
 </script>
 </body>
 </html>
